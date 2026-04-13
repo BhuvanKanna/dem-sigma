@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ΔΕΜ — Delta Epsilon Mu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0eb;
+  --surface: #faf6f1;
+  --surface2: #ede6de;
+  --border: rgba(140,30,30,0.15);
+  --accent: #8c1e1e;
+  --accent2: #b84040;
+  --gold: #8c1e1e;
+  --text: #1a0a0a;
+  --muted: #6b4040;
+  --red: #c0392b;
+  --green: #2e7d32;
+  --tag-bg: rgba(140,30,30,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content:'';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245,240,235,0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  height: 64px;
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.logo span {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 300;
+  margin-left: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.nav-tab {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.nav-tab:hover {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.nav-tab.active {
+  color: var(--accent);
+  background: rgba(140,30,30,0.08);
+  border-color: rgba(140,30,30,0.25);
+}
+
+.header-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.header-stat .num {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* MAIN */
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.page-header h1 em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.page-header p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* STATS BAR */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  transition: border-color 0.2s;
+}
+
+.stat-card:hover { border-color: rgba(176,143,255,0.3); }
+
+.stat-card .label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.stat-card .value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-card .value.accent { color: var(--accent); }
+.stat-card .value.gold { color: var(--gold); }
+.stat-card .value.green { color: var(--green); }
+.stat-card .value.blue { color: var(--accent2); }
+
+/* CONTROLS */
+.controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem 0.55rem 2.25rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: var(--muted); }
+
+select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 2rem 0.55rem 0.75rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a86a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  transition: border-color 0.2s;
+}
+
+select:focus { border-color: var(--accent); }
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+}
+
+.btn:hover { color: var(--text); border-color: rgba(176,143,255,0.3); }
+.btn.primary { background: rgba(140,30,30,0.10); color: var(--accent); border-color: rgba(140,30,30,0.25); }
+.btn.primary:hover { background: rgba(140,30,30,0.18); }
+
+.results-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.results-count span { color: var(--gold); }
+
+/* TABLE */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+thead th:hover { color: var(--text); }
+
+thead th .sort-icon {
+  display: inline-block;
+  margin-left: 0.3rem;
+  opacity: 0.4;
+}
+
+thead th.sorted .sort-icon { opacity: 1; color: var(--accent); }
+
+tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+tbody tr:hover { background: rgba(176,143,255,0.04); }
+tbody tr:last-child { border-bottom: none; }
+
+tbody td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.member-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.badge-medicine { background: rgba(176,143,255,0.12); color: var(--accent); }
+.badge-pa { background: rgba(126,200,227,0.12); color: var(--accent2); }
+.badge-dentistry { background: rgba(212,175,110,0.12); color: var(--gold); }
+.badge-other { background: rgba(138,134,160,0.12); color: var(--muted); }
+.badge-vet { background: rgba(110,219,168,0.12); color: var(--green); }
+.badge-opt { background: rgba(232,112,112,0.12); color: var(--red); }
+
+.email-link {
+  color: var(--accent2);
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+}
+.email-link:hover { text-decoration: underline; }
+
+.cat-badge {
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+.cat-clinical { background: rgba(176,143,255,0.1); color: var(--accent); }
+.cat-research { background: rgba(126,200,227,0.1); color: var(--accent2); }
+.cat-volunteer { background: rgba(110,219,168,0.1); color: var(--green); }
+.cat-shadow { background: rgba(212,175,110,0.1); color: var(--gold); }
+.cat-leadership { background: rgba(232,112,112,0.1); color: var(--red); }
+.cat-orgs { background: rgba(138,134,160,0.1); color: var(--muted); }
+.cat-intern { background: rgba(232,160,80,0.1); color: #e8a050; }
+.cat-other { background: rgba(138,134,160,0.08); color: var(--muted); }
+
+/* EXPANDED ROW */
+.expanded-row td {
+  padding: 0;
+}
+
+.expanded-content {
+  padding: 1rem 1.5rem;
+  background: rgba(176,143,255,0.03);
+  border-top: 1px solid var(--border);
+}
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.exp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+}
+
+.exp-item .exp-name { color: var(--text); flex: 1; }
+.exp-item .exp-cat { flex-shrink: 0; }
+
+/* MEMBER MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid rgba(176,143,255,0.2);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.modal-close:hover { color: var(--text); }
+
+.modal-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.modal-field {
+  margin-bottom: 1rem;
+}
+
+.modal-field label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.modal-field .val {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.25rem 0;
+}
+
+.modal-section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+/* INVOLVEMENT VIEW SPECIFIC */
+.inv-controls {
+  gap: 0.75rem;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+
+.empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+.empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 0.5rem; }
+
+/* TOGGLE BUTTONS */
+.view-toggle {
+  display: flex;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.view-btn {
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+
+.view-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* CHART CONTAINER */
+.chart-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .chart-section { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+}
+
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.chart-card h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.bar-label {
+  width: 140px;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  background: var(--surface2);
+  border-radius: 3px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+.bar-count {
+  width: 30px;
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.page-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.page-btn:hover { color: var(--text); border-color: rgba(176,143,255,0.3); }
+.page-btn.active { background: rgba(140,30,30,0.10); color: var(--accent); border-color: rgba(140,30,30,0.25); }
+.page-btn:disabled { opacity: 0.3; cursor: default; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(140,30,30,0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(140,30,30,0.45); }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
+    <svg width="36" height="42" viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 2 L56 12 L56 44 Q56 62 30 70 Q4 62 4 44 L4 12 Z" fill="#8c1e1e" stroke="#5a0a0a" stroke-width="2"/>
+      <path d="M30 8 L50 16 L50 43 Q50 58 30 65 Q10 58 10 43 L10 16 Z" fill="#a82222"/>
+      <text x="30" y="42" text-anchor="middle" font-family="serif" font-size="20" font-weight="bold" fill="white" letter-spacing="1">ΔΕΜ</text>
+      <path d="M14 24 L46 24" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+    </svg>
+    <div class="logo">ΔΕΜ <span>Delta Epsilon Mu</span></div>
+  </div>
+  <nav>
+    <button class="nav-tab active" onclick="switchTab('tracker')">Interactive Active Tracker</button>
+    <button class="nav-tab" onclick="switchTab('demographics')">Demographics</button>
+  </nav>
+  <div style="display:flex;align-items:center;margin-left:auto;margin-right:1rem;">
+    <svg width="48" height="28" viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
+      <!-- Texas Longhorn silhouette -->
+      <path d="M8,50 Q0,20 20,18 Q10,8 30,22 Q40,10 60,16 Q80,10 90,22 Q110,8 100,18 Q120,20 112,50 Q100,35 90,40 Q80,28 60,32 Q40,28 30,40 Q20,35 8,50 Z" fill="#8c1e1e"/>
+    </svg>
+  </div>
+  <div class="header-stat">
+    <div class="num" id="hdr-members">84</div> active members
+  </div>
+</header>
+
+<main>
+  <!-- ACTIVE TRACKER TAB -->
+  <div class="tab-panel active" id="tab-tracker">
+    <div class="page-header">
+      <h1>Active Member <em>Tracker</em></h1>
+      <p>All active members, contact info, and involvement records from the chapter roster.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <!-- CHART ROW -->
+    <div class="chart-section">
+      <div class="chart-card">
+        <h3>Pre-Health Track Distribution</h3>
+        <div class="bar-chart" id="track-chart"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Involvement by Category</h3>
+        <div class="bar-chart" id="cat-chart"></div>
+      </div>
+    </div>
+
+    <!-- SUB-NAV TOGGLE -->
+    <div class="controls" style="margin-bottom:1rem;">
+      <div class="view-toggle">
+        <button class="view-btn active" id="vbtn-members" onclick="switchView('members')">Members</button>
+        <button class="view-btn" id="vbtn-involvement" onclick="switchView('involvement')">Involvement Log</button>
+      </div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-left:0.5rem;" id="view-desc">Showing all active members with contact information</div>
+    </div>
+
+    <!-- MEMBERS VIEW -->
+    <div id="view-members">
+      <div class="controls">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="member-search" placeholder="Search by name, major, email..." oninput="filterMembers()">
+        </div>
+        <select id="filter-track" onchange="filterMembers()">
+          <option value="">All Tracks</option>
+        </select>
+        <select id="filter-major" onchange="filterMembers()">
+          <option value="">All Majors</option>
+        </select>
+        <select id="filter-family" onchange="filterMembers()">
+          <option value="">All Families</option>
+        </select>
+        <select id="sort-members" onchange="filterMembers()">
+          <option value="name">Sort: Name A→Z</option>
+          <option value="name-desc">Sort: Name Z→A</option>
+          <option value="major">Sort: Major</option>
+          <option value="track">Sort: Track</option>
+        </select>
+        <div class="results-count">Showing <span id="member-count">—</span> members</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="setSortMembers('name')">Name <span class="sort-icon">↕</span></th>
+              <th onclick="setSortMembers('major')">Major <span class="sort-icon">↕</span></th>
+              <th>Minor / Certificate</th>
+              <th onclick="setSortMembers('track')">Track <span class="sort-icon">↕</span></th>
+              <th>Family</th>
+              <th>Class</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th style="text-align:center;">Experiences</th>
+            </tr>
+          </thead>
+          <tbody id="members-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="members-pagination"></div>
+    </div>
+
+    <!-- INVOLVEMENT VIEW -->
+    <div id="view-involvement" style="display:none;">
+      <div class="controls inv-controls">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="inv-search" placeholder="Search name, experience, category..." oninput="filterInvolvement()">
+        </div>
+        <select id="filter-cat" onchange="filterInvolvement()">
+          <option value="">All Categories</option>
+        </select>
+        <select id="filter-inv-name" onchange="filterInvolvement()">
+          <option value="">All Members</option>
+        </select>
+        <div class="results-count">Showing <span id="inv-count">—</span> records</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Major</th>
+              <th>Category</th>
+              <th>Experience</th>
+            </tr>
+          </thead>
+          <tbody id="inv-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="inv-pagination"></div>
+    </div>
+  </div>
+</main>
+
+<!-- DEMOGRAPHICS TAB -->
+<div class="tab-panel" id="tab-demographics" style="position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:2rem;">
+  <div class="page-header">
+    <h1>Chapter <em>Demographics</em></h1>
+    <p>Visual breakdown of Alpha Iota chapter, DEM as a whole, and University of Texas benchmarks.</p>
+  </div>
+
+  <!-- GROUP SELECTOR -->
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;">
+    <span style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-right:0.5rem;">Show:</span>
+    <button class="dem-group-btn active" data-group="ai" onclick="setDemGroup('ai',this)">Alpha Iota</button>
+    <button class="dem-group-btn" data-group="dem_with" onclick="setDemGroup('dem_with',this)">DEM (with Iotas)</button>
+    <button class="dem-group-btn" data-group="dem_no" onclick="setDemGroup('dem_no',this)">DEM (minus Iotas)</button>
+    <button class="dem-group-btn" data-group="ut" onclick="setDemGroup('ut',this)">University of Texas</button>
+    <button class="dem-group-btn" data-group="all" onclick="setDemGroup('all',this)">All Groups</button>
+  </div>
+
+  <!-- CATEGORY SELECTOR -->
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.75rem;align-items:center;">
+    <span style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-right:0.5rem;">Category:</span>
+    <button class="dem-cat-btn" data-cat="gender" onclick="setDemCat('gender',this)">Gender</button>
+    <button class="dem-cat-btn" data-cat="race" onclick="setDemCat('race',this)">Race / Ethnicity</button>
+    <button class="dem-cat-btn" data-cat="year" onclick="setDemCat('year',this)">Academic Year</button>
+    <button class="dem-cat-btn" data-cat="major" onclick="setDemCat('major',this)">Major</button>
+    <button class="dem-cat-btn active" data-cat="track" onclick="setDemCat('track',this)">Pre-Health Track</button>
+  </div>
+
+  <!-- CHARTS GRID -->
+  <div id="dem-charts-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.25rem;"></div>
+
+  <!-- LEGEND / TABLE -->
+  <div id="dem-legend-section" style="margin-top:1.5rem;"></div>
+</div>
+
+<style>
+.dem-group-btn, .dem-cat-btn {
+  padding: 0.38rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.dem-group-btn:hover, .dem-cat-btn:hover { color: var(--text); border-color: rgba(176,143,255,0.3); }
+.dem-group-btn.active { background: rgba(140,30,30,0.10); color: var(--accent); border-color: rgba(140,30,30,0.3); }
+.dem-cat-btn.active { background: rgba(140,30,30,0.08); color: var(--accent); border-color: rgba(140,30,30,0.3); }
+
+.dem-chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: border-color 0.2s;
+}
+.dem-chart-card:hover { border-color: rgba(140,30,30,0.3); }
+.dem-chart-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+.dem-chart-subtitle {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+.dem-donut-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 1.25rem;
+}
+.dem-donut-wrap svg { overflow: visible; }
+.dem-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.dem-donut-center .total-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+.dem-donut-center .total-label {
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.dem-legend {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+.dem-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.dem-legend-row:hover { background: rgba(255,255,255,0.04); }
+.dem-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dem-legend-label { flex: 1; color: var(--muted); }
+.dem-legend-pct {
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
+  font-size: 0.75rem;
+}
+.dem-na {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  letter-spacing: .1em;
+}
+</style>
+
+<script>
+// ===== DEMOGRAPHICS DATA =====
+const DEM_DATA = {
+  gender: {
+    ai:       [['Female',58.3],['Male',41.7]],
+    dem_with: [['Female',63.7],['Male',36.3]],
+    dem_no:   [['Female',64.6],['Male',35.4]],
+    ut:       [['Female',55.9],['Male',43.9],['Other',0.2]],
+  },
+  race: {
+    ai:       [['Asian',58.3],['Hispanic/Latino/a',25.0],['White',16.7]],
+    dem_with: [['Asian',61.5],['Hispanic/Latino/a',15.4],['White/Caucasian',11.0],['Black/African American',5.5],['Middle Eastern',3.3],['Multiracial',3.3]],
+    dem_no:   [['Asian',62.0],['Hispanic/Latino/a',13.9],['White/Caucasian',10.1],['Black/African American',6.3],['Middle Eastern',3.8],['Multiracial',3.8]],
+    ut:       [['White/Caucasian',30.2],['Hispanic/Latino/a',25.8],['Asian',22.9],['International',9.6],['Black/African American',4.4],['Multiracial',3.8],['Unknown/Blank',3.2]],
+  },
+  year: {
+    ai:       [['Freshman',58.3],['Sophomore',41.7]],
+    dem_with: [['Sophomore',38.5],['Senior',24.2],['Junior',22.0],['Freshman',15.4]],
+    dem_no:   [['Sophomore',38.0],['Senior',27.8],['Junior',25.3],['Freshman',8.9]],
+    ut:       null,
+  },
+  major: {
+    ai:       [['Biology',33.3],['Public Health',16.7],['Biochemistry',8.3],['Mechanical Engineering',8.3],['Communications',8.3],['Philosophy',8.3],['Neuroscience',8.3],['Biomedical Engineering',8.3]],
+    dem_with: [['Biology',17.6],['Neuroscience',17.6],['Public Health',12.1],['Human Biology',5.5],['Biochemistry',5.5],['Psychology',2.2],['Health and Society',2.2],['Human Development',2.2],['Neuroscience & Sociology',1.1],['Cell & Molecular Biology',1.1],['Biology and Plan II',1.1],['public health',1.1],['Mechanical Engineering',1.1],['Other',28.6]],
+    dem_no:   [['Neuroscience',19.0],['Biology',15.2],['Public Health',11.4],['Human Biology',6.3],['Biochemistry',5.1],['Chemistry',2.5],['Psychology',2.5],['Health and Society',2.5],['Human Development',2.5],['Neuroscience & Sociology',1.3],['Other',32.2]],
+    ut:       [['Natural Sciences',23.2],['Liberal Arts',22.9],['Engineering',15.0],['Business Administration',10.3],['Communication',8.5],['Education',6.1],['Fine Arts',3.7],['Law',1.7],['Architecture',1.3],['Nursing',1.3],['Other',6.0]],
+  },
+  track: {
+    ai:       [['Medicine',91.7],['Physician Assistant',8.3]],
+    dem_with: [['Medicine',81.3],['Physician Assistant',6.6],['Dentistry',5.5],['Other',2.2],['Speech Pathology',1.1]],
+    dem_no:   [['Medicine',79.7],['Physician Assistant',6.3],['Dentistry',6.3],['Other',2.5],['Speech Pathology',1.3]],
+    ut:       null,
+  },
+};
+
+const DEM_GROUPS = {
+  ai: 'Alpha Iota',
+  dem_with: 'DEM (with Iotas)',
+  dem_no: 'DEM (minus Iotas)',
+  ut: 'University of Texas',
+};
+
+const DEM_CATS = {
+  gender: 'Gender',
+  race: 'Race / Ethnicity',
+  year: 'Academic Year',
+  major: 'Major',
+  track: 'Pre-Health Track',
+};
+
+// Palette — enough for all slices
+const DEM_PALETTE = [
+  '#b08fff','#7ec8e3','#d4af6e','#6edba8','#e87070','#e8a050',
+  '#a78bfa','#34d399','#f87171','#60a5fa','#fbbf24','#a3e635',
+  '#f472b6','#38bdf8','#fb923c','#4ade80','#c084fc','#e879f9',
+  '#2dd4bf','#facc15',
+];
+
+let demCurGroup = 'ai';
+let demCurCat = 'track';
+let demHighlight = null; // highlighted slice index
+
+function setDemGroup(g, btn) {
+  demCurGroup = g;
+  document.querySelectorAll('.dem-group-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDemCharts();
+}
+
+function setDemCat(c, btn) {
+  demCurCat = c;
+  document.querySelectorAll('.dem-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDemCharts();
+}
+
+function renderDemCharts() {
+  const grid = document.getElementById('dem-charts-grid');
+  const groups = demCurGroup === 'all' ? Object.keys(DEM_GROUPS) : [demCurGroup];
+  grid.style.gridTemplateColumns = groups.length === 1 ? 'minmax(340px,480px)' : 'repeat(auto-fit,minmax(310px,1fr))';
+  grid.innerHTML = '';
+
+  groups.forEach(g => {
+    const data = DEM_DATA[demCurCat][g];
+    const card = document.createElement('div');
+    card.className = 'dem-chart-card';
+
+    if (!data) {
+      card.innerHTML = `
+        <div class="dem-chart-title">${DEM_GROUPS[g]}</div>
+        <div class="dem-chart-subtitle">${DEM_CATS[demCurCat]}</div>
+        <div class="dem-na">N / A</div>`;
+    } else {
+      const total = data.reduce((s,[,v]) => s+v, 0);
+      const donutSVG = buildDonut(data, 90, g + '_' + demCurCat);
+      const legendHTML = data.map(([label, pct], i) =>
+        `<div class="dem-legend-row" onmouseenter="highlightSlice('${g}_${demCurCat}',${i})" onmouseleave="unhighlightSlice('${g}_${demCurCat}',${i})">
+          <div class="dem-legend-dot" style="background:${DEM_PALETTE[i % DEM_PALETTE.length]}"></div>
+          <div class="dem-legend-label">${label}</div>
+          <div class="dem-legend-pct">${pct.toFixed(1)}%</div>
+        </div>`
+      ).join('');
+
+      card.innerHTML = `
+        <div class="dem-chart-title">${DEM_GROUPS[g]}</div>
+        <div class="dem-chart-subtitle">${DEM_CATS[demCurCat]}</div>
+        <div class="dem-donut-wrap" id="wrap_${g}_${demCurCat}">
+          ${donutSVG}
+          <div class="dem-donut-center">
+            <div class="total-num" id="center-num_${g}_${demCurCat}">${data.length}</div>
+            <div class="total-label" id="center-lbl_${g}_${demCurCat}">groups</div>
+          </div>
+        </div>
+        <div class="dem-legend">${legendHTML}</div>`;
+    }
+    grid.appendChild(card);
+  });
+}
+
+function buildDonut(data, r, id) {
+  const cx = 100, cy = 100, sw = 38;
+  const total = data.reduce((s,[,v]) => s+v, 0);
+  let angle = -Math.PI / 2;
+  let paths = '';
+
+  data.forEach(([label, pct], i) => {
+    const frac = pct / total;
+    const sweep = frac * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(angle);
+    const y1 = cy + r * Math.sin(angle);
+    const x2 = cx + r * Math.cos(angle + sweep);
+    const y2 = cy + r * Math.sin(angle + sweep);
+    const large = sweep > Math.PI ? 1 : 0;
+    const color = DEM_PALETTE[i % DEM_PALETTE.length];
+    const midAngle = angle + sweep / 2;
+
+    paths += `<path
+      id="slice_${id}_${i}"
+      d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z"
+      fill="${color}"
+      opacity="0.88"
+      stroke="var(--bg)"
+      stroke-width="1.5"
+      style="transform-origin:${cx}px ${cy}px;transition:transform 0.2s,opacity 0.2s;cursor:pointer;"
+      onmouseenter="highlightSlice('${id}',${i})"
+      onmouseleave="unhighlightSlice('${id}',${i})"
+    />`;
+
+    angle += sweep;
+  });
+
+  // Inner circle cutout via clip or overlay circle
+  paths += `<circle cx="${cx}" cy="${cy}" r="${r - sw}" fill="var(--surface)" />`;
+
+  return `<svg viewBox="0 0 200 200" width="200" height="200" id="svg_${id}">${paths}</svg>`;
+}
+
+function highlightSlice(id, i) {
+  const slice = document.getElementById(`slice_${id}_${i}`);
+  if (slice) {
+    slice.style.transform = 'scale(1.06)';
+    slice.style.opacity = '1';
+    slice.style.filter = 'drop-shadow(0 0 6px rgba(176,143,255,0.5))';
+  }
+  // Update center text
+  const parts = id.split('_');
+  const cat = parts.slice(1).join('_');
+  const group = parts[0];
+  const data = DEM_DATA[cat]?.[group];
+  if (data && data[i]) {
+    const numEl = document.getElementById(`center-num_${id}`);
+    const lblEl = document.getElementById(`center-lbl_${id}`);
+    if (numEl) numEl.textContent = data[i][1].toFixed(1) + '%';
+    if (lblEl) { lblEl.textContent = data[i][0]; lblEl.style.maxWidth='90px'; lblEl.style.textAlign='center'; }
+  }
+}
+
+function unhighlightSlice(id, i) {
+  const slice = document.getElementById(`slice_${id}_${i}`);
+  if (slice) {
+    slice.style.transform = '';
+    slice.style.opacity = '0.88';
+    slice.style.filter = '';
+  }
+  const parts = id.split('_');
+  const cat = parts.slice(1).join('_');
+  const group = parts[0];
+  const data = DEM_DATA[cat]?.[group];
+  const numEl = document.getElementById(`center-num_${id}`);
+  const lblEl = document.getElementById(`center-lbl_${id}`);
+  if (numEl && data) numEl.textContent = data.length;
+  if (lblEl) { lblEl.textContent = 'groups'; lblEl.style.maxWidth=''; lblEl.style.textAlign=''; }
+}
+
+// Init demographics on tab switch — handled by main switchTab above
+
+</script>
+
+
+
+<!-- MEMBER MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <div class="modal-name" id="modal-name"></div>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-field">
+      <label>Major</label>
+      <div class="val" id="modal-major"></div>
+    </div>
+    <div class="modal-field" id="modal-minor-wrap">
+      <label>Minor / Certificate</label>
+      <div class="val" id="modal-minor"></div>
+    </div>
+    <div class="modal-field">
+      <label>Email</label>
+      <div class="val"><a class="email-link" id="modal-email" href="#"></a></div>
+    </div>
+    <div class="modal-field">
+      <label>Phone</label>
+      <div class="val" id="modal-phone"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+      <div class="modal-field" style="margin-bottom:0;">
+        <label>Family</label>
+        <div class="val" id="modal-family"></div>
+      </div>
+      <div class="modal-field" style="margin-bottom:0;">
+        <label>Class</label>
+        <div class="val" id="modal-class"></div>
+      </div>
+    </div>
+    <div class="modal-field" id="modal-parents-wrap">
+      <label>Big(s)</label>
+      <div class="val" id="modal-parents"></div>
+    </div>
+    <div class="modal-field" id="modal-littles-wrap">
+      <label>Littles</label>
+      <div class="val" id="modal-littles"></div>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section-title">Involvement Records (<span id="modal-exp-count">0</span>)</div>
+    <div class="exp-grid" id="modal-experiences"></div>
+    <div style="font-size:0.8rem;color:var(--muted);margin-top:0.75rem;" id="modal-no-exp" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const CONTACTS = [{"First Name": "Pranay", "Last Name": "Chalasani", "Major": "Informatics", "MajorsList": ["Informatics"], "Minor": "Innovation and entrepreneurship", "Track": "Medicine", "Email": "Pranay.chalasani5@gmail.com", "Phone": "512-789-4149", "Family": "Bigg Tigg", "ClassName": "Psi", "Parents": ["Sami Khan"], "Littles": ["Anjana Reddy"]}, {"First Name": "Dustin", "Last Name": "Walters", "Major": "Molecular & Cell Biology", "MajorsList": ["Molecular & Cell Biology"], "Minor": "Spanish for health professions", "Track": "Medicine", "Email": "dustinwalters5555@gmail.com", "Phone": "2038513245", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Ram Mahavadi"], "Littles": ["Jacob Bazbaz"]}, {"First Name": "Anjana", "Last Name": "Reddy", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "anjanaredd@gmail.com", "Phone": "5127690323", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Pranay Chalasani"], "Littles": ["Jatin Kommera"]}, {"First Name": "Mihir", "Last Name": "Gupta", "Major": "Business", "MajorsList": ["Business"], "Minor": "Healthcare Reform and Innovation", "Track": "Medicine", "Email": "mihirg4210@gmail.com", "Phone": "5124971936", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Raaz Patel"], "Littles": []}, {"First Name": "Abhinav", "Last Name": "Reddy", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Business and Spanish in healthcare", "Track": "Medicine", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "5026441950", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Jatin Kommera"], "Littles": []}, {"First Name": "Estefania", "Last Name": "Cabrera", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "estcabrera04@gmail.com", "Phone": "5126745142", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Juslyn Dhingra"], "Littles": ["Nora Nazrul"]}, {"First Name": "Samarveer", "Last Name": "Panag", "Major": "Biomedical Engineering", "MajorsList": ["Biomedical Engineering"], "Minor": "", "Track": "Medicine", "Email": "samarveerspanag@gmail.com", "Phone": "5122857011", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Milit Patel"], "Littles": []}, {"First Name": "Shivani", "Last Name": "Patel", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Medicine", "Email": "Shivipatel5729@gmail.com", "Phone": "4693796320", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Juslyn Dhingra"], "Littles": ["Naviya Reddy"]}, {"First Name": "Milit", "Last Name": "Patel", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "Healthcare Reform & Innovation, SDS", "Track": "Medicine", "Email": "x14pat@gmail.com", "Phone": "6163684824", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Sami Khan"], "Littles": ["Harshitha Yalamanchili", "Samarveer Panag"]}, {"First Name": "Raaz", "Last Name": "Patel", "Major": "Chemistry", "MajorsList": ["Chemistry"], "Minor": "Computer Science and social inequality health and policy", "Track": "Medicine", "Email": "raazpatel2025@gmail.com", "Phone": "7138221449", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Samin Hoskere"], "Littles": ["Mihir Gupta"]}, {"First Name": "Ram", "Last Name": "Mahavadi", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Healthcare Reform & Innovation, Economics", "Track": "Medicine", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Sarthak Reddy"], "Littles": ["Juslyn Dhingra", "Dustin Walters"]}, {"First Name": "Jatin", "Last Name": "Kommera", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Anjana Reddy"], "Littles": ["Abhinav Reddy"]}, {"First Name": "Juslyn", "Last Name": "Dhingra", "Major": "Public Health \u00b7 Health & Society", "MajorsList": ["Public Health", "Health & Society"], "Minor": "American Sign Language", "Track": "Medicine", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Ram Mahavadi"], "Littles": ["Estefania Cabrera", "Shivani Patel"]}, {"First Name": "Harshitha", "Last Name": "Yalamanchili", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "", "Track": "Medicine", "Email": "Harshiyalamanchili@gmail.com", "Phone": "5129609563", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Milit Patel"], "Littles": []}, {"First Name": "Jocelyn", "Last Name": "Hernandez", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Physician Assistant", "Email": "jocelyn.her712@gmail.com", "Phone": "6823130806", "Family": "Team Boba", "ClassName": "Alpha Gamma", "Parents": ["Valeria Trevino"], "Littles": []}, {"First Name": "Maryam", "Last Name": "Paykar", "Major": "Biology (Honors)", "MajorsList": ["Biology (Honors)"], "Minor": "Business in Healthcare", "Track": "Medicine", "Email": "maryam.paykar089@gmail.com", "Phone": "2102743052", "Family": "Team Boba", "ClassName": "Alpha Gamma", "Parents": ["Zara Jafri"], "Littles": ["Dheeya Jivnani"]}, {"First Name": "Zara", "Last Name": "Jafri", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Medicine", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Family": "Team Boba", "ClassName": "Psi", "Parents": ["Canivan Anton"], "Littles": ["Maryam Paykar"]}, {"First Name": "Diya", "Last Name": "Kashyap", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Medicine", "Email": "Diyakashyap0218@gmail.com", "Phone": "8325400044", "Family": "DEMolishers", "ClassName": "Alpha Eta", "Parents": ["Clarissa Shin"], "Littles": []}, {"First Name": "Katelyn", "Last Name": "Trieu", "Major": "Molecular & Cell Biology", "MajorsList": ["Molecular & Cell Biology"], "Minor": "Sociology", "Track": "Medicine", "Email": "katelynmtrieu.98@gmail.com", "Phone": "7148131339", "Family": "DEMolishers", "ClassName": "Alpha Beta", "Parents": ["Tyler Le"], "Littles": []}, {"First Name": "Sheena", "Last Name": "Leelani", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Spanish, core texts and ideas", "Track": "Medicine", "Email": "Sleelani10@gmail.com", "Phone": "2109007961", "Family": "DEMolishers", "ClassName": "Alpha Beta", "Parents": ["Tyler Le"], "Littles": ["Anna Dobre", "Ariana Izaddoost"]}, {"First Name": "Jack", "Last Name": "Florist", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "jackflorist1@gmail.com", "Phone": "4695677777", "Family": "DEMolishers", "ClassName": "Alpha Eta", "Parents": ["Clarissa Shin"], "Littles": ["Johnson Pham"]}, {"First Name": "Clarissa", "Last Name": "Shin", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "French Studies, Elements of Computing", "Track": "Medicine", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Family": "DEMolishers", "ClassName": "Alpha Gamma", "Parents": ["Sirie Yamani"], "Littles": ["Annie Li", "Diya Kashyap", "Jack Florist"]}, {"First Name": "Annie", "Last Name": "Li", "Major": "Public Health \u00b7 Health & Society", "MajorsList": ["Public Health", "Health & Society"], "Minor": "", "Track": "Dentistry", "Email": "anniehyli@gmail.com", "Phone": "2817066317", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Clarissa Shin"], "Littles": []}, {"First Name": "Ariana", "Last Name": "Izaddoost", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "arianai7205@gmail.com", "Phone": "8323500031", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Sheena Leelani"], "Littles": ["Amelia Saenz"]}, {"First Name": "Param", "Last Name": "Bajaj", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Spanish, Teaching License through UTeach", "Track": "Medicine", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Sirie Yamani"], "Littles": []}, {"First Name": "Chidinma", "Last Name": "Ogby", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "ASL", "Track": "Medicine", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Family": "N/A", "ClassName": "N/A", "Parents": [], "Littles": []}, {"First Name": "Atiana", "Last Name": "Kochling", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Kinesiology", "Track": "Medicine", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Cassandra Aguirre"], "Littles": ["Ariba Awan"]}, {"First Name": "Cassandra", "Last Name": "Aguirre", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Business", "Track": "Physician Assistant", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Maci Matejka"], "Littles": ["Anya Kochling"]}, {"First Name": "Jewell", "Last Name": "Cooper", "Major": "Psychology", "MajorsList": ["Psychology"], "Minor": "pre health certificate", "Track": "Medicine", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Tina Feng"], "Littles": ["Aarthi Salver"]}, {"First Name": "Stone", "Last Name": "Nwamadi", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Dentistry", "Email": "stonenw03@gmail.com", "Phone": "2142238890", "Family": "Team Boba", "ClassName": "Alpha Beta", "Parents": ["Aniket Hingnekar"], "Littles": ["Rayaan Hameed", "Yousef Aziz"]}, {"First Name": "Carolina", "Last Name": "Romero", "Major": "Computational Biology", "MajorsList": ["Computational Biology"], "Minor": "Spanish for Health Care Professions", "Track": "Physician Assistant", "Email": "carolinarr4791@gmail.com", "Phone": "8329538104", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Joanne Navales"], "Littles": ["Karla Puga"]}, {"First Name": "Anay", "Last Name": "Gujrathi", "Major": "Biomedical Engineering", "MajorsList": ["Biomedical Engineering"], "Minor": "", "Track": "Medicine", "Email": "anay.gujrathi@icloud.com", "Phone": "7372162244", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Ariba Awan"], "Littles": ["Roberto Hernandez"]}, {"First Name": "Janvi", "Last Name": "Duri", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Zeeyad Anwar"], "Littles": []}, {"First Name": "Lohithaksha", "Last Name": "Panidepu", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Healthcare Reform and Innovation", "Track": "Medicine", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Chidinma Ogbu"], "Littles": []}, {"First Name": "Rajika Singh", "Last Name": "Parihar", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "CDI", "Track": "Medicine", "Email": "RAJIKAPARIHAR@GMAIL.COM", "Phone": "5125849198", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Karla Puga"], "Littles": []}, {"First Name": "Sityana", "Last Name": "Yirga", "Major": "Chemistry", "MajorsList": ["Chemistry"], "Minor": "", "Track": "Medicine", "Email": "sityana.yirga@gmail.com", "Phone": "2404772684", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Bilqees Ade-Jamiu"], "Littles": []}, {"First Name": "Victoria", "Last Name": "Trinh", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "victoriat1892@gmail.com", "Phone": "8326005987", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Tyson Huynh"], "Littles": ["Puneet Nunsavathu"]}, {"First Name": "Ramiro", "Last Name": "Tijerina", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "career.ramiro@gmail.com", "Phone": "9566062133", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Aarthi Salver"], "Littles": []}, {"First Name": "Maneet", "Last Name": "Brar", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Health Communication", "Track": "Medicine", "Email": "maneetkbr@gmail.com", "Phone": "682-472-3443", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Madelaine Carralero Costa"], "Littles": ["Ramina Tavakolian"]}, {"First Name": "Aarthi", "Last Name": "Salver", "Major": "Human Biology \u00b7 Health & Society", "MajorsList": ["Human Biology", "Health & Society"], "Minor": "Spanish for Healthcare Professionals", "Track": "Medicine", "Email": "aarthisal01@gmail.com", "Phone": "9723583588", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Jewell Cooper"], "Littles": ["Ramiro Tijerina"]}, {"First Name": "Madelaine", "Last Name": "Carralero Costa", "Major": "Neuroscience \u00b7 Sociology", "MajorsList": ["Neuroscience", "Sociology"], "Minor": "", "Track": "Medicine", "Email": "madimccosta@gmail.com", "Phone": "9402732681", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Elizabeth Pittman"], "Littles": ["Maneet Brar"]}, {"First Name": "Anish", "Last Name": "Baktha", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "Business; Critical Disability Studies", "Track": "Medicine", "Email": "anish.bakthaa@gmail.com", "Phone": "2144255795", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Sanjana Pinapala"], "Littles": ["Divya Ghanta"]}, {"First Name": "Harrison", "Last Name": "Griffith", "Major": "Biology \u00b7 Management", "MajorsList": ["Biology", "Management"], "Minor": "", "Track": "Medicine", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Avery Croft"], "Littles": ["Juhi Arora", "Marli Golden"]}, {"First Name": "Karla", "Last Name": "Puga", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "karly.puga7@gmail.com", "Phone": "9565436541", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Carolina Romero"], "Littles": ["Rajika Singh Parihar"]}, {"First Name": "Tyson", "Last Name": "Huynh", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Medicine", "Email": "tysonhuynh03@gmail.com", "Phone": "6266580887", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Annie Fu"], "Littles": ["Victoria Trinh"]}, {"First Name": "Emily", "Last Name": "Ji", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "exxemijiey@gmail.com", "Phone": "8325088507", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Ciera Fontenot"], "Littles": []}, {"First Name": "Bilqees", "Last Name": "Ade-Jamiu", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Pre-Health/Undecided", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Family": "Sankofa", "ClassName": "Psi", "Parents": ["Saachi Singal"], "Littles": ["Kerryn Xu", "Sityana Yirga"]}, {"First Name": "Ciera", "Last Name": "Fontenot", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Family": "Sankofa", "ClassName": "Psi", "Parents": ["Angeline Ajit"], "Littles": ["Sabrina Porter", "Emily Ji"]}, {"First Name": "Rosemarlyn", "Last Name": "Dokyi", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "rosemarlynsdd@gmail.com", "Phone": "4016485057", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Chidinma Ogbu"], "Littles": []}, {"First Name": "Avery", "Last Name": "Croft", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "Business", "Track": "Medicine", "Email": "averycroft03@gmail.com", "Phone": "5127182990", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Katrina Lowther"], "Littles": ["Pranavi Garlapati", "Harrison Griffith"]}, {"First Name": "Stephanie", "Last Name": "Calderon", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "stephaniecalderon99@icloud.com", "Phone": "8329647307", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Sanvi Kakkar"], "Littles": []}, {"First Name": "Zeeyad", "Last Name": "Anwar", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Rhetoric and Writing", "Track": "Medicine", "Email": "zeeyad.anwar@gmail.com", "Phone": "4696051711", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Aleena Teresa"], "Littles": ["Janvi Duri"]}, {"First Name": "Ariba", "Last Name": "Awan", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Business", "Track": "Medicine", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Anya Kochling"], "Littles": ["Anay Gujrathi"]}, {"First Name": "Shruti", "Last Name": "Vykunta", "Major": "Neuroscience \u00b7 Plan II", "MajorsList": ["Neuroscience", "Plan II"], "Minor": "Stats and Data Science", "Track": "Medicine", "Email": "shruti.vykunta@gmail.com", "Phone": "5127873604", "Family": "Seelee", "ClassName": "Alpha Eta", "Parents": ["Laney Stong"], "Littles": ["Chris Kurian"]}, {"First Name": "Sreenevash", "Last Name": "Ramesh", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Statistics", "Track": "Medicine", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Family": "Seelee", "ClassName": "Alpha Eta", "Parents": ["Dylan Waite"], "Littles": ["Bhuvan Kanna", "Lindsey Won"]}, {"First Name": "Lisa", "Last Name": "Nguyen", "Major": "Nutrition", "MajorsList": ["Nutrition"], "Minor": "Sports Media", "Track": "Optometry", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Family": "Seelee", "ClassName": "Alpha Gamma", "Parents": ["Mia Zheng"], "Littles": ["Rachel Cai"]}, {"First Name": "Rue", "Last Name": "Ledesma", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Family": "Seelee", "ClassName": "Alpha Gamma", "Parents": ["Swetha Velayutham"], "Littles": ["Anya Chawla", "Caroline Palamountain"]}, {"First Name": "Rachel", "Last Name": "Cai", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Medicine", "Email": "rachelcai64@gmail.com", "Phone": "5126887857", "Family": "Seelee", "ClassName": "Alpha Zeta", "Parents": ["Lisa Nguyen"], "Littles": ["Fiona Wang"]}, {"First Name": "Campbell", "Last Name": "Albers", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "campbellalbers@gmail.com", "Phone": "4699102854", "Family": "Seelee", "ClassName": "Alpha Zeta", "Parents": ["Sara Modur"], "Littles": []}, {"First Name": "Swetha", "Last Name": "Velayutham", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "postswi@gmail.com", "Phone": "2149093206", "Family": "Seelee", "ClassName": "Alpha Beta", "Parents": ["Sandhya Maddali"], "Littles": ["Rue Ledesma"]}, {"First Name": "Caroline", "Last Name": "Palamountain", "Major": "Biology \u00b7 Plan II (Honors)", "MajorsList": ["Biology", "Plan II (Honors)"], "Minor": "", "Track": "Dentistry", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Family": "Seelee", "ClassName": "Alpha Eta", "Parents": ["Rue Ledesma"], "Littles": []}, {"First Name": "Aarav", "Last Name": "Metai", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "aarav.metai@gmail.com", "Phone": "972-439-0707", "Family": "Seelee", "ClassName": "Alpha Eta", "Parents": ["Laney Stong"], "Littles": []}, {"First Name": "anya", "Last Name": "chawla", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "SDS", "Track": "Medicine", "Email": "anyachawla@gmail.com", "Phone": "5127650902", "Family": "Seelee", "ClassName": "Alpha Eta", "Parents": ["Rue Ledesma"], "Littles": []}, {"First Name": "Laney", "Last Name": "Stong", "Major": "Human Ecology", "MajorsList": ["Human Ecology"], "Minor": "", "Track": "Other", "Email": "laneykstong@gmail.com", "Phone": "2103913331", "Family": "Seelee", "ClassName": "Alpha Zeta", "Parents": ["Ava Melmed"], "Littles": ["Aarav Metai", "Shruti Vykunta"]}, {"First Name": "Saumya", "Last Name": "Seth", "Major": "Biology \u00b7 Microbiology & Infectious Diseases", "MajorsList": ["Biology", "Microbiology & Infectious Diseases"], "Minor": "Business", "Track": "Veterinarian", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Family": "Team Boba", "ClassName": "Alpha Zeta", "Parents": ["Arlen Kelley"], "Littles": ["Mi Tran"]}, {"First Name": "Dheeya", "Last Name": "Jivnani", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business/Healthcare and reform", "Track": "Dentistry", "Email": "dheeya2019@gmail.com", "Phone": "9722156587", "Family": "Team Boba", "ClassName": "Alpha Zeta", "Parents": ["Maryam Paykar"], "Littles": []}, {"First Name": "Amelia", "Last Name": "Saenz", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Speech Pathology/Audiology", "Email": "ameliasaenz2006@gmail.com", "Phone": "512-285-0873", "Family": "DEMolishers", "ClassName": "Alpha Theta", "Parents": ["Ariana Izaddoost"], "Littles": []}, {"First Name": "Bhuvan", "Last Name": "Kanna", "Major": "Neuroscience \u00b7 Computer Science", "MajorsList": ["Neuroscience", "Computer Science"], "Minor": "", "Track": "Medicine", "Email": "bhuvan.kanna@utexas.edu", "Phone": "512-686-6535", "Family": "Seelee", "ClassName": "Alpha Theta", "Parents": ["Sreenevash Ramesh"], "Littles": []}, {"First Name": "Chris", "Last Name": "Kurian", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "chrismathan2007@gmail.com", "Phone": "512-284-1875", "Family": "Seelee", "ClassName": "Alpha Theta", "Parents": ["Shruti Vykunta"], "Littles": []}, {"First Name": "Divya", "Last Name": "Ghanta", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "divya.ghanta@gmail.com", "Phone": "214-606-6067", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Anish Baktha"], "Littles": []}, {"First Name": "Fiona", "Last Name": "Wang", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "fw9244278@gmail.com", "Phone": "469-881-7706", "Family": "Seelee", "ClassName": "Alpha Theta", "Parents": ["Rachel Cai"], "Littles": []}, {"First Name": "Jacob", "Last Name": "Bazbaz", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Dustin Walters"], "Littles": []}, {"First Name": "Johnson", "Last Name": "Pham", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "", "Track": "Medicine", "Email": "phamjohnson123@gmail.com", "Phone": "615-299-6846", "Family": "DEMolishers", "ClassName": "Alpha Theta", "Parents": ["Jack Florist"], "Littles": []}, {"First Name": "Juhi", "Last Name": "Arora", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "ja57236@my.utexas.edu", "Phone": "469-456-1453", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Harrison Griffith"], "Littles": []}, {"First Name": "Lindsey", "Last Name": "Won", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "lindseywon@utexas.edu", "Phone": "469-777-2530", "Family": "Seelee", "ClassName": "Alpha Theta", "Parents": ["Sreenevash Ramesh"], "Littles": []}, {"First Name": "Marli", "Last Name": "Golden", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Dentistry", "Email": "marligolden11@yahoo.com", "Phone": "201-562-8260", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Harrison Griffith"], "Littles": []}, {"First Name": "Mi", "Last Name": "Tran", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "", "Track": "Medicine", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Saumya Seth"], "Littles": []}, {"First Name": "Naviya", "Last Name": "Reddy", "Major": "Biology \u00b7 Plan II", "MajorsList": ["Biology", "Plan II"], "Minor": "", "Track": "Medicine", "Email": "nr26998@my.utexas.edu", "Phone": "214-755-0599", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Shivani Patel"], "Littles": []}, {"First Name": "Nora", "Last Name": "Nazrul", "Major": "Business (Canfield Honors) \u00b7 Plan II", "MajorsList": ["Business (Canfield Honors)", "Plan II"], "Minor": "", "Track": "Medicine", "Email": "noranazrul@utexas.edu", "Phone": "469-728-4220", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Estefania Cabrera"], "Littles": []}, {"First Name": "Puneet", "Last Name": "Nunsavathu", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "puneet.nunsavathu@utexas.edu", "Phone": "940-299-2573", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Victoria Trinh"], "Littles": []}, {"First Name": "Ramina", "Last Name": "Tavakolian", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "rt28539@eid.utexas.edu", "Phone": "469-544-5834", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Maneet Brar"], "Littles": []}, {"First Name": "Rayaan", "Last Name": "Hameed", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "rh39795@my.utexas.edu", "Phone": "972-202-6129", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Stone Nwamadi"], "Littles": []}, {"First Name": "Roberto", "Last Name": "Hernandez", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Occupational Therapy", "Email": "robertohernandezjr6@gmail.com", "Phone": "832 -877-9608", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Anay Gujrathi"], "Littles": []}, {"First Name": "Yousef", "Last Name": "Aziz", "Major": "Psychology", "MajorsList": ["Psychology"], "Minor": "", "Track": "Medicine", "Email": "ywa67@eid.utexas.edu", "Phone": "210-355-1799", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Stone Nwamadi"], "Littles": []}];
+const INVOLVEMENT = [{"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Immunotherapy Technician"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Medical Assistant; Neuro and orthopedic surgery"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Behavior Technician"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Clinical Jobs", "Experience": "Behavior Care Technician at Occupational Therapy and Speech Therapy Clinic (FTH)"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Clinical Jobs", "Experience": "CNA at Assisted Living Facility"}, {"Name": "Carolina Romero", "Major": "Computational Biology", "Email": "carolina.rom310@gmail.com", "Phone": "832-953-8104", "Category": "Clinical Jobs", "Experience": "Medical Assistant at CBS"}, {"Name": "Cassandra Aguirre", "Major": "Biology", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Category": "Clinical Jobs", "Experience": "PCT at Heart Hospital"}, {"Name": "Chris Kurian", "Major": "Neuroscience", "Email": "chrismathan2007@gmail.com", "Phone": "5122841875", "Category": "Clinical Jobs", "Experience": "Court at RoundRock"}, {"Name": "Ciera Fontenot", "Major": "Public Health", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Category": "Clinical Jobs", "Experience": "Patient Care Tech at St. Davids"}, {"Name": "Ciera Fontenot", "Major": "Public Health", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Category": "Clinical Jobs", "Experience": "Medical Assistant at 360 Plastic Surgery"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Clinical Jobs", "Experience": "Dental Asisstant"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Clinical Jobs", "Experience": "Dental Front office/ Insurance coordinator"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Clinical Jobs", "Experience": "UT Sports Medicine aid"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Clinical Jobs", "Experience": "Newborn hearing screener"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Clinical Jobs", "Experience": "MA at a foot and ankle clinic!"}, {"Name": "Jatin", "Major": "Neuroscience", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Category": "Clinical Jobs", "Experience": "Event EMT - Capitol Medical Service \u2026 Need NREMT and State Certification"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Clinical Jobs", "Experience": "Medical Assistant"}, {"Name": "Lisa Nguyen", "Major": "Nutrition", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Category": "Clinical Jobs", "Experience": "Optometry Tech"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Clinical Jobs", "Experience": "Medical Assistant at ADI Medical Clinic"}, {"Name": "Madi Costa", "Major": "Neuroscience & Sociology", "Email": "Madimccosta@gmail.com", "Phone": "9402732681", "Category": "Clinical Jobs", "Experience": "Pediatrix Hearing Screen"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Clinical Jobs", "Experience": "Dental & Orthodontic Assistant (Sterilization, Tray Setup, Receptionist Help, etc...)"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Clinical Jobs", "Experience": "Pharmacy Technician CVS Health"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Clinical Jobs", "Experience": "EMT cert through LifeStart"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Clinical Jobs", "Experience": "Acadian Ambulance - EMT"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Clinical Jobs", "Experience": "Certified Clinical Medical Assistant for Dr. Anil Amanda\u2019s Premier Medcare"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Clinical Jobs", "Experience": "Pediatric MA"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Clinical Jobs", "Experience": "Substance Abuse Rehab MA"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Clinical Jobs", "Experience": "OT Connection"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Clinical Jobs", "Experience": "Caregiver"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Clinical Jobs", "Experience": "Medical assistant for ID and wound care"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Clinical Jobs", "Experience": "Working at Well Pet Center"}, {"Name": "Sheena Leelani", "Major": "Biology", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Clinical Jobs", "Experience": "Home health provider for kids and adults with disabilities"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Clinical Jobs", "Experience": "Pediatric Lab Tech/Phlebotomist"}, {"Name": "Sreenevash Ramesh", "Major": "Neuroscience", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Category": "Clinical Jobs", "Experience": "Aspire Austin (ABA)"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Intern - Institute of Orthopaedic Special Surgery (Under Dr. Adham Abdelfattah, MD)"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Clinical Volunteer @Corazon Medical Clinic, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Resident Support & Activities Volunteer  @Golden Estates Rehabilitation & Healthcare Center, San Antonio, TX"}, {"Name": "Zeeyad Anwar", "Major": "Honors Neuroscience", "Email": "zeeyadanwar@utexas.edu", "Phone": "4696051711", "Category": "Clinical Jobs", "Experience": "HCMP Intern"}, {"Name": "Bilqees Ade -Jamiu", "Major": "Human Biology", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Category": "Clinical Jobs", "Experience": "Behavioral Technician"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Clinical Jobs", "Experience": "Dental Assistant at Pediatric Office"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Clinical Jobs", "Experience": "Medical Scribe w/ People's Community Clinic"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Clinical Jobs", "Experience": "Medical assistant austin surgeons"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Clinical Jobs", "Experience": "MA at VisionWorks"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Clinical Jobs", "Experience": "Pediatric MA/Phlebotomist"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Clinical Jobs", "Experience": "Step Up Sports Medicine Intern"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Clinical Jobs", "Experience": "BSW ER Volunteer"}, {"Name": "Jatin", "Major": "Neuroscience", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Category": "Clinical Jobs", "Experience": "Capital Medicak Service"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Clinical Jobs", "Experience": "Scribe at Cardiology Clinic"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Internships", "Experience": "Spanish Outreach Coordinator - Power for Parkinsons"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Internships", "Experience": "Clinical Operations Intern in Addiction Rehabilitation"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Internships", "Experience": "Scottish Rite Sports Medicine & Shadowing internship"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Internships", "Experience": "Texas A&M School of Dentistry SPEP"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Internships", "Experience": "Baylor University Medical Center ICU intern with Dr. Ginger Tsai-Nguyen"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Internships", "Experience": "Practicum of Health Sciences Clinical Rotations Program Student Intern"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Internships", "Experience": "Texas Department of State Health Services"}, {"Name": "Lisa Nguyen", "Major": "Nutrition", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Category": "Internships", "Experience": "EdEN Lab"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Internships", "Experience": "Internship at Plano ISD Professional Development Department"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Internships", "Experience": "MD Anderson - Department of Health Disparities Research"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Internships", "Experience": "NIH/Google Summer of Code - Developing an LLM-powered interactive chat interface for CellMinerCDB using GraphRAG, converting natural language queries into R code to enhance accessibility to cancer genomics data."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Internships", "Experience": "Startup in biotech, creating ML algorithms to create inhibitors to bind to different receptors to solve skin diseases. Finished family and friends seed round!"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Internships", "Experience": "MD Anderson - CPRIT-CURE Scholar - Department of Cancer Systems Imaging - Investigated molecular mechanisms by which small-molecule compounds modulate the activity of immune checkpoint proteins using advanced biochemical and imaging assays"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Internships", "Experience": "Texas RISE"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Internships", "Experience": "UT SHIFT Intern"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Internships", "Experience": "Home to Texas (Internship with Austin Public Health)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Internships", "Experience": "Alzheimer\u2019s Association Marketing Intern (under BHA Consulting Project)"}, {"Name": "Roberto Hernandez", "Major": "Health & Society", "Email": "robertohernandezjr6@gmail.com", "Phone": "832-877-9608", "Category": "Internships", "Experience": "Houston Methodist Research Institute"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Internships", "Experience": "VAW Global Dental"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Internships", "Experience": "FRI EvoDevOmics fellowship"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Internships", "Experience": "Summer Research intern at Sanofi Pharmaceuticals"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Internships", "Experience": "Clinical Research Intern - Johnson Center of Child Development"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Internships", "Experience": "UTEACH STEM Mentor"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Internships", "Experience": "Healthpointe Internship - UT"}, {"Name": "Maryam Paykar", "Major": "Biology Honors", "Email": "maryam.paykar@utexas.edu", "Phone": "2102743052", "Category": "Internships", "Experience": "CIIC Operations Intern"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Leadership", "Experience": "Grant Coordinator - Perfect Pair National Board"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Leadership", "Experience": "Volunteer Chair - Perfect Pair UT Chapter"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Leadership", "Experience": "TA - BIO 325H Craig Linder"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Leadership", "Experience": "Vice President - UT Hippocratic Society"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Leadership", "Experience": "Natural Sciences Council; Student Faculty Chair"}, {"Name": "anya chawla", "Major": "public health", "Email": "anyachawla@utexas.edu", "Phone": "5127650902", "Category": "Leadership", "Experience": "secretary of h4h"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Leadership", "Experience": "DEM Volunteer Chair"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Leadership", "Experience": "UT Women\u2019s Lacrosse"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Leadership", "Experience": "HOSA- Social Chair"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Leadership", "Experience": "Mccombs Social Media Ambassador"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Leadership", "Experience": "Special programs committee chair for Polymath"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Leadership", "Experience": "UGCA for honors UGS class"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Leadership", "Experience": "President and Founder of UT Austin Parkinson's Pals starting Spring 2025"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Leadership", "Experience": "Student Council Secretary"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Leadership", "Experience": "Supplemental Instruction Leader for BIO 325"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Leadership", "Experience": "UGCA/TA for CH 320M, CH 320N, BCH 219L, BIO 325 - Facilitate laboratory sessions and guide students through experimental protocols, data analysis, and problem-solving in biochemistry, genetics, and organic chemistry courses"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Leadership", "Experience": "DEM Academic Chair"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Leadership", "Experience": "Honors Gen Chem I & II UGCA"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Leadership", "Experience": "Business Healthcare Association Consulting Project Lead"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Leadership", "Experience": "Keep it Doable Public Relations Director (Free Nutrition and Exercise Classes for Low income/access families)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Leadership", "Experience": "Home to Texas Ambassador"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Leadership", "Experience": "Treasurer PreVet club"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Leadership", "Experience": "Longhorn EMS Drug Safety Chair"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Leadership", "Experience": "Chem Lab LA"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Leadership", "Experience": "Aceing Autism court lead and volunteer coordinator"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Leadership", "Experience": "Recruitment/social media chair and Governing Board Member for UT Women's Ultimate Frisbee Club Team"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Leadership", "Experience": "Founder of Future Healers of the Coastal Bend"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Leadership", "Experience": "PR chair: DEM, Recruitment chair- Lonestars"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Leadership", "Experience": "FRI mentor"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Leadership", "Experience": "TUMS Ochem"}, {"Name": "Maryam Paykar", "Major": "Biology Honors", "Email": "maryam.paykar@utexas.edu", "Phone": "2102743052", "Category": "Leadership", "Experience": "PIH Team lead"}, {"Name": "Amelia Saenz", "Major": "Health & Society", "Email": "ameliasaenz2006@gmail.com", "Phone": "(512) 285-0873", "Category": "Non-clinical Jobs", "Experience": "The Little Princess Spa - kids spa"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Non-clinical Jobs", "Experience": "JB Tutoring"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Non-clinical Jobs", "Experience": "JB Tutoring"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Non-clinical Jobs", "Experience": "UT UGS TA - Honors"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Non-clinical Jobs", "Experience": "General Chemistry UGCA"}, {"Name": "Carolina Romero", "Major": "Computational Biology", "Email": "carolina.rom310@gmail.com", "Phone": "832-953-8104", "Category": "Non-clinical Jobs", "Experience": "Undergraduate Teaching Assistant (Genetics, past)"}, {"Name": "Ciera Fontenot", "Major": "Public Health", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Category": "Non-clinical Jobs", "Experience": "FIG Mentor"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Non-clinical Jobs", "Experience": "Student Recruiter for CNS"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "Work for Texas Closet Design over the summer and help with product intake."}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "Work for JunkLuggers over the summer."}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "Worked for J. Theodore as a busboy."}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Non-clinical Jobs", "Experience": "Piano tutor"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Non-clinical Jobs", "Experience": "SI Leader @ UT Austin"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Non-clinical Jobs", "Experience": "HealthPoint Wellness"}, {"Name": "Lisa Nguyen", "Major": "Nutrition", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Category": "Non-clinical Jobs", "Experience": "Kid\u2019s Volleyball Referee"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Non-clinical Jobs", "Experience": "UT College of Natural Sciences Dean's Office Student Assistant"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Non-clinical Jobs", "Experience": "DMS - Office of Innovation and Entrepreneurship - Designed automated software solutions for systematic data gathering and processing from multiple institutional and governmental sources in the IT domain."}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Non-clinical Jobs", "Experience": "Customer Service/ Cashier For Southern Multifoods Inc. (Taco Bell)"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Non-clinical Jobs", "Experience": "UGCA"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Non-clinical Jobs", "Experience": "Undergraduate Research Assistant"}, {"Name": "Roberto Hernandez", "Major": "Health & Society", "Email": "robertohernandezjr6@gmail.com", "Phone": "832-877-9608", "Category": "Non-clinical Jobs", "Experience": "Lifeguard and pool supervisor/manager"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Non-clinical Jobs", "Experience": "Art Teacher"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Non-clinical Jobs", "Experience": "Tutor"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Non-clinical Jobs", "Experience": "FRI EvoDevOmics Mentor"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Non-clinical Jobs", "Experience": "Tutor for Austin Sunshine Chinese Language and Arts"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Non-clinical Jobs", "Experience": "Academic Tutor and Coach - Austin Learning Center"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Non-clinical Jobs", "Experience": "Care taking for child with developmental differences"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Non-clinical Jobs", "Experience": "Online tutoring"}, {"Name": "Param Bajaj", "Major": "Biology", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Category": "Non-clinical Jobs", "Experience": "Teaching Online through Zoom"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Non-clinical Jobs", "Experience": "STEM Katy Tutoring"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Non-clinical Jobs", "Experience": "UGCA - Health Professions Classes"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Non-clinical Jobs", "Experience": "UT Athletics Tutoring"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Non-clinical Jobs", "Experience": "Biochem TA"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Non-clinical Jobs", "Experience": "Ochem Ta"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Non-clinical Jobs", "Experience": "Intern at Children Development Nonprofit"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Non-clinical Jobs", "Experience": "Home To Texas Selection Committee"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Non-clinical Jobs", "Experience": "UCGA for BIO206L"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Research", "Experience": "Research Coordinator - Power for Parkinson's"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Research", "Experience": "Research Assistant - Kentucky Spinal Cord Injury Research Center"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Research", "Experience": "Clinical Research Assistant - Multiple Sclerosis Imaging and Outcomes Lab"}, {"Name": "Anjana Reddy", "Major": "neuro", "Email": "anjana.reddy@utexas.edu", "Phone": "5127690323", "Category": "Research", "Experience": "lab of dr ekker"}, {"Name": "Anjana Reddy", "Major": "neuro", "Email": "anjana.reddy@utexas.edu", "Phone": "5127690323", "Category": "Research", "Experience": "lab of dr marinelli"}, {"Name": "anya chawla", "Major": "public health", "Email": "anyachawla@utexas.edu", "Phone": "5127650902", "Category": "Research", "Experience": "genetics research"}, {"Name": "Ariana Izaddoost", "Major": "Public Health", "Email": "arianai7205@gmail.com", "Phone": "8323500031", "Category": "Research", "Experience": "Baylor Tropical Medicine Research Assistant"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Research", "Experience": "Aptamers FRI Lab Mentor"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Research", "Experience": "Pierce Lab C. elegans research"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Research", "Experience": "Science of Learning and Metacognition Lab Research Assistant"}, {"Name": "Ciera Fontenot", "Major": "Public Health", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Category": "Research", "Experience": "Jones Lab - Behavioral Neuroscience"}, {"Name": "Clarissa Shin", "Major": "Biochemistry", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Category": "Research", "Experience": "Leahy Lab (Molecular Biosciences)"}, {"Name": "Clarissa Shin", "Major": "Biochemistry", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Category": "Research", "Experience": "FRI - Biodiversity Discovery"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Research", "Experience": "FRI"}, {"Name": "Divya Ghanta", "Major": "Public Health", "Email": "divya.ghanta@gmail.com", "Phone": "2146066067", "Category": "Research", "Experience": "RA in the Kid's Lab at UT (Psych Lab)"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Research", "Experience": "FRI Biobricks"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Research", "Experience": "Mass Gen Ortho Onc"}, {"Name": "Harshi Yalamanchili", "Major": "HDFS", "Email": "Harshithayalamanchili@utexas.edu", "Phone": "5129609563", "Category": "Research", "Experience": "RA in Meston Lab"}, {"Name": "Harshitha Yalamanchili", "Major": "Hdfs", "Email": "Harshithayalamanchili@utexas.edu", "Phone": "5129609563", "Category": "Research", "Experience": "RA at Meston Lab"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Research", "Experience": "Worked as a research assistant for Texas Back Institute in Frisco, Texas."}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Research", "Experience": "DIY Diagnostics FRI lab"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Research", "Experience": "Research assistant at Prevention Research Lab"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Research", "Experience": "Freshman Research Initiative"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Research", "Experience": "ClearCam"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Research", "Experience": "UH-HEART Summer Program"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Research", "Experience": "Undergraduate Research Assistant"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Research", "Experience": "FRI Behavioral Neuroscience"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Research", "Experience": "FRI : Urban Ecosystems DNA Tracers Team"}, {"Name": "Madi Costa", "Major": "Neuroscience & Sociology", "Email": "Madimccosta@gmail.com", "Phone": "9402732681", "Category": "Research", "Experience": "Jones Lab"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "FRI - Virtual Cures (Virtual Drug Screening)"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "UT Department of Psychology - Developed and implemented streamlined ASL preprocessing workflows based on stream guidelines, resulting in improved efficiency and accuracy in neuroimaging analysis."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "DMS Department of Neurology - Conducted research examining how adolescent and adult rats respond to punishment for cocaine self-administration"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "UT - McCombs - Department of IROM - Appling Tanaka-Camerer-Nguyen model to assess risk preference, probability weighting, and loss aversion in Llama models using multiple-choice lottery experiments."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "DMS - Department of Oncology - Developed advanced bioinformatics methodologies for protein-treatment structure matching, significantly accelerating therapeutic compound identification"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "Memorial Sloan Kettering Cancer Center - Analyzing cancer genomics datasets to identify statistical patterns in treatment outcomes across diverse patient populations, focusing on racial and socioeconomic disparities in care access and survival rates."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "MD Anderson - Department of Imaging Physics - Explored perioperative applications of radiomics and data-driven imaging to support outcome prediction and risk stratification for surgical patients."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "Harvard Medical School/MGH - Department of Neuro-oncology - Conducting H&E slide analysis for research studies, with biopsies sourced from low- and middle-income countries (LMICs)."}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Research", "Experience": "MIT Institute of Medical Engineering and Sciences - conducting research in the intersection of bridging the gap between high income countries and low income countries using AI."}, {"Name": "Naviya Reddy", "Major": "Biology and Plan II", "Email": "nr26998@my.utexas.edu", "Phone": "2147550599", "Category": "Research", "Experience": "Research Intern at UT Southwestern in Department of Pharmacology"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Research", "Experience": "Greystone"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Research", "Experience": "Freshman Research Initiative Researcher for the SupraSensors Stream"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Research", "Experience": "Samanta Laboratory"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Research", "Experience": "Institute for Applied Cancer Science \u2013 MD Anderson Cancer Center Internship"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Research", "Experience": "Addiction Research Institute"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Research", "Experience": "Bioactive Molecules FRI"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Research", "Experience": "Virtual Drug Screening FRI Lab/Mentor (UT CNS with Dr. Beckham)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Research", "Experience": "Fall Risk Management in Dementia Patients (UT School of Social Work with Dr. Zhou)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Research", "Experience": "Mobile Reproductive Health Lab (H2TX Continuing Research with Dr. Pinto)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Research", "Experience": "Home to Texas (Research with the UT COLA for various PIs)"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Research", "Experience": "Equitable Skin Condition Diagnosis in Mobile Healthcare Apps and Development of a Game that Promotes Learned Optimism (University of Pittsburgh and UPMC with Dr. Hu)"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Research", "Experience": "DIY Diagnostics (FRI)"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Research", "Experience": "MILES lab"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Research", "Experience": "Discovering Signals FRI"}, {"Name": "Samarveer Panag", "Major": "Biomedical Engineering", "Email": "samarveerpanag@utexas.edu", "Phone": "5122857011", "Category": "Research", "Experience": "Baker Lab Undergrad Researcher - Includes paper and poster presentations"}, {"Name": "Samarveer Panag", "Major": "Biomedical Engineering", "Email": "samarveerpanag@utexas.edu", "Phone": "5122857011", "Category": "Research", "Experience": "Community Clinical Research Intern - Psychiatric Intern"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Research", "Experience": "Virtual Drug Cures"}, {"Name": "Sheena Leelani", "Major": "Biology", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Research", "Experience": "biodiversity research over salamanders"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Research", "Experience": "Fleet Lab Research Assistant"}, {"Name": "Sreenevash Ramesh", "Major": "Neuroscience", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Category": "Research", "Experience": "Greehey CCRI Donald G McEwen Memorial Summer Research Program in San Antonio"}, {"Name": "Tyson Huynh", "Major": "Human Biology", "Email": "tysonhuynh03@gmail.com", "Phone": "6266580887", "Category": "Research", "Experience": "ARI- Practical Sensors"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Research", "Experience": "FRI- Plant Pathways"}, {"Name": "Zeeyad Anwar", "Major": "Honors Neuroscience", "Email": "zeeyadanwar@utexas.edu", "Phone": "4696051711", "Category": "Research", "Experience": "HLA - Academics & Student Wellbeing"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Research", "Experience": "Rice Lab Synthetic Biology Research"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Research", "Experience": "FRI Bugs in Bugs"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Research", "Experience": "Research Assistant for Project SEED Brokering Language Study (At UT)"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Research", "Experience": "Osteoporosis Research (individual senior thesis)"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Research", "Experience": "Research Assistant w/ MUNA lab"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Research", "Experience": "Practical Sensors (ARI) - summer fellowship"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Research", "Experience": "Clinical Research Associate w/ Think Neuro"}, {"Name": "Dustin Walters", "Major": "Cell and molecular bio", "Email": "dustinwalters@utexas.edu", "Phone": "2038513245", "Category": "Research", "Experience": "Md Anderson cancer center"}, {"Name": "Dustin Walters", "Major": "Cell and molecular bio", "Email": "dustinwalters@utexas.edu", "Phone": "2038513245", "Category": "Research", "Experience": "Biohaven pharmaceuticals"}, {"Name": "Dustin Walters", "Major": "Cell and molecular bio", "Email": "dustinwalters@utexas.edu", "Phone": "2038513245", "Category": "Research", "Experience": "Yale cancer center"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Research", "Experience": "psychology undergraduate mentorship program"}, {"Name": "Param Bajaj", "Major": "Biology", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Category": "Research", "Experience": "Li Lab Research"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Research", "Experience": "FRI - Biobricks"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Research", "Experience": "Microbe Hackers"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Research", "Experience": "Tuskegee Summer Fellowship"}, {"Name": "Maryam Paykar", "Major": "Biology Honors", "Email": "maryam.paykar@utexas.edu", "Phone": "2102743052", "Category": "Research", "Experience": "Dr. Peppas lab"}, {"Name": "Jatin", "Major": "Neuroscience", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Category": "Research", "Experience": "FRI - Aptamers"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Research/Startup Experience", "Experience": "Texas Health Catalyst"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Shadowing", "Experience": "Shadowing Dr. Gottlieb at  Dell Children\u2019s"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Shadowing", "Experience": "Shadowed Dr. Adari at West Plano Medical Center"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Shadowing", "Experience": "Medical Shadowing of Allergist/ Immunologist Premier Medcare Doctor Anil Nanda"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Shadowing", "Experience": "Medical Shadowing of Argyle Orthodontics Dr. David Dyer"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Shadowing", "Experience": "Shadowing at Well Pet Center"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Shadowing", "Experience": "Veterinary Emergency Group"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Shadowing", "Experience": "Orthopaedic Surgery - Dr. Adham Abdelfattah, MD (80 hrs) Internal Medicine - Dr. Gopinath Chandrahasan, MD (20 hrs) Family Medicine - Dr. Ravjot Sarao, MD (15 hrs)"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Shadowing", "Experience": "Christus Hospital - 4 week Rotation (Louisiana)"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Shadowing", "Experience": "Shadowing - ER Technician 170 Hours"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Student Organizations", "Experience": "Editor - Texas Undergraduate Research Journal"}, {"Name": "Amelia Saenz", "Major": "Health & Society", "Email": "ameliasaenz2006@gmail.com", "Phone": "(512) 285-0873", "Category": "Student Organizations", "Experience": "SEAL - exanding literacy rates in Austin"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Student Organizations", "Experience": "Mental Health Initiative for South Asians"}, {"Name": "anya chawla", "Major": "public health", "Email": "anyachawla@utexas.edu", "Phone": "5127650902", "Category": "Student Organizations", "Experience": "lassos"}, {"Name": "Ariana Izaddoost", "Major": "Public Health", "Email": "arianai7205@gmail.com", "Phone": "8323500031", "Category": "Student Organizations", "Experience": "Kappa Delta"}, {"Name": "Ariana Izaddoost", "Major": "Public Health", "Email": "arianai7205@gmail.com", "Phone": "8323500031", "Category": "Student Organizations", "Experience": "Texas Angels"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Student Organizations", "Experience": "TCUP Art Vendor"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Student Organizations", "Experience": "Longhorn Neurotech"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Student Organizations", "Experience": "Texas Taekwondo"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Student Organizations", "Experience": "Dell Med Health Leadership Apprenticeship"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Student Organizations", "Experience": "Texas Tri Delta"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Student Organizations", "Experience": "Texas Young Life"}, {"Name": "Carolina Romero", "Major": "Computational Biology", "Email": "carolina.rom310@gmail.com", "Phone": "832-953-8104", "Category": "Student Organizations", "Experience": "BBAM (Black and Brown Academics and Mentorship, non-profit)"}, {"Name": "Chris Kurian", "Major": "Neuroscience", "Email": "chrismathan2007@gmail.com", "Phone": "5122841875", "Category": "Student Organizations", "Experience": "Mental health initiative for South Asian"}, {"Name": "Clarissa Shin", "Major": "Biochemistry", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Category": "Student Organizations", "Experience": "Austin STEM Buddies"}, {"Name": "Clarissa Shin", "Major": "Biochemistry", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Category": "Student Organizations", "Experience": "Community Engagement Collective"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Student Organizations", "Experience": "HSS"}, {"Name": "Divya Ghanta", "Major": "Public Health", "Email": "divya.ghanta@gmail.com", "Phone": "2146066067", "Category": "Student Organizations", "Experience": "Spirit Org Member - Texas Lassos"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Student Organizations", "Experience": "Music United Piano Teacher"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Student Organizations", "Experience": "DEM"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Student Organizations", "Experience": "HSS"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Student Organizations", "Experience": "Filipino Student Association"}, {"Name": "Juhi Arora", "Major": "Neuroscience", "Email": "ja57236@my.utexas.edu", "Phone": "4694561453", "Category": "Student Organizations", "Experience": "Longhorns Crushing Medical Debt"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Student Organizations", "Experience": "Health Leadership Apprentice Program"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Student Organizations", "Experience": "Texas Lassos"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Student Organizations", "Experience": "Texas BEI"}, {"Name": "Lisa Nguyen", "Major": "Nutrition", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Category": "Student Organizations", "Experience": "Texas Angels"}, {"Name": "Lisa Nguyen", "Major": "Nutrition", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Category": "Student Organizations", "Experience": "DEM :P"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Student Organizations", "Experience": "Texas Talaash (Dance Team)"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Student Organizations", "Experience": "Global Medical Brigade"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Student Organizations", "Experience": "SAGES"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Student Organizations", "Experience": "UNICEF"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Student Organizations", "Experience": "Global Medical Training"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Student Organizations", "Experience": "Richardson Youth Leadership"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Student Organizations", "Experience": "HSS Community Engagement Commitee"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Longhorns Crushing Medical Debt"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Business Healthcare Association"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Longhorn Investment Team"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Health Leadership Apprentices"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Student Organizations", "Experience": "DMS - Texas Health Catalyst"}, {"Name": "Milit Patel", "Major": "Biochemistry, minor in healthcare reform and innovation and statistics and datascience", "Email": "milit@austin.utexas.edu", "Phone": "6163684824", "Category": "Student Organizations", "Experience": "Student Health Advisory Committee"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "180 Degrees Consulting"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "Texas Energy Capital"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "University of North Texas Biology Research Intern"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Student Organizations", "Experience": "Member of GMT and Caduceus and DEM Prospect"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Student Organizations", "Experience": "DEM"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Student Organizations", "Experience": "HSS"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Student Organizations", "Experience": "Texas Darlins"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Student Organizations", "Experience": "Delta Epsilon Mu (Class President)"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Student Organizations", "Experience": "Texas Lassos"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Student Organizations", "Experience": "Roustabouts"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Student Organizations", "Experience": "Texas Lonestars"}, {"Name": "Rayaan Hameed", "Major": "Neuroscience", "Email": "rh39795@my.utexas.edu", "Phone": "972-202-6129", "Category": "Student Organizations", "Experience": "Natural Sciences Council"}, {"Name": "Roberto Hernandez", "Major": "Health & Society", "Email": "robertohernandezjr6@gmail.com", "Phone": "832-877-9608", "Category": "Student Organizations", "Experience": "Texas Latinx Health Professions"}, {"Name": "Samarveer Panag", "Major": "Biomedical Engineering", "Email": "samarveerpanag@utexas.edu", "Phone": "5122857011", "Category": "Student Organizations", "Experience": "BMES"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Student Organizations", "Experience": "Pre vet society"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Student Organizations", "Experience": "Longhorn Art Therapy"}, {"Name": "Tyson Huynh", "Major": "Human Biology", "Email": "tysonhuynh03@gmail.com", "Phone": "6266580887", "Category": "Student Organizations", "Experience": "Natural Science Council"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Student Organizations", "Experience": "Club Tennis"}, {"Name": "Zeeyad Anwar", "Major": "Honors Neuroscience", "Email": "zeeyadanwar@utexas.edu", "Phone": "4696051711", "Category": "Student Organizations", "Experience": "Senate of College Councils (Membership Director)"}, {"Name": "Bilqees Ade -Jamiu", "Major": "Human Biology", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Category": "Student Organizations", "Experience": "Texas thon high school relations committee"}, {"Name": "Bilqees Ade -Jamiu", "Major": "Human Biology", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Category": "Student Organizations", "Experience": "Longhorn Mindful Miles"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Student Organizations", "Experience": "Plan II Advocacy"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Student Organizations", "Experience": "TPS"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Student Organizations", "Experience": "Texas Delta Delta Delta"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Student Organizations", "Experience": "UT Women's Ultimate Frisbee"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Student Organizations", "Experience": "Hook'd Magazine Print photographer"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Student Organizations", "Experience": "DEM!"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Student Organizations", "Experience": "Texas lonestars"}, {"Name": "Param Bajaj", "Major": "Biology", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Category": "Student Organizations", "Experience": "Texas TableTop"}, {"Name": "Param Bajaj", "Major": "Biology", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Category": "Student Organizations", "Experience": "Orchestra (non-UT affiliated)"}, {"Name": "Param Bajaj", "Major": "Biology", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Category": "Student Organizations", "Experience": "UTeach"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Student Organizations", "Experience": "Hearts for Homeless"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Student Organizations", "Experience": "Raas Rodeo - Liaison"}, {"Name": "Jatin", "Major": "Neuroscience", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Category": "Student Organizations", "Experience": "Wranglers"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Student Organizations", "Experience": "Tri Delt"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Student Organizations", "Experience": "Women in Medicine"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Student Organizations", "Experience": "Alpha Epsilon Phi"}, {"Name": "Caroline Palamountain", "Major": "Plan II and Human Biology", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Category": "Student Organizations", "Experience": "Savor and Sweat Production Team"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Volunteering", "Experience": "Ascension Seton Hospitals"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Volunteering", "Experience": "Step-Up Connections - UT health Houston"}, {"Name": "Abhinav", "Major": "Neuroscience", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "(502)644-1950", "Category": "Volunteering", "Experience": "Power for Parkinson's Class Volunteering"}, {"Name": "Amelia Saenz", "Major": "Health & Society", "Email": "ameliasaenz2006@gmail.com", "Phone": "(512) 285-0873", "Category": "Volunteering", "Experience": "Alzheimers Retirement Home - Sundance Memory Care"}, {"Name": "Amelia Saenz", "Major": "Health & Society", "Email": "ameliasaenz2006@gmail.com", "Phone": "(512) 285-0873", "Category": "Volunteering", "Experience": "Special Olympics"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Incredible Fridays"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Special Reach"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Austin Speech Labs"}, {"Name": "Anjana Reddy", "Major": "neuro", "Email": "anjana.reddy@utexas.edu", "Phone": "5127690323", "Category": "Volunteering", "Experience": "kind clinic"}, {"Name": "Anjana Reddy", "Major": "neuro", "Email": "anjana.reddy@utexas.edu", "Phone": "5127690323", "Category": "Volunteering", "Experience": "tutoring at garza independence hs"}, {"Name": "anya chawla", "Major": "public health", "Email": "anyachawla@utexas.edu", "Phone": "5127650902", "Category": "Volunteering", "Experience": "dell seton volunteer"}, {"Name": "anya chawla", "Major": "public health", "Email": "anyachawla@utexas.edu", "Phone": "5127650902", "Category": "Volunteering", "Experience": "volunteering w h4h"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Volunteering", "Experience": "Dress for Succes"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Volunteering", "Experience": "Micah 6 Food Pantry"}, {"Name": "Ariba Awan", "Major": "Neuroscience", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Category": "Volunteering", "Experience": "UTEACH"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Volunteering", "Experience": "Camp Barnabas Missionary"}, {"Name": "Campbell Albers", "Major": "Neuroscience", "Email": "campbellalbers@utexas.edu", "Phone": "4699102854", "Category": "Volunteering", "Experience": "Dell Med/Ascension SHVLP Trainer & Volunteer"}, {"Name": "Carolina Romero", "Major": "Computational Biology", "Email": "carolina.rom310@gmail.com", "Phone": "832-953-8104", "Category": "Volunteering", "Experience": "Camp CAMP (Children's Assocation for Maximum Potential)"}, {"Name": "Carolina Romero", "Major": "Computational Biology", "Email": "carolina.rom310@gmail.com", "Phone": "832-953-8104", "Category": "Volunteering", "Experience": "Dell Children's Medical Center Volunteer (past)"}, {"Name": "Cassandra Aguirre", "Major": "Biology", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Category": "Volunteering", "Experience": "St David's Medical Center"}, {"Name": "Ciera Fontenot", "Major": "Public Health", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Category": "Volunteering", "Experience": "St. David\u2019s Hospice Volunteering"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Volunteering", "Experience": "Downtown Dallas Volunteering"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Volunteering", "Experience": "Texas A&M school of dentistry volunteer for kids dental programs"}, {"Name": "Dheeya Jivnani", "Major": "Public Health", "Email": "dheeyajivnani@utexas.edu", "Phone": "9722156587", "Category": "Volunteering", "Experience": "Texas Pre Dental society"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Volunteering", "Experience": "Methodist Richardson Medical Center Junior Volunteer"}, {"Name": "Harrison Griffith", "Major": "Bio + Business (Management)", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Category": "Volunteering", "Experience": "Ascension volunteering"}, {"Name": "Harshi Yalamanchili", "Major": "HDFS", "Email": "Harshithayalamanchili@utexas.edu", "Phone": "5129609563", "Category": "Volunteering", "Experience": "Ascension Seton Volunteer"}, {"Name": "Harshitha Yalamanchili", "Major": "Hdfs", "Email": "Harshithayalamanchili@utexas.edu", "Phone": "5129609563", "Category": "Volunteering", "Experience": "Ascension seton volunteer"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Participated in the Uganda Spine Surgery Mission Trip in both 2023 and 2024."}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Regularly volunteer with Miracle League when back home."}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Volunteer for BedStart in Plano, Tx."}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Volunteering", "Experience": "Lumin Food pantry volunteer"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Volunteering", "Experience": "Austin Stem Buddies"}, {"Name": "Juhi Arora", "Major": "Neuroscience", "Email": "ja57236@my.utexas.edu", "Phone": "4694561453", "Category": "Volunteering", "Experience": "Foundations Community Marketplace Assistant"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Volunteering", "Experience": "Power for Parkinson's"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Volunteering", "Experience": "Foundation Communities"}, {"Name": "Juslyn Dhingra", "Major": "Public Health; Health & Society", "Email": "juslyndhingra04@gmail.com", "Phone": "7138825903", "Category": "Volunteering", "Experience": "Texas School for the Deaf"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Volunteering", "Experience": "Dell Pediatrics Volunteering"}, {"Name": "Lohith Panidepu", "Major": "Biology", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Category": "Volunteering", "Experience": "Micah 6 Food Bank"}, {"Name": "Madi Costa", "Major": "Neuroscience & Sociology", "Email": "Madimccosta@gmail.com", "Phone": "9402732681", "Category": "Volunteering", "Experience": "St. David\u2019s Hospice"}, {"Name": "Madi Costa", "Major": "Neuroscience & Sociology", "Email": "Madimccosta@gmail.com", "Phone": "9402732681", "Category": "Volunteering", "Experience": "The School for the Blind and Visually Impaired"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Volunteering", "Experience": "Austin Speech Labs"}, {"Name": "Maneet Brar", "Major": "Biology", "Email": "maneetkbr@gmail.com", "Phone": "6824723443", "Category": "Volunteering", "Experience": "Dell Childrens"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Volunteering", "Experience": "Life Long Learning With Friends"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Volunteering", "Experience": "UT Austin Collegiate Dream on 3"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Volunteering", "Experience": "Volunteer Vietnamese Teacher"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Volunteering", "Experience": "Methodist Richardson Volunteer"}, {"Name": "Mi Tran", "Major": "Biochemistry", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Category": "Volunteering", "Experience": "Girls in STEM president and Women in STEM president(high school)"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Volunteering", "Experience": "Ascension Seton Volunteering"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Volunteering", "Experience": "Palmer Drug Abuse Program"}, {"Name": "Raaz Patel", "Major": "Chemistry", "Email": "raazpatel@utexas.edu", "Phone": "7138221449", "Category": "Volunteering", "Experience": "Ascension Seton Medical Center"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Volunteering", "Experience": "St. David\u2019s Medical Center Volunteer"}, {"Name": "Rachel Cai", "Major": "Biology", "Email": "rachelccai@utexas.edu", "Phone": "5126887857", "Category": "Volunteering", "Experience": "Boys and Girls Club"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "CAMP Camp"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Austin Unite"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Lifelong Learning with Friends"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "On the Moov"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Down Syndrome Association of Central Texas"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Volunteering", "Experience": "Texas lions camp med staff"}, {"Name": "Roberto Hernandez", "Major": "Health & Society", "Email": "robertohernandezjr6@gmail.com", "Phone": "832-877-9608", "Category": "Volunteering", "Experience": "Eagle Pass Mission Trip"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Volunteering", "Experience": "Austin Animal Center"}, {"Name": "Sheena Leelani", "Major": "Biology", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Volunteering", "Experience": "Camp CAMP"}, {"Name": "Sheena Leelani", "Major": "Biology", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Volunteering", "Experience": "Austin Unite"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Volunteering", "Experience": "Hope Clinic Volunteer"}, {"Name": "Shruti Vykunta", "Major": "Neuroscience and Plan II", "Email": "svykunta@utexas.edu", "Phone": "512-787-3604", "Category": "Volunteering", "Experience": "Lirios Pediatrics Social Media"}, {"Name": "Sreenevash Ramesh", "Major": "Neuroscience", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Category": "Volunteering", "Experience": "Camp CAMP"}, {"Name": "Sreenevash Ramesh", "Major": "Neuroscience", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Category": "Volunteering", "Experience": "Helping Hand Home For Children"}, {"Name": "Tyson Huynh", "Major": "Human Biology", "Email": "tysonhuynh03@gmail.com", "Phone": "6266580887", "Category": "Volunteering", "Experience": "KIND Clinic"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Volunteering", "Experience": "Ascension Seton"}, {"Name": "Victoria Trinh", "Major": "Human Bio", "Email": "victoriat1892@gmail.com", "Phone": "832-600-5987", "Category": "Volunteering", "Experience": "Crisis Text Line"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Volunteering", "Experience": "Hospice care volunteer @Crest Palliative Care, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Volunteering", "Experience": "Cath Lab Support Volunteer @Methodist Hospital Stone Oak, San Antonio, TX"}, {"Name": "Zeeyad Anwar", "Major": "Honors Neuroscience", "Email": "zeeyadanwar@utexas.edu", "Phone": "4696051711", "Category": "Volunteering", "Experience": "Austin Speech Lab"}, {"Name": "Zeeyad Anwar", "Major": "Honors Neuroscience", "Email": "zeeyadanwar@utexas.edu", "Phone": "4696051711", "Category": "Volunteering", "Experience": "Longhorn Wellness Peer Educator"}, {"Name": "Bilqees Ade -Jamiu", "Major": "Human Biology", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Category": "Volunteering", "Experience": "Trio Hospice Volunteering"}, {"Name": "Bilqees Ade -Jamiu", "Major": "Human Biology", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Category": "Volunteering", "Experience": "HOFT institute ESL tutor"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Volunteering", "Experience": "Dell Seton Post-Op Day Care Volunteer"}, {"Name": "Anya Kochling", "Major": "Biology", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Category": "Volunteering", "Experience": "Coral Rehabilitation and Nursing of Austin Volunteer"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Volunteering", "Experience": "Hospice Volunteer w/ Resolution Hospice"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Volunteering", "Experience": "Volunteer w/ TankProof"}, {"Name": "Chidinma Ogbu", "Major": "Neuroscience", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Category": "Volunteering", "Experience": "Volunteer w/ Micah 6"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Volunteering", "Experience": "Continuous volunteering at Dell Children\u2019s"}, {"Name": "Jewell Cooper", "Major": "Psychology", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Category": "Volunteering", "Experience": "Sam\u2019s camp"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Volunteering", "Experience": "The Other Ones Foundation"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Volunteering", "Experience": "Ascension Seton Volunteering"}, {"Name": "Zara", "Major": "Health and Society", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Category": "Volunteering", "Experience": "St. David Hospice Care"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Volunteering", "Experience": "SEAL"}, {"Name": "Shivani Patel", "Major": "Public Health", "Email": "shivanipatel@utexas.edu", "Phone": "4693796320", "Category": "Volunteering", "Experience": "Disability Note Taker for Classes"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Volunteering", "Experience": "Reading Aces"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Volunteering", "Experience": "Austin Speech Labs"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Volunteering", "Experience": "Foundation Communities"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Volunteering", "Experience": "Ascension Seton Volunteer"}, {"Name": "Ram Mahavadi", "Major": "Biology", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Category": "Volunteering", "Experience": "HCA Hospice Volunteer"}, {"Name": "Maryam Paykar", "Major": "Biology Honors", "Email": "maryam.paykar@utexas.edu", "Phone": "2102743052", "Category": "Volunteering", "Experience": "Ascension Team Lead"}, {"Name": "Rue Ledesma", "Major": "Public Health", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Category": "Volunteering", "Experience": "Volunteer Notetaker"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Personal Business(Healthcare Related)", "Experience": "Fluvent Prevention"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Sports", "Experience": "Texas Rock Climbing"}, {"Name": "Samarveer Panag", "Major": "Biomedical Engineering", "Email": "samarveerpanag@utexas.edu", "Phone": "5122857011", "Category": "Competition", "Experience": "BMES Case Comp and Design Comp (open to everyone, generally med related)"}, {"Name": "Sheena Leelani", "Major": "Bio", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Volunteering", "Experience": "Camp CAMP"}, {"Name": "Sheena Leelani", "Major": "Bio", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Volunteering", "Experience": "Austin Unite"}, {"Name": "Sheena Leelani", "Major": "Bio", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Clinical Jobs", "Experience": "Home health provider for kids and adults with disabilities"}, {"Name": "Sheena Leelani", "Major": "Bio", "Email": "Sheenaleelani@utexas.edu", "Phone": "2109007961", "Category": "Research", "Experience": "Biodiversity research over salamanders"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Shadowing", "Experience": "Shadowing at Well Pet Center"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Clinical Jobs", "Experience": "Working at Well Pet Center"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Student Organizations", "Experience": "Pre vet society"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Volunteering", "Experience": "Austin Animal Center"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Leadership", "Experience": "Treasurer PreVet club"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Shadowing", "Experience": "Veterinary Emergency Group"}, {"Name": "Saumya Seth", "Major": "Biology", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Category": "Research", "Experience": "Virtual Drug Cures"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "CAMP Camp"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Austin Unite"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Lifelong Learning with Friends"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "On the Moov"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Volunteering", "Experience": "Down Syndrome Association of Central Texas"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Clinical Jobs", "Experience": "OT Connection"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Clinical Jobs", "Experience": "Caregiver"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Student Organizations", "Experience": "Texas Lassos"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Student Organizations", "Experience": "Roustabouts"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Research", "Experience": "DIY Diagnostics (FRI)"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Research", "Experience": "MILES lab"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Non-clinical Jobs", "Experience": "UGCA"}, {"Name": "Rajika", "Major": "HAHDFS", "Email": "rajika@utexas.edu", "Phone": "5125849198", "Category": "Non-clinical Jobs", "Experience": "Undergraduate Research Assistant"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Research", "Experience": "Undergraduate Research Assistant"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Clinical Jobs", "Experience": "Medical Assistant"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Volunteering", "Experience": "Dell Pediatrics Volunteering"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Student Organizations", "Experience": "Texas Lassos"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Student Organizations", "Experience": "Texas BEI"}, {"Name": "Lindsey Won", "Major": "Neuroscience", "Email": "lindseywon@utexas", "Phone": "4697772530", "Category": "Research", "Experience": "FRI Behavioral Neuroscience"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Immunotherapy Technician"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Medical Assistant; Neuro and orthopedic surgery"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Clinical Jobs", "Experience": "Behavior Technician"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Interships", "Experience": "Clinical Operations Intern in Addiction Rehabilitation"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Leadership", "Experience": "Natural Sciences Council; Student Faculty Chair"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Incredible Fridays"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Special Reach"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Volunteering", "Experience": "Austin Speech Labs"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Student Organizations", "Experience": "Mental Health Initiative for South Asians"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Non-clinical Jobs", "Experience": "JB Tutoring"}, {"Name": "Anish Baktha", "Major": "Human Biology", "Email": "anish.bakthaa@gmail.com", "Phone": "214-425-5795", "Category": "Sports", "Experience": "Texas Rock Climbing"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Intern - Institute of Orthopaedic Special Surgery (Under Dr. Adham Abdelfattah, MD)"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Clinical Volunteer @Corazon Medical Clinic, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Volunteering", "Experience": "Hospice care volunteer @Crest Palliative Care, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Volunteering", "Experience": "Cath Lab Support Volunteer @Methodist Hospital Stone Oak, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Clinical Jobs", "Experience": "Resident Support & Activities Volunteer @Golden Estates Rehabilitation & Healthcare Center, San Antonio, TX"}, {"Name": "Yousef", "Major": "B.S. Psychology", "Email": "ywa67@eid.utexas.edu", "Phone": "2103551799", "Category": "Shadowing", "Experience": "Orthopaedic Surgery - Dr. Adham Abdelfattah, MD (80 hrs); Internal Medicine - Dr. Gopinath Chandrahasan, MD (20 hrs); Family Medicine - Dr. Ravjot Sarao, MD (15 hrs)"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Shadowing", "Experience": "Medical Shadowing of Allergist/ Immunologist Premier Medcare Doctor Anil Nanda"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Shadowing", "Experience": "Medical Shadowing of Argyle Orthodontics Dr. David Dyer"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Clinical Jobs", "Experience": "Certified Clinical Medical Assistant for Dr. Anil Amanda\u2019s Premier Medcare"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Non-clinical Jobs", "Experience": "Customer Service/ Cashier For Southern Multifoods Inc. (Taco Bell)"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Research", "Experience": "Freshman Research Initiative Researcher for the SupraSensors Stream"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Volunteering", "Experience": "Ascension Seton Volunteering"}, {"Name": "Puneet Nunsavathu", "Major": "Biology", "Email": "puneetn16@icloud.com", "Phone": "9402992573", "Category": "Student Organizations", "Experience": "Member of GMT and Caduceus and DEM Prospect"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "180 Degrees Consulting"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "Texas Energy Capital"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Interships", "Experience": "Texas RISE"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Student Organizations", "Experience": "University of North Texas Biology Research Intern"}, {"Name": "Nora Nazrul", "Major": "BHP + Plan II", "Email": "noranazrul@utexas.edu", "Phone": "4697284220", "Category": "Research", "Experience": "Greystone"}, {"Name": "Rayaan Hameed", "Major": "Neuroscience", "Email": "rh39795@my.utexas.edu", "Phone": "972-202-6129", "Category": "Student Organizations", "Experience": "Natural Sciences Council"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Student Organizations", "Experience": "Filipino Student Association"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Volunteering", "Experience": "Austin Stem Buddies"}, {"Name": "Johnson Pham", "Major": "Biochemistry", "Email": "phamjohnson123@gmail.com", "Phone": "6152996846", "Category": "Research", "Experience": "Freshman Research Initiative"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Research", "Experience": "Research assistant for Texas Back Institute in Frisco, Texas"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Uganda Spine Surgery Mission Trip (2023 and 2024)"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Regular volunteer with Miracle League"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Volunteering", "Experience": "Volunteer for BedStart in Plano, Tx"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "Texas Closet Design \u2013 product intake"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "JunkLuggers \u2013 summer work"}, {"Name": "Jacob Bazbaz", "Major": "Biology", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Category": "Non-clinical Jobs", "Experience": "J. Theodore \u2013 busboy"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Research", "Experience": "Pierce Lab C. elegans research"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Student Organizations", "Experience": "Longhorn Neurotech"}, {"Name": "Bhuvan Kanna", "Major": "Neuroscience + Computer Science", "Email": "bhuvan.kanna@utexas.edu", "Phone": "5126866535", "Category": "Student Organizations", "Experience": "Texas Taekwondo"}, {"Name": "Divya Ghanta", "Major": "Public Health", "Email": "divya.ghanta@gmail.com", "Phone": "2146066067", "Category": "Research", "Experience": "RA in the Kid's Lab at UT (Psych Lab)"}, {"Name": "Divya Ghanta", "Major": "Public Health", "Email": "divya.ghanta@gmail.com", "Phone": "2146066067", "Category": "Student Organizations", "Experience": "Spirit Org Member - Texas Lassos"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Leadership", "Experience": "Student Psychology Association Junior Officer"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Leadership", "Experience": "UTAPL Freshman Officer, Creativity Lead"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Leadership", "Experience": "Orchestra Officer"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Leadership", "Experience": "Service for Humanity Officer"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Volunteering", "Experience": "Junior Firefighter"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Student Organizations", "Experience": "Minority Association of Pre-Med Students"}, {"Name": "Aarush", "Major": "Psychology", "Email": "aarushpatel0300@gmail.com", "Phone": "314-625-2726", "Category": "Sports", "Experience": "Varsity Golf"}, {"Name": "Samarveer Panag", "Major": "Biomedical engineering", "Email": "samarveerpanag@utexas.edu", "Phone": "5122857011", "Category": "Research", "Experience": "Lead undergrad researcher in Baker lab"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Student Organizations", "Experience": "Texas Lonestars"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Research", "Experience": "Discovering Signals FRI"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Clinical Jobs", "Experience": "Medical assistant for ID and wound care"}, {"Name": "Ramina Tavakolian", "Major": "Biology", "Email": "rtavakolian@icloud.com", "Phone": "4695445834", "Category": "Volunteering", "Experience": "Texas Lions Camp med staff"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Research", "Experience": "DIY Diagnostics FRI lab"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Clinical Jobs", "Experience": "MA at a foot and ankle clinic"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Leadership", "Experience": "Special programs committee chair for Polymath"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Research", "Experience": "Research assistant at Prevention Research Lab"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Volunteering", "Experience": "Lumin Food Pantry volunteer"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Non-clinical Jobs", "Experience": "Piano tutor"}, {"Name": "Janvi Duri", "Major": "Public Health", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Category": "Leadership", "Experience": "UGCA for honors UGS class"}, {"Name": "Cassandra Aguirre", "Major": "Biology", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Category": "Volunteering", "Experience": "St David's Medical Center"}, {"Name": "Cassandra Aguirre", "Major": "Biology", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Category": "Clinical Jobs", "Experience": "PCT at Heart Hospital"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Longhorns Crushing Medical Debt"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Research/Startup Experience", "Experience": "Texas Health Catalyst"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Business Healthcare Association"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Clinical Jobs", "Experience": "Pharmacy Technician \u2013 CVS Health"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Longhorn Investment Team"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Student Organizations", "Experience": "Health Leadership Apprentices"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Personal Business(Healthcare Related)", "Experience": "Fluvent Prevention"}, {"Name": "Mihir Gupta", "Major": "Business", "Email": "mihirgupta@utexas.edu", "Phone": "5124971936", "Category": "Clinical Jobs", "Experience": "EMT cert through LifeStart"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Clinical Jobs", "Experience": "Dental & Orthodontic Assistant (Sterilization, Tray Setup, Receptionist Help, etc.)"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Leadership", "Experience": "President and Founder of UT Austin Parkinson's Pals (starting Spring 2025)"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Volunteering", "Experience": "Life Long Learning With Friends"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Student Organizations", "Experience": "Global Medical Training"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Student Organizations", "Experience": "Alpha Epsilon Phi"}, {"Name": "Marli Golden", "Major": "Biology", "Email": "marligolden11@yahoo.com", "Phone": "2015628260", "Category": "Volunteering", "Experience": "UT Austin Collegiate Dream on 3"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Leadership", "Experience": "HOSA - Social Chair"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Student Organizations", "Experience": "Music United Piano Teacher"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Student Organizations", "Experience": "DEM"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Interships", "Experience": "Baylor University Medical Center ICU intern with Dr. Ginger Tsai-Nguyen"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Interships", "Experience": "Practicum of Health Sciences Clinical Rotations Program Student Intern"}, {"Name": "Fiona Wang", "Major": "Neuroscience", "Email": "fw9244278@gmail.com", "Phone": "4698817706", "Category": "Volunteering", "Experience": "Methodist Richardson Medical Center Junior Volunteer"}];
+
+// ---- HELPERS ----
+function getCategoryClass(cat) {
+  if (!cat) return 'cat-other';
+  const c = cat.toLowerCase();
+  if (c.includes('clinical')) return 'cat-clinical';
+  if (c.includes('research')) return 'cat-research';
+  if (c.includes('volunteer')) return 'cat-volunteer';
+  if (c.includes('shadow')) return 'cat-shadow';
+  if (c.includes('leadership')) return 'cat-leadership';
+  if (c.includes('student') || c.includes('organization')) return 'cat-orgs';
+  if (c.includes('intern')) return 'cat-intern';
+  return 'cat-other';
+}
+
+function getTrackBadge(track) {
+  if (!track) return '<span class="badge badge-other">—</span>';
+  const t = track.toLowerCase();
+  if (t.includes('medicine') || t === 'pre-med') return `<span class="badge badge-medicine">${track}</span>`;
+  if (t.includes('physician') || t.includes('pa')) return `<span class="badge badge-pa">${track}</span>`;
+  if (t.includes('dentist') || t === 'pre-dental') return `<span class="badge badge-dentistry">${track}</span>`;
+  if (t.includes('vet')) return `<span class="badge badge-vet">${track}</span>`;
+  if (t.includes('optom')) return `<span class="badge badge-opt">${track}</span>`;
+  return `<span class="badge badge-other">${track}</span>`;
+}
+
+function matchMemberInv(firstName, lastName, r) {
+  const full = (firstName + ' ' + lastName).toLowerCase();
+  const n = (r.Name || '').toLowerCase();
+  return n === full || (n.includes(lastName.toLowerCase()) && n.includes(firstName.toLowerCase().split(' ')[0]));
+}
+
+function getExpCountForMember(firstName, lastName) {
+  return INVOLVEMENT.filter(r => matchMemberInv(firstName, lastName, r)).length;
+}
+
+function getExpForMember(firstName, lastName) {
+  return INVOLVEMENT.filter(r => matchMemberInv(firstName, lastName, r));
+}
+
+// ---- STATE ----
+let memberPage = 1, memberPageSize = 20;
+let invPage = 1, invPageSize = 25;
+let memberSort = 'name';
+let filteredMembers = [...CONTACTS];
+let filteredInv = [...INVOLVEMENT];
+
+// ---- POPULATE FILTERS ----
+function initFilters() {
+  const tracks = [...new Set(CONTACTS.map(c => c.Track).filter(Boolean))].sort();
+  const trackSel = document.getElementById('filter-track');
+  tracks.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; trackSel.appendChild(o); });
+
+  const allMajors = new Set();
+  CONTACTS.forEach(c => (c.MajorsList || []).forEach(m => { if (m) allMajors.add(m); }));
+  const families = [...new Set(CONTACTS.map(c => c.Family).filter(f => f && f !== 'N/A'))].sort();
+  const fFam = document.getElementById('filter-family');
+  if (fFam) families.forEach(f => fFam.innerHTML += `<option value="${f}">${f}</option>`);
+  const majorSel = document.getElementById('filter-major');
+  [...allMajors].sort().forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; majorSel.appendChild(o); });
+
+  const normCat = cat => cat.toLowerCase().includes('intern') ? 'Internships' : cat.toLowerCase().includes('research') ? 'Research' : cat;
+  const cats = [...new Set(INVOLVEMENT.map(i => normCat(i.Category || '')).filter(Boolean))].sort();
+  const catSel = document.getElementById('filter-cat');
+  cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; catSel.appendChild(o); });
+
+  const names = [...new Set(INVOLVEMENT.map(i => i.Name).filter(Boolean))].sort();
+  const nameSel = document.getElementById('filter-inv-name');
+  names.forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; nameSel.appendChild(o); });
+}
+
+// ---- STATS ----
+function initStats() {
+  const totalMembers = CONTACTS.length;
+  const totalExp = INVOLVEMENT.length;
+  const tracks = [...new Set(CONTACTS.map(c => c.Track).filter(Boolean))].length;
+  const membersWithExp = new Set(INVOLVEMENT.map(r => r.Name)).size;
+
+  const statsData = [
+    { label: 'Active Members', value: totalMembers, cls: 'accent' },
+    { label: 'Total Experiences', value: totalExp, cls: 'gold' },
+    { label: 'Pre-Health Tracks', value: tracks, cls: 'blue' },
+    { label: 'Members Tracked', value: membersWithExp, cls: 'green' },
+  ];
+
+  document.getElementById('stats-bar').innerHTML = statsData.map(s =>
+    `<div class="stat-card"><div class="label">${s.label}</div><div class="value ${s.cls}">${s.value}</div></div>`
+  ).join('');
+}
+
+// ---- CHARTS ----
+function initCharts() {
+  // Track chart
+  const trackCounts = {};
+  CONTACTS.forEach(c => {
+    const t = c.Track || 'Unspecified';
+    trackCounts[t] = (trackCounts[t] || 0) + 1;
+  });
+  const trackSorted = Object.entries(trackCounts).sort((a,b) => b[1]-a[1]);
+  const maxTrack = trackSorted[0]?.[1] || 1;
+  const trackColors = ['#b08fff','#7ec8e3','#d4af6e','#6edba8','#e87070','#e8a050','#a0e8d0','#c0a0e8'];
+  document.getElementById('track-chart').innerHTML = trackSorted.map(([label, count], i) =>
+    `<div class="bar-row">
+      <div class="bar-label">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(count/maxTrack*100).toFixed(1)}%;background:${trackColors[i%trackColors.length]}"></div></div>
+      <div class="bar-count">${count}</div>
+    </div>`
+  ).join('');
+
+  // Category chart
+  const catCounts = {};
+  INVOLVEMENT.forEach(r => {
+    const c = r.Category || 'Other';
+    const norm = c.toLowerCase().includes('intern') ? 'Internships' :
+                 c.toLowerCase().includes('research') ? 'Research' : c;
+    catCounts[norm] = (catCounts[norm] || 0) + 1;
+  });
+  const catSorted = Object.entries(catCounts).sort((a,b) => b[1]-a[1]);
+  const maxCat = catSorted[0]?.[1] || 1;
+  document.getElementById('cat-chart').innerHTML = catSorted.map(([label, count], i) =>
+    `<div class="bar-row">
+      <div class="bar-label">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(count/maxCat*100).toFixed(1)}%;background:${trackColors[i%trackColors.length]}"></div></div>
+      <div class="bar-count">${count}</div>
+    </div>`
+  ).join('');
+}
+
+// ---- MEMBERS TABLE ----
+function filterMembers() {
+  const q = document.getElementById('member-search').value.toLowerCase();
+  const track = document.getElementById('filter-track').value;
+  const major = document.getElementById('filter-major').value;
+  const family = document.getElementById('filter-family') ? document.getElementById('filter-family').value : '';
+  const sort = document.getElementById('sort-members').value;
+
+  filteredMembers = CONTACTS.filter(c => {
+    const name = `${c['First Name']} ${c['Last Name']}`.toLowerCase();
+    const maj = (c.Major || '').toLowerCase();
+    const email = (c.Email || '').toLowerCase();
+    const matchQ = !q || name.includes(q) || maj.includes(q) || email.includes(q);
+    const matchTrack = !track || c.Track === track;
+    // Major filter checks any individual major in MajorsList
+    const matchMajor = !major || (c.MajorsList || []).includes(major);
+    const matchFamily = !family || c.Family === family;
+    return matchQ && matchTrack && matchMajor && matchFamily;
+  });
+
+  filteredMembers.sort((a,b) => {
+    if (sort === 'name') return `${a['First Name']} ${a['Last Name']}`.localeCompare(`${b['First Name']} ${b['Last Name']}`);
+    if (sort === 'name-desc') return `${b['First Name']} ${b['Last Name']}`.localeCompare(`${a['First Name']} ${a['Last Name']}`);
+    if (sort === 'major') return (a.Major||'').localeCompare(b.Major||'');
+    if (sort === 'track') return (a.Track||'').localeCompare(b.Track||'');
+    return 0;
+  });
+
+  memberPage = 1;
+  renderMembersTable();
+}
+
+function setSortMembers(field) {
+  const sel = document.getElementById('sort-members');
+  if (sel.value === field) sel.value = field + '-desc';
+  else sel.value = field;
+  filterMembers();
+}
+
+function renderMembersTable() {
+  const tbody = document.getElementById('members-tbody');
+  const total = filteredMembers.length;
+  document.getElementById('member-count').textContent = total;
+
+  const start = (memberPage-1)*memberPageSize;
+  const page = filteredMembers.slice(start, start+memberPageSize);
+
+  if (page.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="icon">🔍</div><h3>No results found</h3><p>Try adjusting your search or filters</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = page.map(c => {
+      const expCount = getExpCountForMember(c['First Name'], c['Last Name']);
+      const fullName = `${c['First Name']} ${c['Last Name']}`;
+      // Render major chips — one per sub-major for double majors
+      const majorChips = (c.MajorsList || [c.Major]).filter(Boolean).map(m =>
+        `<span style="display:inline-block;background:rgba(176,143,255,0.07);border:1px solid rgba(176,143,255,0.15);border-radius:4px;padding:1px 6px;font-size:0.72rem;color:var(--muted);margin:1px 2px 1px 0;">${m}</span>`
+      ).join('');
+      return `<tr onclick="openMemberModal('${encodeURIComponent(JSON.stringify(c))}')">
+        <td class="member-name">${fullName}</td>
+        <td style="font-size:0.82rem;">${majorChips}</td>
+        <td style="color:var(--muted);font-size:0.78rem;">${c.Minor||'—'}</td>
+        <td>${getTrackBadge(c.Track)}</td>
+        <td style="font-size:0.78rem;color:var(--muted);">${c.Family||'—'}</td>
+        <td style="font-size:0.78rem;color:var(--muted);">${c.ClassName||'—'}</td>
+        <td><a class="email-link" href="mailto:${c.Email}" onclick="event.stopPropagation()">${c.Email||'—'}</a></td>
+        <td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted);">${c.Phone||'—'}</td>
+        <td style="text-align:center;"><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:${expCount>0?'var(--green)':'var(--muted)'};">${expCount > 0 ? expCount : '—'}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  renderPagination('members', total, memberPageSize, memberPage, p => { memberPage = p; renderMembersTable(); });
+}
+
+// ---- INVOLVEMENT TABLE ----
+function filterInvolvement() {
+  const q = document.getElementById('inv-search').value.toLowerCase();
+  const cat = document.getElementById('filter-cat').value;
+  const name = document.getElementById('filter-inv-name').value;
+
+  const normCatVal = c => c.toLowerCase().includes('intern') ? 'Internships' : c.toLowerCase().includes('research') ? 'Research' : c;
+  filteredInv = INVOLVEMENT.filter(r => {
+    const rname = (r.Name||'').toLowerCase();
+    const exp = (r.Experience||'').toLowerCase();
+    const rcat = (r.Category||'').toLowerCase();
+    const matchQ = !q || rname.includes(q) || exp.includes(q) || rcat.includes(q);
+    const matchCat = !cat || normCatVal(r.Category||'') === cat;
+    const matchName = !name || r.Name === name;
+    return matchQ && matchCat && matchName;
+  });
+
+  invPage = 1;
+  renderInvTable();
+}
+
+function renderInvTable() {
+  const tbody = document.getElementById('inv-tbody');
+  const total = filteredInv.length;
+  document.getElementById('inv-count').textContent = total;
+
+  const start = (invPage-1)*invPageSize;
+  const page = filteredInv.slice(start, start+invPageSize);
+
+  if (page.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="icon">🔍</div><h3>No records found</h3><p>Try adjusting filters</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = page.map(r => `<tr>
+      <td class="member-name">${r.Name||'—'}</td>
+      <td style="font-size:0.82rem;color:var(--muted);">${r.Major||'—'}</td>
+      <td><span class="cat-badge ${getCategoryClass(r.Category)}">${r.Category||'Other'}</span></td>
+      <td style="font-size:0.85rem;">${r.Experience||'—'}</td>
+    </tr>`).join('');
+  }
+
+  renderPagination('inv', total, invPageSize, invPage, p => { invPage = p; renderInvTable(); });
+}
+
+// ---- PAGINATION ----
+function renderPagination(prefix, total, pageSize, current, onPage) {
+  const pages = Math.ceil(total / pageSize);
+  const el = document.getElementById(prefix + '-pagination');
+  if (pages <= 1) { el.innerHTML = ''; return; }
+
+  let html = `<button class="page-btn" ${current===1?'disabled':''} onclick="(${onPage})(${current-1})">‹</button>`;
+  for (let i = 1; i <= pages; i++) {
+    if (i === 1 || i === pages || Math.abs(i - current) <= 2) {
+      html += `<button class="page-btn ${i===current?'active':''}" onclick="(${onPage})(${i})">${i}</button>`;
+    } else if (Math.abs(i - current) === 3) {
+      html += `<span style="color:var(--muted);font-size:0.8rem;padding:0 0.2rem;">…</span>`;
+    }
+  }
+  html += `<button class="page-btn" ${current===pages?'disabled':''} onclick="(${onPage})(${current+1})">›</button>`;
+  el.innerHTML = html;
+}
+
+// ---- MODAL ----
+function openMemberModal(encoded) {
+  const c = JSON.parse(decodeURIComponent(encoded));
+  document.getElementById('modal-name').textContent = `${c['First Name']} ${c['Last Name']}`;
+  document.getElementById('modal-meta').innerHTML = getTrackBadge(c.Track);
+  // Render major as chips for double majors
+  const mChips = (c.MajorsList || [c.Major]).filter(Boolean).map(m =>
+    `<span style="display:inline-block;background:rgba(176,143,255,0.08);border:1px solid rgba(176,143,255,0.18);border-radius:4px;padding:2px 8px;font-size:0.8rem;margin:2px 3px 2px 0;">${m}</span>`
+  ).join('');
+  document.getElementById('modal-major').innerHTML = mChips || '—';
+  document.getElementById('modal-minor').textContent = c.Minor || '—';
+  if (!c.Minor) document.getElementById('modal-minor-wrap').style.display = 'none';
+  else document.getElementById('modal-minor-wrap').style.display = '';
+  const emailEl = document.getElementById('modal-email');
+  emailEl.textContent = c.Email || '—';
+  emailEl.href = c.Email ? `mailto:${c.Email}` : '#';
+  document.getElementById('modal-phone').textContent = c.Phone || '—';
+  document.getElementById('modal-family').textContent = c.Family || 'N/A';
+  document.getElementById('modal-class').textContent = c.ClassName || 'N/A';
+  const parents = c.Parents && c.Parents.length ? c.Parents.join(', ') : '—';
+  document.getElementById('modal-parents').textContent = parents;
+  document.getElementById('modal-parents-wrap').style.display = (c.Parents && c.Parents.length) ? '' : 'none';
+  const littles = c.Littles && c.Littles.length ? c.Littles.join(', ') : null;
+  document.getElementById('modal-littles').textContent = littles || '—';
+  document.getElementById('modal-littles-wrap').style.display = littles ? '' : 'none';
+
+  const exps = getExpForMember(c['First Name'], c['Last Name']);
+  document.getElementById('modal-exp-count').textContent = exps.length;
+  if (exps.length === 0) {
+    document.getElementById('modal-experiences').innerHTML = '';
+    document.getElementById('modal-no-exp').textContent = 'No involvement records found for this member.';
+    document.getElementById('modal-no-exp').style.display = '';
+  } else {
+    document.getElementById('modal-no-exp').style.display = 'none';
+    document.getElementById('modal-experiences').innerHTML = exps.map(e =>
+      `<div class="exp-item">
+        <span class="exp-name">${e.Experience||'—'}</span>
+        <span class="cat-badge ${getCategoryClass(e.Category)} exp-cat">${e.Category||'Other'}</span>
+      </div>`
+    ).join('');
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+// ---- TABS (overridden by demographics tab script below) ----
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'demographics') { if (typeof renderDemCharts === 'function') renderDemCharts(); }
+}
+
+// ---- VIEW SWITCH ----
+function switchView(view) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('vbtn-' + view).classList.add('active');
+  document.getElementById('view-members').style.display = view === 'members' ? '' : 'none';
+  document.getElementById('view-involvement').style.display = view === 'involvement' ? '' : 'none';
+  document.getElementById('view-desc').textContent = view === 'members'
+    ? 'Showing all active members with contact information'
+    : 'Showing all involvement and experience records';
+}
+
+// ---- INIT ----
+initFilters();
+initStats();
+initCharts();
+filterMembers();
+filterInvolvement();
+</script>
+
+<!-- ===== CHATBOT ===== -->
+<style>
+/* FAB BUTTON */
+.chat-fab {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  left: auto;
+  z-index: 300;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8c1e1e, #c0392b);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(140,30,30,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(140,30,30,0.55); }
+.chat-fab svg { transition: transform 0.3s; }
+.chat-fab.open svg.icon-chat { display: none; }
+.chat-fab.open svg.icon-close { display: block !important; }
+
+.chat-fab-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(140,30,30,0.35);
+  animation: pulse-ring 2.5s ease-out infinite;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* CHAT WINDOW */
+.chat-window {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.75rem;
+  left: auto;
+  z-index: 300;
+  width: 380px;
+  max-height: 560px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid rgba(140,30,30,0.25);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(176,143,255,0.05);
+  overflow: hidden;
+  transform: translateY(12px) scale(0.97);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease;
+}
+.chat-window.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* CHAT HEADER */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.chat-header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8c1e1e, #c0392b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.chat-header-info .name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.chat-header-info .status {
+  font-size: 0.7rem;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.chat-header-info .status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+}
+.chat-header-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.chat-header-close:hover { background: var(--surface); color: var(--text); }
+
+/* MESSAGES */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+.chat-msg {
+  display: flex;
+  gap: 0.5rem;
+  animation: msgIn 0.2s ease;
+}
+@keyframes msgIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+.chat-msg.user { flex-direction: row-reverse; }
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.chat-msg.bot .chat-bubble {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+.chat-msg.user .chat-bubble {
+  background: rgba(176,143,255,0.15);
+  border: 1px solid rgba(140,30,30,0.25);
+  color: var(--text);
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble strong { color: var(--accent); font-weight: 500; }
+.chat-bubble em { color: var(--gold); font-style: normal; }
+.chat-bubble .chat-tag {
+  display: inline-block;
+  background: rgba(110,219,168,0.1);
+  color: var(--green);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+}
+
+/* TYPING INDICATOR */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  width: fit-content;
+}
+.typing-indicator span {
+  width: 6px; height: 6px;
+  background: var(--muted);
+  border-radius: 50%;
+  animation: typing-dot 1.2s infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* SUGGESTED PROMPTS */
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.suggestion-chip {
+  padding: 0.3rem 0.65rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.suggestion-chip:hover { color: var(--accent); border-color: rgba(176,143,255,0.3); background: rgba(176,143,255,0.06); }
+
+/* INPUT AREA */
+.chat-input-area {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.chat-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.84rem;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+  max-height: 100px;
+  line-height: 1.4;
+}
+.chat-input:focus { border-color: rgba(140,30,30,0.5); }
+.chat-input::placeholder { color: var(--muted); }
+.chat-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8c1e1e, #c0392b);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: flex-end;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.chat-send:hover { opacity: 0.88; transform: scale(1.05); }
+.chat-send:disabled { opacity: 0.35; cursor: default; transform: none; }
+</style>
+
+<!-- FAB -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Ask about members">
+  <div class="chat-fab-pulse"></div>
+  <svg class="icon-chat" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="display:none;">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<!-- CHAT WINDOW -->
+<div class="chat-window" id="chat-window">
+  <div class="chat-header">
+    <div class="chat-header-avatar">ΔΕΜ</div>
+    <div class="chat-header-info">
+      <div class="name">Chapter Assistant</div>
+      <div class="status">Online · All member data loaded</div>
+    </div>
+    <button class="chat-header-close" onclick="toggleChat()">✕</button>
+  </div>
+
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-msg bot">
+      <div class="chat-bubble">
+        Hey! 👋 I'm your <strong>ΔΕΜ chapter assistant</strong>. I have access to all <em>84 active members</em>, their contact info, majors, pre-health tracks, and 500+ involvement records.<br><br>Ask me anything!
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-suggestions" id="chat-suggestions">
+    <div class="suggestion-chip" onclick="sendSuggestion(this)">Who's doing research?</div>
+    <div class="suggestion-chip" onclick="sendSuggestion(this)">List pre-med members</div>
+    <div class="suggestion-chip" onclick="sendSuggestion(this)">Who has clinical jobs?</div>
+    <div class="suggestion-chip" onclick="sendSuggestion(this)">Find Neuroscience majors</div>
+  </div>
+
+  <div class="chat-input-area">
+    <textarea class="chat-input" id="chat-input" placeholder="Ask about members, experiences, contacts..." rows="1"
+      onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="chat-send" id="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+// ---- CHATBOT ----
+let chatOpen = false;
+let chatHistory = [];
+let chatLoading = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-window').classList.toggle('open', chatOpen);
+  document.getElementById('chat-fab').classList.toggle('open', chatOpen);
+  if (chatOpen) setTimeout(() => document.getElementById('chat-input').focus(), 250);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+function sendSuggestion(el) {
+  document.getElementById('chat-input').value = el.textContent;
+  sendChat();
+}
+
+function appendMsg(role, html) {
+  const messages = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `<div class="chat-bubble">${html}</div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const messages = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function buildSystemPrompt() {
+  // Build a compact but rich data summary for Claude
+  const memberSummary = CONTACTS.map(c => {
+    const exps = getExpForMember(c['First Name'], c['Last Name']);
+    const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
+    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Minor: ${c.Minor||'none'} | Track: ${c.Track||'?'} | Email: ${c.Email||'?'} | Phone: ${c.Phone||'?'} | Experiences: [${expList || 'none recorded'}]`;
+  }).join('\n');
+
+  return `You are the chapter assistant for Delta Epsilon Mu (ΔΕΜ), a pre-health professional fraternity. You have full access to the chapter's active member roster and involvement data. Answer questions helpfully, concisely, and accurately using ONLY the data provided below. If contact info is requested, provide it. Format names in bold using **name** syntax when listing members. Keep responses concise but complete.
+
+ACTIVE MEMBER DATA (84 members):
+${memberSummary}
+
+INSTRUCTIONS:
+- Answer questions about specific members, majors, tracks, experiences, contact info
+- When listing members, be specific and include relevant details
+- If asked for email/phone, provide it directly
+- Use the experience data to answer questions like "who is doing X"
+- Normalize category variations (e.g. "Interships" = "Internships", "Research/Startup" = Research)
+- If no members match a query, say so clearly
+- Keep responses under ~200 words unless a full list is genuinely needed`;
+}
+
+async function sendChat() {
+  if (chatLoading) return;
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('chat-suggestions').style.display = 'none';
+
+  appendMsg('user', escapeHtml(msg));
+  chatHistory.push({ role: 'user', content: msg });
+
+  chatLoading = true;
+  document.getElementById('chat-send').disabled = true;
+  showTyping();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: buildSystemPrompt(),
+        messages: chatHistory.slice(-10) // last 10 turns for context
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || '').join('') || 'Sorry, I had trouble responding.';
+    chatHistory.push({ role: 'assistant', content: text });
+
+    removeTyping();
+    appendMsg('bot', formatChatResponse(text));
+  } catch (err) {
+    removeTyping();
+    appendMsg('bot', '⚠️ Connection error. Please try again.');
+    chatHistory.pop();
+  }
+
+  chatLoading = false;
+  document.getElementById('chat-send').disabled = false;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatChatResponse(text) {
+  // Convert markdown-ish to styled HTML
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<span class="chat-tag">$1</span>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+</script>
+
+<footer style="
+  background: #1a0505;
+  color: rgba(245,240,235,0.7);
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(140,30,30,0.4);
+  position: relative;
+  z-index: 1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.5rem;
+">
+  <div>© 2026 Delta Epsilon Mu — Sigma Chapter. All Rights Reserved.</div>
+  <a href="https://www.instagram.com/txdemsigma/" target="_blank" rel="noopener"
+     style="display:flex;align-items:center;gap:0.5rem;color:rgba(245,240,235,0.85);text-decoration:none;transition:color 0.2s;"
+     onmouseover="this.style.color='#e87070'" onmouseout="this.style.color='rgba(245,240,235,0.85)'">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#f09433"/>
+          <stop offset="25%" style="stop-color:#e6683c"/>
+          <stop offset="50%" style="stop-color:#dc2743"/>
+          <stop offset="75%" style="stop-color:#cc2366"/>
+          <stop offset="100%" style="stop-color:#bc1888"/>
+        </linearGradient>
+      </defs>
+      <rect width="24" height="24" rx="6" fill="url(#igGrad)"/>
+      <rect x="4" y="4" width="16" height="16" rx="4" stroke="white" stroke-width="1.5" fill="none"/>
+      <circle cx="12" cy="12" r="4" stroke="white" stroke-width="1.5" fill="none"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+    </svg>
+    @txdemsigma
+  </a>
+</footer>
+</body>
+</html>
