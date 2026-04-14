@@ -679,6 +679,7 @@ tbody td {
   <nav>
     <button class="nav-tab active" onclick="switchTab('tracker')">Interactive Active Tracker</button>
     <button class="nav-tab" onclick="switchTab('demographics')">Demographics</button>
+    <button class="nav-tab" onclick="switchTab('families')">Families</button>
   </nav>
   <div style="display:flex;align-items:center;margin-left:auto;margin-right:1rem;">
     <svg width="48" height="28" viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
@@ -1535,6 +1536,12 @@ function switchView(view) {
     : 'Showing all involvement and experience records';
 }
 
+// ---- FAMILY ACCORDION ----
+function toggleFamily(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
 // ---- INIT ----
 initFilters();
 initStats();
@@ -1808,6 +1815,415 @@ filterInvolvement();
 .chat-send:hover { opacity: 0.88; transform: scale(1.05); }
 .chat-send:disabled { opacity: 0.35; cursor: default; transform: none; }
 </style>
+
+<!-- FAMILIES TAB -->
+<div class="tab-panel" id="tab-families" style="position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:2rem;">
+
+  <style>
+  /* ── FAMILIES TAB ─────────────────────────────── */
+  .fam-hero {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .fam-hero-text {
+    flex: 1;
+    padding-right: 3rem;
+  }
+  .fam-hero-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.8rem;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .fam-hero-text h1 em { color: var(--accent); font-style: italic; }
+  .fam-hero-text p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 380px;
+    line-height: 1.7;
+  }
+  .fam-hero-img {
+    width: 340px;
+    flex-shrink: 0;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    position: relative;
+  }
+  .fam-hero-img img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top;
+    height: 340px;
+  }
+  .fam-hero-img-caption {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ACCORDION */
+  .family-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .family-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .family-item:hover { border-color: rgba(140,30,30,0.35); }
+  .family-item.open { border-color: rgba(140,30,30,0.45); box-shadow: 0 8px 32px rgba(140,30,30,0.08); }
+
+  .family-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .family-glyph {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .family-header-info { flex: 1; }
+  .family-header-info .fname {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .family-header-info .ftagline {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+    letter-spacing: 0.04em;
+  }
+  .family-chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .family-item.open .family-chevron { transform: rotate(180deg); }
+
+  .family-body {
+    display: none;
+    padding: 0 1.5rem 1.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .family-item.open .family-body { display: block; }
+
+  /* SELEE LAYOUT */
+  .selee-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-top: 1.5rem;
+  }
+  .selee-left { display: flex; flex-direction: column; gap: 1.25rem; }
+  .selee-right { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .selee-pull {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.2;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .selee-body-text {
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .selee-body-text strong { color: var(--text); font-weight: 500; }
+
+  .constellation-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+  .const-tag {
+    background: rgba(140,30,30,0.07);
+    border: 1px solid rgba(140,30,30,0.2);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    padding: 0.22rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+
+  .selee-photo-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .selee-photo {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .selee-photo img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center top;
+    height: 200px;
+  }
+  .selee-photo-full { grid-column: 1 / -1; }
+  .selee-photo-full img { height: 240px; object-position: 50% 30%; }
+
+  .selee-photo-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(26,5,5,0.75));
+    color: rgba(245,240,235,0.9);
+    font-size: 0.68rem;
+    font-family: 'DM Mono', monospace;
+    padding: 0.5rem 0.6rem 0.4rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .selee-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .selee-value-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.78rem;
+  }
+  .selee-value-chip .chip-title {
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+    font-size: 0.8rem;
+  }
+  .selee-value-chip .chip-desc {
+    color: var(--muted);
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .fam-head-card {
+    background: linear-gradient(135deg, rgba(140,30,30,0.08), rgba(140,30,30,0.03));
+    border: 1px solid rgba(140,30,30,0.25);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .fam-head-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(140,30,30,0.15);
+    border: 1px solid rgba(140,30,30,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .fam-head-info .label {
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.1rem;
+  }
+  .fam-head-info .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .coming-soon-body {
+    padding: 2.5rem 0 0.75rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+  </style>
+
+  <!-- PAGE HEADER -->
+  <div class="fam-hero">
+    <div class="fam-hero-text">
+      <h1>The <em>Families</em><br>of ΔΕΜ</h1>
+      <p>Each family carries its own legacy, language, and lineage. Together they form the backbone of our brotherhood, bound not by blood, but by something chosen.</p>
+    </div>
+    <div class="fam-hero-img">
+      <img src="fam.webp" alt="Selee family photo at UT Tower" style="object-position:50% 15%;">
+      <div class="fam-hero-img-caption">Halloween · UT Main Tower · Sigma Chapter</div>
+    </div>
+  </div>
+
+  <!-- ACCORDION -->
+  <div class="family-accordion">
+
+    <!-- SELEE -->
+    <div class="family-item open" id="fam-selee">
+      <div class="family-header" onclick="toggleFamily('fam-selee')">
+        <div class="family-glyph">✦</div>
+        <div class="family-header-info">
+          <div class="fname">Selee</div>
+          <div class="ftagline">Named after the stars, built for each other</div>
+        </div>
+        <svg class="family-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="family-body">
+        <div class="selee-layout">
+
+          <!-- LEFT COLUMN -->
+          <div class="selee-left">
+            <div class="fam-head-card">
+              <div class="fam-head-avatar">L</div>
+              <div class="fam-head-info">
+                <div class="label">Family Head</div>
+                <div class="name">Lisa</div>
+              </div>
+            </div>
+
+            <div class="selee-body-text">
+              <strong>Seelee</strong> members are each named after a constellation, a reminder that we are singular points of light that together form something far greater than ourselves.
+              <br><br>
+              We believe in <strong>showing up</strong> to shadowing shifts, to research labs, to each other at 2am. In Seelee, your ambitions are never just yours.
+            </div>
+
+            <div>
+              <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:0.5rem;">Active Members</div>
+              <div class="constellation-list">
+                <span class="const-tag">Shruti Vykunta</span>
+                <span class="const-tag">Sreenevash Ramesh</span>
+                <span class="const-tag">Lisa Nguyen</span>
+                <span class="const-tag">Rue Ledesma</span>
+                <span class="const-tag">Rachel Cai</span>
+                <span class="const-tag">Campbell Albers</span>
+                <span class="const-tag">Swetha Velayutham</span>
+                <span class="const-tag">Caroline Palamountain</span>
+                <span class="const-tag">Aarav Metai</span>
+                <span class="const-tag">Anya Chawla</span>
+                <span class="const-tag">Laney Stong</span>
+                <span class="const-tag">Bhuvan Kanna</span>
+                <span class="const-tag">Chris Kurian</span>
+                <span class="const-tag">Fiona Wang</span>
+                <span class="const-tag">Lindsey Won</span>
+              </div>
+            </div>
+
+            <div class="selee-values">
+              <div class="selee-value-chip">
+                <div class="chip-title">Accountability</div>
+                <div class="chip-desc">We hold each other to the standard we all agreed on.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Curiosity</div>
+                <div class="chip-desc">Pre-health isn't a path, it's a question we keep asking.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Warmth</div>
+                <div class="chip-desc">The dinner table is always set. You're always welcome.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Excellence</div>
+                <div class="chip-desc">Not perfection. The honest effort, every single time.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="selee-right">
+            <div class="selee-photo selee-photo-full">
+              <img src="trio.webp" alt="Three Selee members at dinner" style="object-position:50% 20%;">
+              <div class="selee-photo-label">Selee · dinner out</div>
+            </div>
+
+            <div class="selee-photo-pair">
+              <div class="selee-photo">
+                <img src="sree.webp" alt="Selee member portrait" style="object-position:50% 15%;height:200px;">
+                <div class="selee-photo-label">Sree · Selee</div>
+              </div>
+              <div class="selee-photo" style="background:rgba(140,30,30,0.05);display:flex;align-items:center;justify-content:center;height:200px;">
+                <div style="text-align:center;padding:1.25rem;">
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:rgba(140,30,30,0.25);line-height:1;">✦</div>
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--muted);margin-top:0.5rem;">Since Fall 2023</div>
+                  <div style="font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:0.3rem;">Sigma Chapter</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;">
+              <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:0.6rem;">Family Ethos</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.6;color:var(--text);">
+                We were given the sky, and we named ourselves after it. Seelee members don't just coexist; they <em>orbit</em> each other, pull each other into alignment, and navigate the dark parts together.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER FAMILIES (placeholders) -->
+    <div class="family-item" id="fam-placeholder1">
+      <div class="family-header" onclick="toggleFamily('fam-placeholder1')">
+        <div class="family-glyph">◈</div>
+        <div class="family-header-info">
+          <div class="fname">Coming Soon</div>
+          <div class="ftagline">More family pages are on the way</div>
+        </div>
+        <svg class="family-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="family-body">
+        <div class="coming-soon-body">This family's page is being built. Check back soon.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- FAB -->
 <button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Ask about members">
