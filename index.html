@@ -1550,7 +1550,7 @@ async function sendChat() {
         },
         contents,
         generationConfig: {
-          maxOutputTokens: 120, 
+          maxOutputTokens: 120,   // 🔥 ultra-fast demo mode
           temperature: 0.2
         }
       })
@@ -1585,6 +1585,14 @@ async function sendChat() {
 
   chatLoading = false;
   document.getElementById('chat-send').disabled = false;
+}
+
+function formatChatResponse(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--surface2);padding:1px 4px;border-radius:3px;font-size:0.82rem;">$1</code>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
 }
 
 // ══════════════════════════════════════════════════
