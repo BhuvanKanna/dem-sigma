@@ -1460,49 +1460,75 @@ function unhighlightSlice(id,i){
 // ══════════════════════════════════════════════════
 // CHATBOT
 // ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+// CHATBOT
+// ══════════════════════════════════════════════════
 let chatOpen = false, chatHistory = [], chatLoading = false;
+
 function toggleChat() {
   chatOpen = !chatOpen;
   document.getElementById('chat-window').classList.toggle('open', chatOpen);
   document.getElementById('chat-fab').classList.toggle('open', chatOpen);
   if (chatOpen) setTimeout(() => document.getElementById('chat-input').focus(), 250);
 }
-function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
-function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
-function sendSuggestion(el) { document.getElementById('chat-input').value=el.textContent; sendChat(); }
+
+function autoResize(el) { 
+  el.style.height='auto'; 
+  el.style.height=Math.min(el.scrollHeight,100)+'px'; 
+}
+
+function handleChatKey(e) { 
+  if(e.key==='Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendChat();
+  } 
+}
+
+function sendSuggestion(el) { 
+  document.getElementById('chat-input').value = el.textContent; 
+  sendChat(); 
+}
 
 function appendMsg(role, html) {
   const msgs = document.getElementById('chat-messages');
-  const div = document.createElement('div'); div.className=`chat-msg ${role}`;
-  div.innerHTML=`<div class="chat-bubble">${html}</div>`;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
+  const div = document.createElement('div'); 
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `<div class="chat-bubble">${html}</div>`;
+  msgs.appendChild(div); 
+  msgs.scrollTop = msgs.scrollHeight; 
+  return div;
 }
+
 function showTyping() {
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div'); div.className='chat-msg bot'; div.id='typing-indicator';
-  div.innerHTML=`<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div'); 
+  div.className = 'chat-msg bot'; 
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(div); 
+  msgs.scrollTop = msgs.scrollHeight;
 }
-function removeTyping() { const el=document.getElementById('typing-indicator'); if(el)el.remove(); }
+
+function removeTyping() { 
+  const el = document.getElementById('typing-indicator'); 
+  if(el) el.remove(); 
+}
 
 const STATIC_RESPONSE = `
-Here's every active member listed as working as a Medical Assistant:
-
-Anish Baktha – Medical Assistant (Neuro and orthopedic surgery)
-Carolina Romero – Medical Assistant at CBS
-Ciera Fontenot – Medical Assistant at 360 Plastic Surgery
-Janvi Duri – MA at a foot and ankle clinic
-Lindsey Won – Medical Assistant
-Lohith Panidepu – Medical Assistant at ADI Medical Clinic
-Puneet Nunsavathu – Certified Clinical Medical Assistant
-Raaz Patel – Pediatric MA; Substance Abuse Rehab MA
-Ramina Tavakolian – Medical assistant (ID and wound care)
-Jewell Cooper – Medical assistant (Austin surgeons)
-Zara – MA at VisionWorks
-Shivani Patel – Pediatric MA/Phlebotomist
+<strong>Medical Assistants in the Chapter:</strong><br><br>
+• Anish Baktha – Neuro/Ortho Surgery<br>
+• Carolina Romero – CBS<br>
+• Ciera Fontenot – 360 Plastic Surgery<br>
+• Janvi Duri – Foot/Ankle Clinic<br>
+• Lindsey Won – Medical Assistant<br>
+• Lohith Panidepu – ADI Medical Clinic<br>
+• Puneet Nunsavathu – CCMA<br>
+• Raaz Patel – Pediatric / Rehab MA<br>
+• Ramina Tavakolian – ID / Wound Care<br>
+• Jewell Cooper – Austin Surgeons<br>
+• Zara – VisionWorks<br>
+• Shivani Patel – Pediatric / Phlebotomist
 `;
-
-let chatLoading = false;
 
 function sendChat() {
   if (chatLoading) return;
@@ -1511,11 +1537,12 @@ function sendChat() {
   const msg = input.value.trim();
   if (!msg) return;
 
+  // Clear input
   input.value = '';
   input.style.height = 'auto';
-
   document.getElementById('chat-suggestions').style.display = 'none';
 
+  // Show user message
   appendMsg('user', escapeHtml(msg));
 
   chatLoading = true;
@@ -1523,17 +1550,13 @@ function sendChat() {
 
   showTyping();
 
+  // Simulated response delay
   setTimeout(() => {
     removeTyping();
-
-    appendMsg(
-      'bot',
-      STATIC_RESPONSE.replace(/\n/g, '<br>')
-    );
-
+    appendMsg('bot', STATIC_RESPONSE);
     chatLoading = false;
     document.getElementById('chat-send').disabled = false;
-  }, 400); // tiny delay to simulate "thinking"
+  }, 600);
 }
 
 function formatChatResponse(text) {
