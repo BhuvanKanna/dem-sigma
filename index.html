@@ -1489,19 +1489,27 @@ function buildSystemPrompt() {
   // Active members summary
   const memberSummary = CONTACTS.map(c => {
     const exps = getExpForMember(c['First Name'], c['Last Name']);
-    const expList = exps
-      .map(e => `${e.Category}: ${e.Experience}`)
-      .join('; ');
-
-    return `${c['First Name']} ${c['Last Name']} | Activities: ${expList || 'none listed'}`;
+    const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
+    const courses = COURSES.filter(co => co.members.some(m => m.toLowerCase().includes(c['First Name'].toLowerCase()) || m.toLowerCase().includes(c['Last Name'].toLowerCase()))).map(co => `${co.course} (Prof. ${co.professor})`).join(', ');
+    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Family: ${c.Family||'N/A'} | Class: ${c.ClassName||'?'} | Email: ${c.Email||'N/A'} | Phone: ${c.Phone||'N/A'} | Big(s): ${(c.Parents||[]).join(', ')||'None'} | Littles: ${(c.Littles||[]).join(', ')||'None'} | Courses: ${courses||'none listed'} | Experiences: [${expList||'none'}]`;
   }).join('\n');
+
+  // Alumni summary
+  const alumniSummary = ALUMNI.map(a =>
+    `${a.name} | Class: ${a.demClass} | Location: ${a.location} | School: ${a.professionalSchool} | Current: ${a.currentTitle} | Can help with: ${a.willingToHelp}${a.email?' | Email: '+a.email:''}${a.phone?' | Phone: '+a.phone:''}${a.note?' | Note: '+a.note:''}`
+  ).join('\n');
+
+  // Course summary (most useful ones)
+  const bigCourses = COURSES.filter(c => c.members.length > 2).map(c => `${c.course} (Prof. ${c.professor}): ${c.members.join(', ')}`).join('\n');
+
+  // Demographics summary
+  const demSummary = `DEM Sigma demographics: ~81% pre-med, ~6.6% PA, ~5.5% dentistry. 63.7% female, 36.3% male. 61.5% Asian, 15.4% Hispanic/Latino, 11% White, 5.5% Black. Class distribution: 38.5% sophomores, 24.2% seniors, 22% juniors, 15.4% freshmen.`;
 
   return `You are the official chapter assistant for Delta Epsilon Mu (ΔΕΜ) Sigma Chapter at UT Austin, a pre-health professional fraternity. You have complete access to all chapter data. Answer concisely and accurately. Cap member lists at 10 per response. Format names in **bold**. 
 
 IMPORTANT RULES:
-- Max 10 members listed per response
-- Keep responses concise
-- Do not exceed 100 characters in response unless requested more information
+- Give one member per response, first one found
+- Keep responses to under 100 words
 - Always provide contact info if asked
 - Be specific about which tab/section info comes from when helpful
 - For alumni, be clear they are former members willing to mentor
@@ -1509,6 +1517,15 @@ IMPORTANT RULES:
 
 == ACTIVE MEMBERS (${CONTACTS.length} total) ==
 ${memberSummary}
+
+== ALUMNI (${ALUMNI.length} mentors available) ==
+${alumniSummary}
+
+== NOTABLE LARGE COURSES (3+ DEM members) ==
+${bigCourses}
+
+== DEMOGRAPHICS ==
+${demSummary}
 
 == FAMILIES ==
 Bigg Tigg, Team Boba, DEMolishers, Sankofa, Selee, N/A`;
