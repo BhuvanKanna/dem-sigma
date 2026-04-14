@@ -233,6 +233,39 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
 .fam-head-info .name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--text); }
 .coming-soon-body { padding: 2.5rem 0 0.75rem; text-align: center; color: var(--muted); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
 
+/* ── NEWSLETTER ── */
+.nl-hero { position: relative; border-radius: 14px; overflow: hidden; margin-bottom: 2rem; }
+.nl-hero img { width: 100%; height: 420px; object-fit: cover; object-position: center 30%; display: block; filter: brightness(0.6); }
+.nl-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,5,5,0.85) 0%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 2.5rem; }
+.nl-hero-kicker { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,240,235,0.6); margin-bottom: 0.5rem; }
+.nl-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 400; color: rgba(245,240,235,0.97); line-height: 1.05; }
+.nl-hero-title em { color: #e87070; font-style: italic; }
+.nl-hero-byline { font-size: 0.8rem; color: rgba(245,240,235,0.5); margin-top: 0.6rem; font-family: 'DM Mono', monospace; }
+.nl-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 900px) { .nl-body { grid-template-columns: 1fr; } }
+.nl-article { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+.nl-article:hover { border-color: rgba(140,30,30,0.4); box-shadow: 0 6px 24px rgba(140,30,30,0.07); }
+.nl-article.full { grid-column: 1 / -1; }
+.nl-article.tall .nl-img { height: 280px; }
+.nl-img { width: 100%; height: 220px; object-fit: cover; object-position: center; display: block; }
+.nl-img-cap { font-size: 0.67rem; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0.45rem 1.25rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
+.nl-article-body { padding: 1.25rem 1.5rem 1.5rem; }
+.nl-tag { display: inline-block; font-size: 0.68rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); background: rgba(140,30,30,0.08); border: 1px solid rgba(140,30,30,0.2); border-radius: 20px; padding: 0.18rem 0.65rem; margin-bottom: 0.65rem; }
+.nl-article-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+.nl-article-title em { color: var(--accent); font-style: italic; }
+.nl-article-text { font-size: 0.875rem; color: var(--muted); line-height: 1.8; }
+.nl-article-date { font-size: 0.7rem; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 0.9rem; opacity: 0.7; }
+.nl-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 900px) { .nl-duo { grid-template-columns: 1fr; } }
+.nl-trio { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 900px) { .nl-trio { grid-template-columns: 1fr; } }
+.nl-closing { background: linear-gradient(135deg, rgba(140,30,30,0.08), rgba(140,30,30,0.03)); border: 1px solid rgba(140,30,30,0.2); border-radius: 14px; padding: 2rem 2.5rem; margin-top: 1rem; }
+.nl-closing-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--text); margin-bottom: 0.75rem; }
+.nl-closing-title em { color: var(--accent); font-style: italic; }
+.nl-closing-text { font-size: 0.9rem; color: var(--muted); line-height: 1.85; max-width: 680px; }
+.nl-divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+.nl-pullquote { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; font-style: italic; color: var(--accent); border-left: 2px solid rgba(140,30,30,0.4); padding: 0.5rem 0 0.5rem 1.25rem; margin: 1.1rem 0; line-height: 1.5; }
+  
 /* CHAT */
 .chat-fab { position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 300; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #8c1e1e, #c0392b); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(140,30,30,0.4); transition: transform 0.2s, box-shadow 0.2s; }
 .chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(140,30,30,0.55); }
@@ -287,6 +320,8 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <button class="nav-tab" onclick="switchTab('families',this)">Families</button>
     <button class="nav-tab" onclick="switchTab('alumni',this)">Alumni</button>
     <button class="nav-tab" onclick="switchTab('classes',this)">Class Finder</button>
+    <button class="nav-tab" onclick="switchTab('newsletter',this)">Newsletter</button>
+    
   </nav>
   <div class="header-stat">
     <div class="num" id="hdr-members">84</div> active members
@@ -545,7 +580,113 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
   <div class="courses-grid" id="courses-grid"></div>
 </div>
 </main>
+<!-- ══════════════════════ NEWSLETTER TAB ══════════════════════ -->
+<div class="tab-panel" id="tab-newsletter" style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:2rem;">
 
+  <!-- HERO -->
+  <div class="nl-hero">
+    <img src="full.webp" alt="Full chapter photo">
+    <div class="nl-hero-overlay">
+      <div class="nl-hero-kicker">ΔΕΜ Sigma · Spring 2025 · Vol. I</div>
+      <div class="nl-hero-title">A Semester in <em>Full</em></div>
+      <div class="nl-hero-byline">From clinics to concerts, art tables to alleyways — what we built together this spring.</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: two articles side by side -->
+  <div class="nl-duo">
+
+    <!-- Iotas -->
+    <div class="nl-article tall">
+      <img class="nl-img" src="iotas.jpg" alt="Alpha Iota new member class" style="height:260px;">
+      <div class="nl-img-cap">Alpha Iota — Spring 2025</div>
+      <div class="nl-article-body">
+        <div class="nl-tag">New Members</div>
+        <div class="nl-article-title">Welcome to the <em>Alpha Iota</em> Class</div>
+        <div class="nl-article-text">Twelve new faces joined the chapter this semester, and they hit the ground running. From their first general meeting to late-night study sessions, the Iotas brought a rare kind of energy. They showed up curious, stayed engaged, and already feel like they've been here for years. The chapter is better for having them.</div>
+        <div class="nl-article-date">Inducted · Spring 2025</div>
+      </div>
+    </div>
+
+    <!-- Fundraiser -->
+    <div class="nl-article tall">
+      <img class="nl-img" src="kriya.png" alt="Kriya fundraiser event" style="height:260px;">
+      <div class="nl-img-cap">Prospect fundraiser</div>
+      <div class="nl-article-body">
+        <div class="nl-tag">Community</div>
+        <div class="nl-article-title">Raising Funds, <em>Building Bridges</em></div>
+        <div class="nl-article-text">Members organized a fundraiser at Kriya that brought together prospective members, friends, and supporters of the chapter. Part social mixer, part mission-driven event, it gave people a genuine look at what DEM is about beyond the resume line. And yes, we raised what we came for.</div>
+        <div class="nl-article-date">February 2025</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ROW 2: Art Therapy — full width -->
+  <div class="nl-article full" style="margin-bottom:1rem;">
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;">
+      <img class="nl-img" src="cardmaking.webp" alt="Art therapy card making" style="height:300px;border-radius:0;">
+      <div class="nl-article-body" style="display:flex;flex-direction:column;justify-content:center;padding:2rem 2rem;">
+        <div class="nl-tag">DEI Initiative</div>
+        <div class="nl-article-title">Art Therapy and <em>Construction Paper</em></div>
+        <div class="nl-article-text">We set up tables, broke out the construction paper, and spent an afternoon making cards for patients at a local hospital. What started as a craft session turned into something much quieter and more meaningful. People slowed down. Conversations happened. It was a reminder that care doesn't always look clinical.</div>
+        <div class="nl-pullquote">"Sometimes the most therapeutic thing is making something with your hands."</div>
+        <div class="nl-article-date">Spring 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: trio -->
+  <div class="nl-trio">
+
+    <!-- West Campus Cleanup -->
+    <div class="nl-article">
+      <img class="nl-img" src="wcc.heic" alt="West campus cleanup" style="height:200px;">
+      <div class="nl-img-cap">West Campus · March 2025</div>
+      <div class="nl-article-body">
+        <div class="nl-tag">Service</div>
+        <div class="nl-article-title">Scooping Up <em>West Campus</em></div>
+        <div class="nl-article-text">Armed with grabbers and a group chat that was way too active for 9am, members fanned out across the streets surrounding campus and filled bags with whatever the weekend left behind. A small act, an immediate impact.</div>
+        <div class="nl-article-date">March 2025</div>
+      </div>
+    </div>
+
+    <!-- Sanjay concert -->
+    <div class="nl-article">
+      <img class="nl-img" src="sanjay.webp" alt="Sanjay concert" style="height:200px;object-position:center top;">
+      <div class="nl-img-cap">SSANJAY · March 14</div>
+      <div class="nl-article-body">
+        <div class="nl-tag">Culture</div>
+        <div class="nl-article-title">A Night with <em>SSANJAY</em></div>
+        <div class="nl-article-text">On March 14th, members showed up for SSANJAY's indie set and left with a new artist in their rotation. Live music, good company, no agenda.</div>
+        <div class="nl-article-date">March 14, 2025</div>
+      </div>
+    </div>
+
+    <!-- Dumpling making -->
+    <div class="nl-article">
+      <img class="nl-img" src="dumpling.webp" alt="Dumpling making DEI event" style="height:200px;">
+      <div class="nl-img-cap">DEI · Culinary</div>
+      <div class="nl-article-body">
+        <div class="nl-tag">DEI</div>
+        <div class="nl-article-title">Folding <em>Dumplings</em>, Sharing Stories</div>
+        <div class="nl-article-text">For our spring DEI event, we made dumplings together. Members learned technique, traded family recipes, and talked about food as culture. Nobody folded perfectly. That was kind of the point.</div>
+        <div class="nl-article-date">Spring 2025</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="nl-divider">
+
+  <!-- CLOSING: elections -->
+  <div class="nl-closing">
+    <div class="nl-closing-title">Looking Ahead to <em>Elections</em></div>
+    <div class="nl-closing-text">As the semester wraps up, the chapter turns its attention to elections. New leadership will carry forward what this year built: a chapter that shows up for its members, takes on meaningful service, and keeps community at the center of everything. If you've been thinking about stepping up, this is the moment. The positions are there, the mentorship is there, and so is the chapter.</div>
+    <div style="margin-top:1.25rem;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);">Elections · End of Semester 2025</div>
+  </div>
+
+</div>
 <!-- MEMBER MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
   <div class="modal">
