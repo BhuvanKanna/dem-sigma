@@ -1486,50 +1486,38 @@ function showTyping() {
 function removeTyping() { const el=document.getElementById('typing-indicator'); if(el)el.remove(); }
 
 function buildSystemPrompt() {
-  // Active members summary
-  const memberSummary = CONTACTS.map(c => {
-    const exps = getExpForMember(c['First Name'], c['Last Name']);
-    const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
-    const courses = COURSES.filter(co => co.members.some(m => m.toLowerCase().includes(c['First Name'].toLowerCase()) || m.toLowerCase().includes(c['Last Name'].toLowerCase()))).map(co => `${co.course} (Prof. ${co.professor})`).join(', ');
-    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Family: ${c.Family||'N/A'} | Class: ${c.ClassName||'?'} | Email: ${c.Email||'N/A'} | Phone: ${c.Phone||'N/A'} | Big(s): ${(c.Parents||[]).join(', ')||'None'} | Littles: ${(c.Littles||[]).join(', ')||'None'} | Courses: ${courses||'none listed'} | Experiences: [${expList||'none'}]`;
-  }).join('\n');
-
-  // Alumni summary
-  const alumniSummary = ALUMNI.map(a =>
-    `${a.name} | Class: ${a.demClass} | Location: ${a.location} | School: ${a.professionalSchool} | Current: ${a.currentTitle} | Can help with: ${a.willingToHelp}${a.email?' | Email: '+a.email:''}${a.phone?' | Phone: '+a.phone:''}${a.note?' | Note: '+a.note:''}`
+  // Slim member summary — core fields only
+  const memberSummary = CONTACTS.map(c =>
+    `${c['First Name']} ${c['Last Name']} | ${c.Major||'?'} | ${c.Track||'?'} | ${c.Family||'?'} | ${c.ClassName||'?'} | ${c.Email||'N/A'}`
   ).join('\n');
 
-  // Course summary (most useful ones)
-  const bigCourses = COURSES.filter(c => c.members.length > 2).map(c => `${c.course} (Prof. ${c.professor}): ${c.members.join(', ')}`).join('\n');
+  // Slim alumni summary
+  const alumniSummary = ALUMNI.map(a =>
+    `${a.name} | ${a.demClass} | ${a.currentTitle} | ${a.willingToHelp}${a.email?' | '+a.email:''}`
+  ).join('\n');
 
-  // Demographics summary
-  const demSummary = `DEM Sigma demographics: ~81% pre-med, ~6.6% PA, ~5.5% dentistry. 63.7% female, 36.3% male. 61.5% Asian, 15.4% Hispanic/Latino, 11% White, 5.5% Black. Class distribution: 38.5% sophomores, 24.2% seniors, 22% juniors, 15.4% freshmen.`;
+  const demSummary = `~81% pre-med, ~6.6% PA, ~5.5% dentistry. 63.7% female, 36.3% male.`;
 
-  return `You are the official chapter assistant for Delta Epsilon Mu (ΔΕΜ) Sigma Chapter at UT Austin, a pre-health professional fraternity. You have complete access to all chapter data. Answer concisely and accurately. Cap member lists at 10 per response. Format names in **bold**. 
+  return `You are the DEM Sigma Chapter assistant at UT Austin (pre-health fraternity). Answer in under 60 words. Never explain unless asked. Bold member names with **name**.
 
-IMPORTANT RULES:
-- Keep responses under 100 words unless more detail is requested
-- Max 10 members listed per response
-- Format names in **bold**
-- Provide contact info if explicitly asked
-- Alumni are former members willing to mentor
-- Help members find classmates and mentors
-- Be concise and fast
+RULES:
+- Max 60 words per response
+- Max 10 members listed
+- Bold names: **First Last**
+- For contact info requests, provide the email if available, otherwise say "DM an officer"
+- Be direct and fast
 
 == ACTIVE MEMBERS (${CONTACTS.length} total) ==
 ${memberSummary}
 
-== ALUMNI (${ALUMNI.length} mentors available) ==
+== ALUMNI ==
 ${alumniSummary}
-
-== NOTABLE LARGE COURSES (3+ DEM members) ==
-${bigCourses}
 
 == DEMOGRAPHICS ==
 ${demSummary}
 
 == FAMILIES ==
-Bigg Tigg, Team Boba, DEMolishers, Sankofa, Selee, N/A`;
+Bigg Tigg, Team Boba, DEMolishers, Sankofa, Selee`;
 }
 
 async function sendChat() {
@@ -1545,14 +1533,14 @@ async function sendChat() {
   document.getElementById('chat-send').disabled = true;
   showTyping();
   try {
-    const recent = chatHistory.slice(-10);
+    const recent = chatHistory.slice(-4); // trimmed from -10
     const contents = recent.map(m => ({role: m.role==='assistant'?'model':'user', parts:[{text:m.content}]}));
     const response = await fetch(GEMINI_URL, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         system_instruction:{parts:[{text:buildSystemPrompt()}]},
         contents,
-        generationConfig:{maxOutputTokens:300, temperature:0.3}
+        generationConfig:{maxOutputTokens:150, temperature:0.3} // trimmed from 300
       })
     });
     if (!response.ok) { const e=await response.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${response.status}`); }
