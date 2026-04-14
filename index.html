@@ -2326,13 +2326,16 @@ function removeTyping() {
 }
 
 function buildSystemPrompt() {
-  // Build a compact but rich data summary for Claude
   const memberSummary = CONTACTS.map(c => {
     const exps = getExpForMember(c['First Name'], c['Last Name']);
     const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
-    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Minor: ${c.Minor||'none'} | Track: ${c.Track||'?'} | Email: ${c.Email||'?'} | Phone: ${c.Phone||'?'} | Experiences: [${expList || 'none recorded'}]`;
-  }).join('\n');
+    
+    // ADD THE LINE BELOW TO INCLUDE FAMILY DATA
+    const famInfo = `Family: ${c.Family || 'N/A'} | Bigs: ${c.Parents?.join(', ') || 'None'} | Littles: ${c.Littles?.join(', ') || 'None'}`;
 
+    return `${c['First Name']} ${c['Last Name']} | ${famInfo} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Experiences: [${expList || 'none'}]`;
+  }).join('\n');
+  
   return `You are the chapter assistant for Delta Epsilon Mu (ΔΕΜ), a pre-health professional fraternity. You have full access to the chapter's active member roster and involvement data. Answer questions helpfully, concisely, and accurately using ONLY the data provided below. If contact info is requested, provide it. Format names in bold using **name** syntax when listing members. Keep responses concise but complete.
 
 ACTIVE MEMBER DATA (84 members):
