@@ -1983,8 +1983,7 @@ filterInvolvement();
   }
 
   .selee-photo-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     gap: 0.75rem;
   }
   .selee-photo {
@@ -2090,14 +2089,10 @@ filterInvolvement();
   </style>
 
   <!-- PAGE HEADER -->
-  <div class="fam-hero">
-    <div class="fam-hero-text">
+  <div class="fam-hero" style="display:block;margin-bottom:2rem;">
+    <div class="fam-hero-text" style="padding-right:0;">
       <h1>The <em>Families</em><br>of ΔΕΜ</h1>
       <p>Each family carries its own legacy, language, and lineage. Together they form the backbone of our brotherhood, bound not by blood, but by something chosen.</p>
-    </div>
-    <div class="fam-hero-img">
-      <img src="fam.jpg" alt="Selee family photo at UT Tower" style="object-position:50% 15%;">
-      <div class="fam-hero-img-caption">Halloween · UT Main Tower · Sigma Chapter</div>
     </div>
   </div>
 
@@ -2177,21 +2172,18 @@ filterInvolvement();
           <!-- RIGHT COLUMN -->
           <div class="selee-right">
             <div class="selee-photo selee-photo-full">
-              <img src="fam.jpg" alt="Three Selee members at dinner" style="object-position:50% 20%;">
-              <div class="selee-photo-label"></div>
+              <img src="fam.jpg" alt="Seelee family at UT Tower" style="object-position:50% 20%;height:260px;width:100%;object-fit:cover;">
+              <div class="selee-photo-label">Halloween · UT Main Tower · Sigma Chapter</div>
             </div>
 
             <div class="selee-photo-pair">
-              <div class="selee-photo">
-                <img src="sree.webp" alt="Selee member portrait" style="object-position:50% 15%;height:200px;">
-                <div class="selee-photo-label"></div>
+              <div class="selee-photo" style="flex:1.6;">
+                <img src="trio.webp" alt="Seelee members at dinner" style="object-position:50% 20%;height:200px;width:100%;object-fit:cover;">
+                <div class="selee-photo-label">Seelee · dinner out</div>
               </div>
-              <div class="selee-photo" style="background:rgba(140,30,30,0.05);display:flex;align-items:center;justify-content:center;height:200px;">
-                <div style="text-align:center;padding:1.25rem;">
-                  <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:rgba(140,30,30,0.25);line-height:1;">✦</div>
-                  <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--muted);margin-top:0.5rem;">Since Fall 2023</div>
-                  <div style="font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:0.3rem;">Sigma Chapter</div>
-                </div>
+              <div class="selee-photo" style="flex:1;">
+                <img src="sree.webp" alt="Sreenevash Ramesh" style="object-position:50% 15%;height:200px;width:100%;object-fit:cover;">
+                <div class="selee-photo-label">Sree · Seelee</div>
               </div>
             </div>
 
