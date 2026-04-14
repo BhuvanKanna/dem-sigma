@@ -265,8 +265,8 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
 .nl-closing-text { font-size: 0.9rem; color: var(--muted); line-height: 1.85; max-width: 680px; }
 .nl-divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
 .nl-pullquote { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; font-style: italic; color: var(--accent); border-left: 2px solid rgba(140,30,30,0.4); padding: 0.5rem 0 0.5rem 1.25rem; margin: 1.1rem 0; line-height: 1.5; }
-
-/* ── CHAT ── */
+  
+/* CHAT */
 .chat-fab { position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 300; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #8c1e1e, #c0392b); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(140,30,30,0.4); transition: transform 0.2s, box-shadow 0.2s; }
 .chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(140,30,30,0.55); }
 .chat-fab.open svg.icon-chat { display: none; }
@@ -321,6 +321,7 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <button class="nav-tab" onclick="switchTab('alumni',this)">Alumni</button>
     <button class="nav-tab" onclick="switchTab('classes',this)">Class Finder</button>
     <button class="nav-tab" onclick="switchTab('newsletter',this)">Newsletter</button>
+    
   </nav>
   <div class="header-stat">
     <div class="num" id="hdr-members">84</div> active members
@@ -439,91 +440,101 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <p>Each family carries its own legacy, language, and lineage.</p>
   </div>
 
-  <!-- SELEE -->
-  <div class="family-item open" id="fam-selee">
-    <div class="family-header" onclick="toggleFamily('fam-selee')">
-      <div class="family-glyph">✦</div>
-      <div class="family-header-info">
-        <div class="fname">Selee</div>
-        <div class="ftagline">The Selee family is named after constellations to symbolize the idea that every individual shines with their own unique light, yet together forms something far greater.</div>
-      </div>
-      <svg class="family-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
-    <div class="family-body">
-      <div class="selee-layout">
-        <!-- LEFT COLUMN -->
-        <div class="selee-left">
-          <div class="fam-head-card">
-            <div class="fam-head-avatar">L</div>
-            <div class="fam-head-info">
-              <div class="label">Family Head</div>
-              <div class="name">Lisa</div>
-            </div>
-          </div>
-          <div class="selee-body-text">
-            <strong>Selee</strong>
-            <br><br>
-            The Selee family is named after constellations to represent the idea that each individual shines with a distinct light, while together they create something greater than themselves. Like stars scattered across the night sky, each member contributes their own strengths, perspectives, and purpose to a shared identity. Bound by connection and guided by a common vision, the family forms a constellation of unity, growth, and lasting impact.
-          </div>
-          <div>
-            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:0.5rem;">Active Members</div>
-            <div class="constellation-list">
-              <span class="const-tag">Shruti Vykunta</span>
-              <span class="const-tag">Sreenevash Ramesh</span>
-              <span class="const-tag">Lisa Nguyen</span>
-              <span class="const-tag">Rue Ledesma</span>
-              <span class="const-tag">Rachel Cai</span>
-              <span class="const-tag">Campbell Albers</span>
-              <span class="const-tag">Swetha Velayutham</span>
-              <span class="const-tag">Caroline Palamountain</span>
-              <span class="const-tag">Aarav Metai</span>
-              <span class="const-tag">Anya Chawla</span>
-              <span class="const-tag">Laney Stong</span>
-              <span class="const-tag">Bhuvan Kanna</span>
-              <span class="const-tag">Chris Kurian</span>
-              <span class="const-tag">Fiona Wang</span>
-              <span class="const-tag">Lindsey Won</span>
-            </div>
-          </div>
-          <div class="selee-values">
-            <div class="selee-value-chip">
-              <div class="chip-title">Accountability</div>
-              <div class="chip-desc">We hold each other to the standard we all agreed on.</div>
-            </div>
-            <div class="selee-value-chip">
-              <div class="chip-title">Curiosity</div>
-              <div class="chip-desc">Pre-health isn't a path, it's a question we keep asking.</div>
-            </div>
-            <div class="selee-value-chip">
-              <div class="chip-title">Warmth</div>
-              <div class="chip-desc">The dinner table is always set. You're always welcome.</div>
-            </div>
-            <div class="selee-value-chip">
-              <div class="chip-title">Excellence</div>
-              <div class="chip-desc">Not perfection. The honest effort, every single time.</div>
-            </div>
-          </div>
+    <!-- SELEE -->
+    <div class="family-item open" id="fam-selee">
+      <div class="family-header" onclick="toggleFamily('fam-selee')">
+        <div class="family-glyph">✦</div>
+        <div class="family-header-info">
+          <div class="fname">Selee</div>
+          <div class="ftagline">The Selee family is named after constellations to symbolize the idea that every individual shines with their own unique light, yet together forms something far greater.</div>
         </div>
-        <!-- RIGHT COLUMN -->
-        <div class="selee-right">
-          <div class="selee-photo selee-photo-full">
-            <img src="fam.jpg" alt="Selee family at UT Tower" style="object-position:50% 20%; height: 100%;width:100%;object-fit:cover;">
-          </div>
-          <div class="selee-photo-pair">
-            <div class="selee-photo" style="flex:1.6;">
-              <img src="trio.webp" alt="Selee members at dinner" style="object-position:50% 20%;height:200px;width:100%;object-fit:cover;">
-              <div><img src="zeeyad.png" style="object-position:50% 20%; height: 100%;width:100%;object-fit:cover;"></div>
+        <svg class="family-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="family-body">
+        <div class="selee-layout">
+
+          <!-- LEFT COLUMN -->
+          <div class="selee-left">
+            <div class="fam-head-card">
+              <div class="fam-head-avatar">L</div>
+              <div class="fam-head-info">
+                <div class="label">Family Head</div>
+                <div class="name">Lisa</div>
+              </div>
             </div>
-            <div class="selee-photo" style="flex:1;">
-              <img src="sree.webp" alt="Sreenevash Ramesh" style="object-position:50% 15%;height: 100% ;width:100%;object-fit:cover;">
-              <div class="selee-photo-label">Sree · Selee</div>
+
+            <div class="selee-body-text">
+              <strong>Selee</strong>
+              <br><br>
+              The Selee family is named after constellations to represent the idea that each individual shines with a distinct light, while together they create something greater than themselves. Like stars scattered across the night sky, each member contributes their own strengths, perspectives, and purpose to a shared identity. Bound by connection and guided by a common vision, the family forms a constellation of unity, growth, and lasting impact.
+            </div>
+
+            <div>
+              <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:0.5rem;">Active Members</div>
+              <div class="constellation-list">
+                <span class="const-tag">Shruti Vykunta</span>
+                <span class="const-tag">Sreenevash Ramesh</span>
+                <span class="const-tag">Lisa Nguyen</span>
+                <span class="const-tag">Rue Ledesma</span>
+                <span class="const-tag">Rachel Cai</span>
+                <span class="const-tag">Campbell Albers</span>
+                <span class="const-tag">Swetha Velayutham</span>
+                <span class="const-tag">Caroline Palamountain</span>
+                <span class="const-tag">Aarav Metai</span>
+                <span class="const-tag">Anya Chawla</span>
+                <span class="const-tag">Laney Stong</span>
+                <span class="const-tag">Bhuvan Kanna</span>
+                <span class="const-tag">Chris Kurian</span>
+                <span class="const-tag">Fiona Wang</span>
+                <span class="const-tag">Lindsey Won</span>
+              </div>
+            </div>
+
+            <div class="selee-values">
+              <div class="selee-value-chip">
+                <div class="chip-title">Accountability</div>
+                <div class="chip-desc">We hold each other to the standard we all agreed on.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Curiosity</div>
+                <div class="chip-desc">Pre-health isn't a path, it's a question we keep asking.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Warmth</div>
+                <div class="chip-desc">The dinner table is always set. You're always welcome.</div>
+              </div>
+              <div class="selee-value-chip">
+                <div class="chip-title">Excellence</div>
+                <div class="chip-desc">Not perfection. The honest effort, every single time.</div>
+              </div>
             </div>
           </div>
-          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;"></div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="selee-right">
+            <div class="selee-photo selee-photo-full">
+              <img src="fam.jpg" alt="Selee family at UT Tower" style="object-position:50% 20%; height: 100%;width:100%;object-fit:cover;">
+            </div>
+
+            <div class="selee-photo-pair">
+              <div class="selee-photo" style="flex:1.6;">
+                <img src="trio.webp" alt="Selee members at dinner" style="object-position:50% 20%;height:200px;width:100%;object-fit:cover;">
+                <div><img src="zeeyad.png" style="object-position:50% 20%; height: 100%;width:100%;object-fit:cover;"></div>
+              </div>
+              <div class="selee-photo" style="flex:1;">
+                <img src="sree.webp" alt="Sreenevash Ramesh" style="object-position:50% 15%;height: 100% ;width:100%;object-fit:cover;">
+                <div class="selee-photo-label">Sree · Selee</div>
+              </div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;">
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
-  </div>
+
 </div>
 
 <!-- ══════════════════════ ALUMNI TAB ══════════════════════ -->
@@ -532,6 +543,7 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <h1>ΔΕΜ <em>Alumni</em></h1>
     <p>Former members who have offered to mentor, advise, and support the chapter. Reach out — they're here for you.</p>
   </div>
+
   <div class="controls" style="margin-bottom:1.25rem;">
     <div class="search-box">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -540,6 +552,7 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <select id="alumni-class-filter" onchange="filterAlumni()"><option value="">All Classes</option></select>
     <div class="results-count">Showing <span id="alumni-count">—</span> alumni</div>
   </div>
+
   <div class="alumni-grid" id="alumni-grid"></div>
 </div>
 
@@ -549,6 +562,7 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     <h1>Class <em>Finder</em></h1>
     <p>Find out which DEM members are in your classes. Search by course number or professor.</p>
   </div>
+
   <div class="controls" style="margin-bottom:1.5rem;">
     <div class="search-box" style="flex:2;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -559,13 +573,17 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     </select>
     <div class="results-count">Showing <span id="class-count">—</span> courses</div>
   </div>
+
+  <!-- Quick stats row -->
   <div id="class-stats-row" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.25rem;"></div>
+
   <div class="courses-grid" id="courses-grid"></div>
 </div>
 </main>
-
 <!-- ══════════════════════ NEWSLETTER TAB ══════════════════════ -->
 <div class="tab-panel" id="tab-newsletter" style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:2rem;">
+
+  <!-- HERO -->
   <div class="nl-hero">
     <img src="full.webp" alt="Full chapter photo">
     <div class="nl-hero-overlay">
@@ -575,7 +593,10 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     </div>
   </div>
 
+  <!-- ROW 1: two articles side by side -->
   <div class="nl-duo">
+
+    <!-- Iotas -->
     <div class="nl-article tall">
       <img class="nl-img" src="iotas.jpg" alt="Alpha Iota new member class">
       <div class="nl-img-cap">Alpha Iota — Spring 2026</div>
@@ -586,6 +607,8 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
         <div class="nl-article-date">Inducted · Spring 2026</div>
       </div>
     </div>
+
+    <!-- Fundraiser -->
     <div class="nl-article tall">
       <img class="nl-img" src="kriya.png" alt="Kriya fundraiser event">
       <div class="nl-img-cap">Prospect fundraiser</div>
@@ -596,8 +619,10 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
         <div class="nl-article-date">February 2026</div>
       </div>
     </div>
+
   </div>
 
+  <!-- ROW 2: Art Therapy — full width -->
   <div class="nl-article full">
     <div style="display:grid;grid-template-columns:1.1fr 1fr;">
       <img class="nl-img" src="cardmaking.webp" alt="Art therapy card making">
@@ -611,7 +636,10 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
     </div>
   </div>
 
+  <!-- ROW 3: trio -->
   <div class="nl-trio">
+
+    <!-- West Campus Cleanup -->
     <div class="nl-article">
       <img class="nl-img" src="wcc.jpg" alt="West campus cleanup">
       <div class="nl-img-cap">West Campus · March 2026</div>
@@ -622,6 +650,8 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
         <div class="nl-article-date">March 2026</div>
       </div>
     </div>
+
+    <!-- Sanjay concert -->
     <div class="nl-article">
       <img class="nl-img" src="sanjay.webp" alt="Sanjay concert" style="height:200px;object-position:center top;">
       <div class="nl-img-cap">SSANJAY · March 14</div>
@@ -632,6 +662,8 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
         <div class="nl-article-date">March 14, 2026</div>
       </div>
     </div>
+
+    <!-- Dumpling making -->
     <div class="nl-article">
       <img class="nl-img" src="dumpling.webp" alt="Dumpling making DEI event" style="height:200px;">
       <div class="nl-img-cap">DEI · Culinary</div>
@@ -642,17 +674,19 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
         <div class="nl-article-date">Spring 2026</div>
       </div>
     </div>
+
   </div>
 
   <hr class="nl-divider">
 
+  <!-- CLOSING: elections -->
   <div class="nl-closing">
     <div class="nl-closing-title">Looking Ahead to <em>Elections</em></div>
     <div class="nl-closing-text">As the semester wraps up, the chapter turns its attention to elections. New leadership will carry forward what this year built: a chapter that shows up for its members, takes on meaningful service, and keeps community at the center of everything. If you've been thinking about stepping up, this is the moment. The positions are there, the mentorship is there, and so is the chapter.</div>
     <div style="margin-top:1.25rem;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);">Elections · End of Semester 2026</div>
   </div>
-</div>
 
+</div>
 <!-- MEMBER MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
   <div class="modal">
@@ -732,6 +766,11 @@ tbody td { padding: 0.75rem 1rem; font-size: 0.875rem; vertical-align: middle; }
 // ══════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════
+
+// NOTE FOR DEPLOYMENT: Replace the GEMINI_API_KEY value below with your key.
+// For production security, proxy this through a backend endpoint so the key
+// is never exposed in the browser. See README_API_SECURITY.md for steps.
+const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
 const GEMINI_URL = "/api/chat";
 
 const CONTACTS = [{"First Name": "Pranay", "Last Name": "Chalasani", "Major": "Informatics", "MajorsList": ["Informatics"], "Minor": "Innovation and entrepreneurship", "Track": "Medicine", "Email": "Pranay.chalasani5@gmail.com", "Phone": "512-789-4149", "Family": "Bigg Tigg", "ClassName": "Psi", "Parents": ["Sami Khan"], "Littles": ["Anjana Reddy"]}, {"First Name": "Dustin", "Last Name": "Walters", "Major": "Molecular & Cell Biology", "MajorsList": ["Molecular & Cell Biology"], "Minor": "Spanish for health professions", "Track": "Medicine", "Email": "dustinwalters5555@gmail.com", "Phone": "2038513245", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Ram Mahavadi"], "Littles": ["Jacob Bazbaz"]}, {"First Name": "Anjana", "Last Name": "Reddy", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "anjanaredd@gmail.com", "Phone": "5127690323", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Pranay Chalasani"], "Littles": ["Jatin Kommera"]}, {"First Name": "Mihir", "Last Name": "Gupta", "Major": "Business", "MajorsList": ["Business"], "Minor": "Healthcare Reform and Innovation", "Track": "Medicine", "Email": "mihirg4210@gmail.com", "Phone": "5124971936", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Raaz Patel"], "Littles": []}, {"First Name": "Abhinav", "Last Name": "Reddy", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Business and Spanish in healthcare", "Track": "Medicine", "Email": "Abhinav.reddy3828@gmail.com", "Phone": "5026441950", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Jatin Kommera"], "Littles": []}, {"First Name": "Estefania", "Last Name": "Cabrera", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "estcabrera04@gmail.com", "Phone": "5126745142", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Estefania Cabrera"], "Littles": ["Nora Nazrul"]}, {"First Name": "Samarveer", "Last Name": "Panag", "Major": "Biomedical Engineering", "MajorsList": ["Biomedical Engineering"], "Minor": "", "Track": "Medicine", "Email": "samarveerspanag@gmail.com", "Phone": "5122857011", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Milit Patel"], "Littles": []}, {"First Name": "Shivani", "Last Name": "Patel", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Medicine", "Email": "Shivipatel5729@gmail.com", "Phone": "4693796320", "Family": "Bigg Tigg", "ClassName": "Alpha Eta", "Parents": ["Estefania Cabrera"], "Littles": ["Naviya Reddy"]}, {"First Name": "Milit", "Last Name": "Patel", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "Healthcare Reform & Innovation, SDS", "Track": "Medicine", "Email": "x14pat@gmail.com", "Phone": "6163684824", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Sami Khan"], "Littles": ["Harshitha Yalamanchili", "Samarveer Panag"]}, {"First Name": "Raaz", "Last Name": "Patel", "Major": "Chemistry", "MajorsList": ["Chemistry"], "Minor": "Computer Science and social inequality health and policy", "Track": "Medicine", "Email": "raazpatel2025@gmail.com", "Phone": "7138221449", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Samin Hoskere"], "Littles": ["Mihir Gupta"]}, {"First Name": "Ram", "Last Name": "Mahavadi", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Healthcare Reform & Innovation, Economics", "Track": "Medicine", "Email": "rammahavadi@gmail.com", "Phone": "2146362607", "Family": "Bigg Tigg", "ClassName": "Alpha Gamma", "Parents": ["Sarthak Reddy"], "Littles": ["Dustin Walters"]}, {"First Name": "Jatin", "Last Name": "Kommera", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "j.kommera@gmail.com", "Phone": "5129155908", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Anjana Reddy"], "Littles": ["Abhinav Reddy"]}, {"First Name": "Harshitha", "Last Name": "Yalamanchili", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "", "Track": "Medicine", "Email": "Harshiyalamanchili@gmail.com", "Phone": "5129609563", "Family": "Bigg Tigg", "ClassName": "Alpha Zeta", "Parents": ["Milit Patel"], "Littles": []}, {"First Name": "Jocelyn", "Last Name": "Hernandez", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Physician Assistant", "Email": "jocelyn.her712@gmail.com", "Phone": "6823130806", "Family": "Team Boba", "ClassName": "Alpha Gamma", "Parents": ["Valeria Trevino"], "Littles": []}, {"First Name": "Maryam", "Last Name": "Paykar", "Major": "Biology (Honors)", "MajorsList": ["Biology (Honors)"], "Minor": "Business in Healthcare", "Track": "Medicine", "Email": "maryam.paykar089@gmail.com", "Phone": "2102743052", "Family": "Team Boba", "ClassName": "Alpha Gamma", "Parents": ["Zara Jafri"], "Littles": ["Dheeya Jivnani"]}, {"First Name": "Zara", "Last Name": "Jafri", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Medicine", "Email": "zarairfanjafri1260@gmail.com", "Phone": "2814943854", "Family": "Team Boba", "ClassName": "Psi", "Parents": ["Canivan Anton"], "Littles": ["Maryam Paykar"]}, {"First Name": "Diya", "Last Name": "Kashyap", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Medicine", "Email": "Diyakashyap0218@gmail.com", "Phone": "8325400044", "Family": "DEMolishers", "ClassName": "Alpha Eta", "Parents": ["Clarissa Shin"], "Littles": []}, {"First Name": "Katelyn", "Last Name": "Trieu", "Major": "Molecular & Cell Biology", "MajorsList": ["Molecular & Cell Biology"], "Minor": "Sociology", "Track": "Medicine", "Email": "katelynmtrieu.98@gmail.com", "Phone": "7148131339", "Family": "DEMolishers", "ClassName": "Alpha Beta", "Parents": ["Tyler Le"], "Littles": []}, {"First Name": "Sheena", "Last Name": "Leelani", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Spanish, core texts and ideas", "Track": "Medicine", "Email": "Sleelani10@gmail.com", "Phone": "2109007961", "Family": "DEMolishers", "ClassName": "Alpha Beta", "Parents": ["Tyler Le"], "Littles": ["Anna Dobre", "Ariana Izaddoost"]}, {"First Name": "Jack", "Last Name": "Florist", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "jackflorist1@gmail.com", "Phone": "4695677777", "Family": "DEMolishers", "ClassName": "Alpha Eta", "Parents": ["Clarissa Shin"], "Littles": ["Johnson Pham"]}, {"First Name": "Clarissa", "Last Name": "Shin", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "French Studies, Elements of Computing", "Track": "Medicine", "Email": "shinclarissa@gmail.com", "Phone": "5125850809", "Family": "DEMolishers", "ClassName": "Alpha Gamma", "Parents": ["Sirie Yamani"], "Littles": ["Annie Li", "Diya Kashyap", "Jack Florist"]}, {"First Name": "Annie", "Last Name": "Li", "Major": "Public Health · Health & Society", "MajorsList": ["Public Health", "Health & Society"], "Minor": "", "Track": "Dentistry", "Email": "anniehyli@gmail.com", "Phone": "2817066317", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Clarissa Shin"], "Littles": []}, {"First Name": "Ariana", "Last Name": "Izaddoost", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "arianai7205@gmail.com", "Phone": "8323500031", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Sheena Leelani"], "Littles": ["Amelia Saenz"]}, {"First Name": "Param", "Last Name": "Bajaj", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Spanish, Teaching License through UTeach", "Track": "Medicine", "Email": "param.bajaj231@outlook.com", "Phone": "832-297-9149", "Family": "DEMolishers", "ClassName": "Alpha Zeta", "Parents": ["Sirie Yamani"], "Littles": []}, {"First Name": "Chidinma", "Last Name": "Ogbu", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "ASL", "Track": "Medicine", "Email": "bup3o9bu@gmail.com", "Phone": "3617390610", "Family": "N/A", "ClassName": "N/A", "Parents": [], "Littles": []}, {"First Name": "Atiana", "Last Name": "Kochling", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Kinesiology", "Track": "Medicine", "Email": "atianaeveline@gmail.com", "Phone": "5083085158", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Cassandra Aguirre"], "Littles": ["Ariba Awan"]}, {"First Name": "Cassandra", "Last Name": "Aguirre", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Business", "Track": "Physician Assistant", "Email": "casaguirre08@gmail.com", "Phone": "4697328472", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Maci Matejka"], "Littles": ["Anya Kochling"]}, {"First Name": "Jewell", "Last Name": "Cooper", "Major": "Psychology", "MajorsList": ["Psychology"], "Minor": "pre health certificate", "Track": "Medicine", "Email": "jewelldana27@gmail.com", "Phone": "2405786010", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Tina Feng"], "Littles": ["Aarthi Salver"]}, {"First Name": "Stone", "Last Name": "Nwamadi", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business", "Track": "Dentistry", "Email": "stonenw03@gmail.com", "Phone": "2142238890", "Family": "Team Boba", "ClassName": "Alpha Beta", "Parents": ["Aniket Hingnekar"], "Littles": ["Rayaan Hameed", "Yousef Aziz"]}, {"First Name": "Carolina", "Last Name": "Romero", "Major": "Computational Biology", "MajorsList": ["Computational Biology"], "Minor": "Spanish for Health Care Professions", "Track": "Physician Assistant", "Email": "carolinarr4791@gmail.com", "Phone": "8329538104", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Joanne Navales"], "Littles": ["Karla Puga"]}, {"First Name": "Anay", "Last Name": "Gujrathi", "Major": "Biomedical Engineering", "MajorsList": ["Biomedical Engineering"], "Minor": "", "Track": "Medicine", "Email": "anay.gujrathi@icloud.com", "Phone": "7372162244", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Ariba Awan"], "Littles": ["Roberto Hernandez"]}, {"First Name": "Janvi", "Last Name": "Duri", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "durijanvi@gmail.com", "Phone": "3463327762", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Zeeyad Anwar"], "Littles": []}, {"First Name": "Lohithaksha", "Last Name": "Panidepu", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Healthcare Reform and Innovation", "Track": "Medicine", "Email": "lohithpanidepu@gmail.com", "Phone": "4698181559", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Chidinma Ogbu"], "Littles": []}, {"First Name": "Rajika Singh", "Last Name": "Parihar", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "CDI", "Track": "Medicine", "Email": "RAJIKAPARIHAR@GMAIL.COM", "Phone": "5125849198", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Karla Puga"], "Littles": []}, {"First Name": "Sityana", "Last Name": "Yirga", "Major": "Chemistry", "MajorsList": ["Chemistry"], "Minor": "", "Track": "Medicine", "Email": "sityana.yirga@gmail.com", "Phone": "2404772684", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Bilqees Ade-Jamiu"], "Littles": []}, {"First Name": "Victoria", "Last Name": "Trinh", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "victoriat1892@gmail.com", "Phone": "8326005987", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Tyson Huynh"], "Littles": ["Puneet Nunsavathu"]}, {"First Name": "Ramiro", "Last Name": "Tijerina", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "career.ramiro@gmail.com", "Phone": "9566062133", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Aarthi Salver"], "Littles": []}, {"First Name": "Maneet", "Last Name": "Brar", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "Health Communication", "Track": "Medicine", "Email": "maneetkbr@gmail.com", "Phone": "682-472-3443", "Family": "Sankofa", "ClassName": "Alpha Eta", "Parents": ["Madelaine Carralero Costa"], "Littles": ["Ramina Tavakolian"]}, {"First Name": "Aarthi", "Last Name": "Salver", "Major": "Human Biology · Health & Society", "MajorsList": ["Human Biology", "Health & Society"], "Minor": "Spanish for Healthcare Professionals", "Track": "Medicine", "Email": "aarthisal01@gmail.com", "Phone": "9723583588", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Jewell Cooper"], "Littles": ["Ramiro Tijerina"]}, {"First Name": "Madelaine", "Last Name": "Carralero Costa", "Major": "Neuroscience · Sociology", "MajorsList": ["Neuroscience", "Sociology"], "Minor": "", "Track": "Medicine", "Email": "madimccosta@gmail.com", "Phone": "9402732681", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Elizabeth Pittman"], "Littles": ["Maneet Brar"]}, {"First Name": "Anish", "Last Name": "Baktha", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "Business; Critical Disability Studies", "Track": "Medicine", "Email": "anish.bakthaa@gmail.com", "Phone": "2144255795", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Sanjana Pinapala"], "Littles": ["Divya Ghanta"]}, {"First Name": "Harrison", "Last Name": "Griffith", "Major": "Biology · Management", "MajorsList": ["Biology", "Management"], "Minor": "", "Track": "Medicine", "Email": "jharrisongriffith@icloud.com", "Phone": "9362221333", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Avery Croft"], "Littles": ["Juhi Arora", "Marli Golden"]}, {"First Name": "Karla", "Last Name": "Puga", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "karly.puga7@gmail.com", "Phone": "9565436541", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Carolina Romero"], "Littles": ["Rajika Singh Parihar"]}, {"First Name": "Tyson", "Last Name": "Huynh", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Medicine", "Email": "tysonhuynh03@gmail.com", "Phone": "6266580887", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Annie Fu"], "Littles": ["Victoria Trinh"]}, {"First Name": "Emily", "Last Name": "Ji", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "exxemijiey@gmail.com", "Phone": "8325088507", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Ciera Fontenot"], "Littles": []}, {"First Name": "Bilqees", "Last Name": "Ade-Jamiu", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Pre-Health/Undecided", "Email": "bilqeesla96@gmail.com", "Phone": "9403128210", "Family": "Sankofa", "ClassName": "Psi", "Parents": ["Saachi Singal"], "Littles": ["Kerryn Xu", "Sityana Yirga"]}, {"First Name": "Ciera", "Last Name": "Fontenot", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "ciera.fontenot@gmail.com", "Phone": "7134179780", "Family": "Sankofa", "ClassName": "Psi", "Parents": ["Angeline Ajit"], "Littles": ["Sabrina Porter", "Emily Ji"]}, {"First Name": "Rosemarlyn", "Last Name": "Dokyi", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "rosemarlynsdd@gmail.com", "Phone": "4016485057", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Chidinma Ogbu"], "Littles": []}, {"First Name": "Avery", "Last Name": "Croft", "Major": "Human Development & Family Sciences", "MajorsList": ["Human Development & Family Sciences"], "Minor": "Business", "Track": "Medicine", "Email": "averycroft03@gmail.com", "Phone": "5127182990", "Family": "Sankofa", "ClassName": "Alpha Beta", "Parents": ["Katrina Lowther"], "Littles": ["Pranavi Garlapati", "Harrison Griffith"]}, {"First Name": "Stephanie", "Last Name": "Calderon", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Physician Assistant", "Email": "stephaniecalderon99@icloud.com", "Phone": "8329647307", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Sanvi Kakkar"], "Littles": []}, {"First Name": "Zeeyad", "Last Name": "Anwar", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Rhetoric and Writing", "Track": "Medicine", "Email": "zeeyad.anwar@gmail.com", "Phone": "4696051711", "Family": "Sankofa", "ClassName": "Alpha Gamma", "Parents": ["Aleena Teresa"], "Littles": ["Janvi Duri"]}, {"First Name": "Ariba", "Last Name": "Awan", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Business", "Track": "Medicine", "Email": "aribaawan23@gmail.com", "Phone": "3378845502", "Family": "Sankofa", "ClassName": "Alpha Zeta", "Parents": ["Anya Kochling"], "Littles": ["Anay Gujrathi"]}, {"First Name": "Shruti", "Last Name": "Vykunta", "Major": "Neuroscience · Plan II", "MajorsList": ["Neuroscience", "Plan II"], "Minor": "Stats and Data Science", "Track": "Medicine", "Email": "shruti.vykunta@gmail.com", "Phone": "5127873604", "Family": "Selee", "ClassName": "Alpha Eta", "Parents": ["Laney Stong"], "Littles": ["Chris Kurian"]}, {"First Name": "Sreenevash", "Last Name": "Ramesh", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "Statistics", "Track": "Medicine", "Email": "sreenevash.r@gmail.com", "Phone": "2109194108", "Family": "Selee", "ClassName": "Alpha Eta", "Parents": ["Dylan Waite"], "Littles": ["Bhuvan Kanna", "Lindsey Won"]}, {"First Name": "Lisa", "Last Name": "Nguyen", "Major": "Nutrition", "MajorsList": ["Nutrition"], "Minor": "Sports Media", "Track": "Optometry", "Email": "lisanguyen2003@gmail.com", "Phone": "3464017316", "Family": "Selee", "ClassName": "Alpha Gamma", "Parents": ["Mia Zheng"], "Littles": ["Rachel Cai"]}, {"First Name": "Rue", "Last Name": "Ledesma", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "rueled49@gmail.com", "Phone": "9142557216", "Family": "Selee", "ClassName": "Alpha Gamma", "Parents": ["Swetha Velayutham"], "Littles": ["Anya Chawla", "Caroline Palamountain"]}, {"First Name": "Rachel", "Last Name": "Cai", "Major": "Human Biology", "MajorsList": ["Human Biology"], "Minor": "", "Track": "Medicine", "Email": "rachelcai64@gmail.com", "Phone": "5126887857", "Family": "Selee", "ClassName": "Alpha Zeta", "Parents": ["Lisa Nguyen"], "Littles": ["Fiona Wang"]}, {"First Name": "Campbell", "Last Name": "Albers", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "campbellalbers@gmail.com", "Phone": "4699102854", "Family": "Selee", "ClassName": "Alpha Zeta", "Parents": ["Sara Modur"], "Littles": []}, {"First Name": "Swetha", "Last Name": "Velayutham", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "postswi@gmail.com", "Phone": "2149093206", "Family": "Selee", "ClassName": "Alpha Beta", "Parents": ["Sandhya Maddali"], "Littles": ["Rue Ledesma"]}, {"First Name": "Caroline", "Last Name": "Palamountain", "Major": "Biology · Plan II (Honors)", "MajorsList": ["Biology", "Plan II (Honors)"], "Minor": "", "Track": "Dentistry", "Email": "caropala14@icloud.com", "Phone": "2817536776", "Family": "Selee", "ClassName": "Alpha Eta", "Parents": ["Rue Ledesma"], "Littles": []}, {"First Name": "Aarav", "Last Name": "Metai", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "aarav.metai@gmail.com", "Phone": "972-439-0707", "Family": "Selee", "ClassName": "Alpha Eta", "Parents": ["Laney Stong"], "Littles": []}, {"First Name": "anya", "Last Name": "chawla", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "SDS", "Track": "Medicine", "Email": "anyachawla@gmail.com", "Phone": "5127650902", "Family": "Selee", "ClassName": "Alpha Eta", "Parents": ["Rue Ledesma"], "Littles": []}, {"First Name": "Laney", "Last Name": "Stong", "Major": "Human Ecology", "MajorsList": ["Human Ecology"], "Minor": "", "Track": "Other", "Email": "laneykstong@gmail.com", "Phone": "2103913331", "Family": "Selee", "ClassName": "Alpha Zeta", "Parents": ["Ava Melmed"], "Littles": ["Aarav Metai", "Shruti Vykunta"]}, {"First Name": "Saumya", "Last Name": "Seth", "Major": "Biology · Microbiology & Infectious Diseases", "MajorsList": ["Biology", "Microbiology & Infectious Diseases"], "Minor": "Business", "Track": "Veterinarian", "Email": "saumya0520@gmail.com", "Phone": "8327078166", "Family": "Team Boba", "ClassName": "Alpha Zeta", "Parents": ["Arlen Kelley"], "Littles": ["Mi Tran"]}, {"First Name": "Dheeya", "Last Name": "Jivnani", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "Business/Healthcare and reform", "Track": "Dentistry", "Email": "dheeya2019@gmail.com", "Phone": "9722156587", "Family": "Team Boba", "ClassName": "Alpha Zeta", "Parents": ["Maryam Paykar"], "Littles": []}, {"First Name": "Amelia", "Last Name": "Saenz", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Speech Pathology/Audiology", "Email": "ameliasaenz2006@gmail.com", "Phone": "512-285-0873", "Family": "DEMolishers", "ClassName": "Alpha Theta", "Parents": ["Ariana Izaddoost"], "Littles": []}, {"First Name": "Bhuvan", "Last Name": "Kanna", "Major": "Neuroscience · Computer Science", "MajorsList": ["Neuroscience", "Computer Science"], "Minor": "", "Track": "Medicine", "Email": "bhuvan.kanna@utexas.edu", "Phone": "512-686-6535", "Family": "Selee", "ClassName": "Alpha Theta", "Parents": ["Sreenevash Ramesh"], "Littles": []}, {"First Name": "Chris", "Last Name": "Kurian", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "chrismathan2007@gmail.com", "Phone": "512-284-1875", "Family": "Selee", "ClassName": "Alpha Theta", "Parents": ["Shruti Vykunta"], "Littles": []}, {"First Name": "Divya", "Last Name": "Ghanta", "Major": "Public Health", "MajorsList": ["Public Health"], "Minor": "", "Track": "Medicine", "Email": "divya.ghanta@gmail.com", "Phone": "214-606-6067", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Anish Baktha"], "Littles": []}, {"First Name": "Fiona", "Last Name": "Wang", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "fw9244278@gmail.com", "Phone": "469-881-7706", "Family": "Selee", "ClassName": "Alpha Theta", "Parents": ["Rachel Cai"], "Littles": []}, {"First Name": "Jacob", "Last Name": "Bazbaz", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "bazbazjacob@gmail.com", "Phone": "214-218-8185", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Dustin Walters"], "Littles": []}, {"First Name": "Johnson", "Last Name": "Pham", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "", "Track": "Medicine", "Email": "phamjohnson123@gmail.com", "Phone": "615-299-6846", "Family": "DEMolishers", "ClassName": "Alpha Theta", "Parents": ["Jack Florist"], "Littles": []}, {"First Name": "Juhi", "Last Name": "Arora", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "ja57236@my.utexas.edu", "Phone": "469-456-1453", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Harrison Griffith"], "Littles": []}, {"First Name": "Lindsey", "Last Name": "Won", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "lindseywon@utexas.edu", "Phone": "469-777-2530", "Family": "Selee", "ClassName": "Alpha Theta", "Parents": ["Sreenevash Ramesh"], "Littles": []}, {"First Name": "Marli", "Last Name": "Golden", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Dentistry", "Email": "marligolden11@yahoo.com", "Phone": "201-562-8260", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Harrison Griffith"], "Littles": []}, {"First Name": "Mi", "Last Name": "Tran", "Major": "Biochemistry", "MajorsList": ["Biochemistry"], "Minor": "", "Track": "Medicine", "Email": "mi.tran.t006@gmail.com", "Phone": "469-927-1389", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Saumya Seth"], "Littles": []}, {"First Name": "Naviya", "Last Name": "Reddy", "Major": "Biology · Plan II", "MajorsList": ["Biology", "Plan II"], "Minor": "", "Track": "Medicine", "Email": "nr26998@my.utexas.edu", "Phone": "214-755-0599", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Shivani Patel"], "Littles": []}, {"First Name": "Nora", "Last Name": "Nazrul", "Major": "Business (Canfield Honors) · Plan II", "MajorsList": ["Business (Canfield Honors)", "Plan II"], "Minor": "", "Track": "Medicine", "Email": "noranazrul@utexas.edu", "Phone": "469-728-4220", "Family": "Bigg Tigg", "ClassName": "Alpha Theta", "Parents": ["Estefania Cabrera"], "Littles": []}, {"First Name": "Puneet", "Last Name": "Nunsavathu", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "puneet.nunsavathu@utexas.edu", "Phone": "940-299-2573", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Victoria Trinh"], "Littles": []}, {"First Name": "Ramina", "Last Name": "Tavakolian", "Major": "Biology", "MajorsList": ["Biology"], "Minor": "", "Track": "Medicine", "Email": "rt28539@eid.utexas.edu", "Phone": "469-544-5834", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Maneet Brar"], "Littles": []}, {"First Name": "Rayaan", "Last Name": "Hameed", "Major": "Neuroscience", "MajorsList": ["Neuroscience"], "Minor": "", "Track": "Medicine", "Email": "rh39795@my.utexas.edu", "Phone": "972-202-6129", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Stone Nwamadi"], "Littles": []}, {"First Name": "Roberto", "Last Name": "Hernandez", "Major": "Health & Society", "MajorsList": ["Health & Society"], "Minor": "", "Track": "Occupational Therapy", "Email": "robertohernandezjr6@gmail.com", "Phone": "832-877-9608", "Family": "Sankofa", "ClassName": "Alpha Theta", "Parents": ["Anay Gujrathi"], "Littles": []}, {"First Name": "Yousef", "Last Name": "Aziz", "Major": "Psychology", "MajorsList": ["Psychology"], "Minor": "", "Track": "Medicine", "Email": "ywa67@eid.utexas.edu", "Phone": "210-355-1799", "Family": "Team Boba", "ClassName": "Alpha Theta", "Parents": ["Stone Nwamadi"], "Littles": []}];
@@ -754,6 +793,7 @@ const ALUMNI = [
   {name:"Monzer Alatrach", demClass:"Nu", location:"Houston, TX", professionalSchool:"Residency (Starting This Year)", currentTitle:"Incoming Resident Physician", willingToHelp:"Advice, application review, panels, mentorship", note:"Starting residency this year. Excited to help with advice and mentorship.", email:"", phone:""}
 ];
 
+// COURSE DATA from the class spreadsheet
 const COURSE_DATA = [
   {course:"ACC 312",professor:"Johnston-Blair",members:["Mihir Gupta"]},
   {course:"ADV 378",professor:"Junker",members:["Tyson Huynh"]},
@@ -900,7 +940,7 @@ const COURSE_DATA = [
   {course:"UGS 303",professor:"Schechtman",members:["Alexandra Rivera"]}
 ];
 
-// Deduplicate courses
+// Deduplicate courses (same course+prof = merge members)
 const COURSES = [];
 COURSE_DATA.forEach(row => {
   const key = row.course.toUpperCase() + '||' + row.professor.toLowerCase();
@@ -976,6 +1016,7 @@ function switchTab(tab, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   if (btn) btn.classList.add('active');
+  else document.querySelectorAll('.nav-tab')[['tracker','demographics','families','alumni','classes'].indexOf(tab)]?.classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
   if (tab === 'demographics') renderDemCharts();
   if (tab === 'alumni') renderAlumni();
@@ -1020,6 +1061,7 @@ function initFilters() {
   const alumniClasses = [...new Set(ALUMNI.map(a => a.demClass).filter(Boolean))].sort();
   alumniClasses.forEach(c => { document.getElementById('alumni-class-filter').innerHTML += `<option value="${c}">${c}</option>`; });
 
+  // Course filter dropdown
   const courseCodes = [...new Set(COURSES.map(c => c.course))].sort();
   courseCodes.forEach(c => { document.getElementById('class-filter-course').innerHTML += `<option value="${c}">${c}</option>`; });
 }
@@ -1213,16 +1255,18 @@ function renderAlumni() {
 // ══════════════════════════════════════════════════
 function filterClasses() {
   const q = document.getElementById('class-search').value.toLowerCase().trim();
-  filteredCourses = COURSES.filter(c =>
-    c.course.toLowerCase().includes(q) || c.professor.toLowerCase().includes(q) || c.members.some(m => m.toLowerCase().includes(q))
-  );
+  filteredCourses = COURSES.filter(c => {
+    return c.course.toLowerCase().includes(q) || c.professor.toLowerCase().includes(q) || c.members.some(m => m.toLowerCase().includes(q));
+  });
   document.getElementById('class-filter-course').value = '';
   renderCourses();
 }
 
 function filterClassesDirect() {
   const val = document.getElementById('class-filter-course').value;
-  filteredCourses = val ? COURSES.filter(c => c.course === val) : [...COURSES];
+  if (!val) { filteredCourses = [...COURSES]; } else {
+    filteredCourses = COURSES.filter(c => c.course === val);
+  }
   document.getElementById('class-search').value = '';
   renderCourses();
 }
@@ -1230,22 +1274,28 @@ function filterClassesDirect() {
 function renderCourses() {
   const grid = document.getElementById('courses-grid');
   document.getElementById('class-count').textContent = filteredCourses.length;
+
+  // Quick stats
   const allMemsInResults = new Set(filteredCourses.flatMap(c => c.members));
   const statsRow = document.getElementById('class-stats-row');
   if (filteredCourses.length < COURSES.length && filteredCourses.length > 0) {
     statsRow.innerHTML = `
       <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">Courses Found</div><div class="value accent" style="font-size:1.4rem;">${filteredCourses.length}</div></div>
-      <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">DEM Members Across These Courses</div><div class="value gold" style="font-size:1.4rem;">${allMemsInResults.size}</div></div>`;
+      <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">DEM Members Across These Courses</div><div class="value gold" style="font-size:1.4rem;">${allMemsInResults.size}</div></div>
+    `;
   } else {
     const totalUnique = new Set(COURSES.flatMap(c => c.members)).size;
     statsRow.innerHTML = `
       <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">Total Courses</div><div class="value accent" style="font-size:1.4rem;">${COURSES.length}</div></div>
-      <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">DEM Students Listed</div><div class="value gold" style="font-size:1.4rem;">${totalUnique}</div></div>`;
+      <div class="stat-card" style="padding:0.6rem 1rem;"><div class="label">DEM Students Listed</div><div class="value gold" style="font-size:1.4rem;">${totalUnique}</div></div>
+    `;
   }
+
   if (!filteredCourses.length) {
     grid.innerHTML = `<div class="no-results-state"><div class="icon">📚</div><h3>No courses found</h3><p>Try searching by course number (e.g. BCH 369) or professor name</p></div>`;
     return;
   }
+
   const sorted = [...filteredCourses].sort((a,b) => b.members.length - a.members.length || a.course.localeCompare(b.course));
   grid.innerHTML = sorted.map(c => `
     <div class="class-search-result">
@@ -1259,7 +1309,8 @@ function renderCourses() {
       <div class="class-member-list">
         ${c.members.map(m => `<div class="class-member-chip">${m}</div>`).join('')}
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
 // ══════════════════════════════════════════════════
@@ -1410,14 +1461,12 @@ function unhighlightSlice(id,i){
 // CHATBOT
 // ══════════════════════════════════════════════════
 let chatOpen = false, chatHistory = [], chatLoading = false;
-
 function toggleChat() {
   chatOpen = !chatOpen;
   document.getElementById('chat-window').classList.toggle('open', chatOpen);
   document.getElementById('chat-fab').classList.toggle('open', chatOpen);
   if (chatOpen) setTimeout(() => document.getElementById('chat-input').focus(), 250);
 }
-
 function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
 function handleChatKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
 function sendSuggestion(el) { document.getElementById('chat-input').value=el.textContent; sendChat(); }
@@ -1428,17 +1477,16 @@ function appendMsg(role, html) {
   div.innerHTML=`<div class="chat-bubble">${html}</div>`;
   msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
 }
-
 function showTyping() {
   const msgs=document.getElementById('chat-messages');
   const div=document.createElement('div'); div.className='chat-msg bot'; div.id='typing-indicator';
   div.innerHTML=`<div class="typing-indicator"><span></span><span></span><span></span></div>`;
   msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
-
 function removeTyping() { const el=document.getElementById('typing-indicator'); if(el)el.remove(); }
 
 function buildSystemPrompt() {
+  // Active members summary
   const memberSummary = CONTACTS.map(c => {
     const exps = getExpForMember(c['First Name'], c['Last Name']);
     const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
@@ -1446,12 +1494,15 @@ function buildSystemPrompt() {
     return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Family: ${c.Family||'N/A'} | Class: ${c.ClassName||'?'} | Email: ${c.Email||'N/A'} | Phone: ${c.Phone||'N/A'} | Big(s): ${(c.Parents||[]).join(', ')||'None'} | Littles: ${(c.Littles||[]).join(', ')||'None'} | Courses: ${courses||'none listed'} | Experiences: [${expList||'none'}]`;
   }).join('\n');
 
+  // Alumni summary
   const alumniSummary = ALUMNI.map(a =>
     `${a.name} | Class: ${a.demClass} | Location: ${a.location} | School: ${a.professionalSchool} | Current: ${a.currentTitle} | Can help with: ${a.willingToHelp}${a.email?' | Email: '+a.email:''}${a.phone?' | Phone: '+a.phone:''}${a.note?' | Note: '+a.note:''}`
   ).join('\n');
 
+  // Course summary (most useful ones)
   const bigCourses = COURSES.filter(c => c.members.length > 2).map(c => `${c.course} (Prof. ${c.professor}): ${c.members.join(', ')}`).join('\n');
 
+  // Demographics summary
   const demSummary = `DEM Sigma demographics: ~81% pre-med, ~6.6% PA, ~5.5% dentistry. 63.7% female, 36.3% male. 61.5% Asian, 15.4% Hispanic/Latino, 11% White, 5.5% Black. Class distribution: 38.5% sophomores, 24.2% seniors, 22% juniors, 15.4% freshmen.`;
 
   return `You are the official chapter assistant for Delta Epsilon Mu (ΔΕΜ) Sigma Chapter at UT Austin, a pre-health professional fraternity. You have complete access to all chapter data. Answer concisely and accurately. Cap member lists at 10 per response. Format names in **bold**. 
@@ -1479,14 +1530,6 @@ ${demSummary}
 Bigg Tigg, Team Boba, DEMolishers, Sankofa, Selee, N/A`;
 }
 
-function formatChatResponse(text) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code style="background:var(--surface2);padding:1px 4px;border-radius:3px;font-size:0.82rem;">$1</code>')
-    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-}
-
 async function sendChat() {
   if (chatLoading) return;
   const input = document.getElementById('chat-input');
@@ -1499,84 +1542,38 @@ async function sendChat() {
   chatLoading = true;
   document.getElementById('chat-send').disabled = true;
   showTyping();
-
   try {
     const recent = chatHistory.slice(-10);
-    const contents = recent.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-
+    const contents = recent.map(m => ({role: m.role==='assistant'?'model':'user', parts:[{text:m.content}]}));
     const response = await fetch(GEMINI_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: buildSystemPrompt() }] },
+        system_instruction:{parts:[{text:buildSystemPrompt()}]},
         contents,
-        generationConfig: { maxOutputTokens: 1000, temperature: 0.3 }
+        generationConfig:{maxOutputTokens:1000, temperature:0.3}
       })
     });
-
-    if (!response.ok) {
-      const e = await response.json().catch(() => ({}));
-      throw new Error(e?.error?.message || `HTTP ${response.status}`);
-    }
-
+    if (!response.ok) { const e=await response.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${response.status}`); }
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I had trouble responding.';
+    chatHistory.push({role:'assistant', content:text});
     removeTyping();
-    const botMsg = appendMsg('bot', '');
-    const bubble = botMsg.querySelector('.chat-bubble');
-    let fullText = '';
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop(); // keep incomplete line in buffer
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const raw = line.slice(6).trim();
-        if (raw === '[DONE]') continue;
-        try {
-          const json = JSON.parse(raw);
-          const token = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          fullText += token;
-          bubble.innerHTML = formatChatResponse(fullText);
-          document.getElementById('chat-messages').scrollTop = 999999;
-        } catch {}
-      }
-    }
-
-    // flush any remaining buffer content
-    if (buffer.startsWith('data: ')) {
-      const raw = buffer.slice(6).trim();
-      if (raw && raw !== '[DONE]') {
-        try {
-          const json = JSON.parse(raw);
-          const token = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          fullText += token;
-          bubble.innerHTML = formatChatResponse(fullText);
-        } catch {}
-      }
-    }
-
-    chatHistory.push({ role: 'assistant', content: fullText });
-
-  } catch (err) {
+    appendMsg('bot', formatChatResponse(text));
+  } catch(err) {
     removeTyping();
-    appendMsg('bot', err.message?.includes('429')
-      ? '⚠️ Rate limit reached. Please wait a moment.'
-      : `⚠️ Error: ${err.message || 'Please try again.'}`
-    );
+    appendMsg('bot', err.message?.includes('429') ? '⚠️ Rate limit reached. Please wait a moment.' : `⚠️ Error: ${err.message||'Please try again.'}`);
     chatHistory.pop();
   }
-
   chatLoading = false;
   document.getElementById('chat-send').disabled = false;
+}
+
+function formatChatResponse(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--surface2);padding:1px 4px;border-radius:3px;font-size:0.82rem;">$1</code>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
 }
 
 // ══════════════════════════════════════════════════
