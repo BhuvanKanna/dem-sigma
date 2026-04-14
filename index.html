@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ΔΕΜ — Delta Epsilon Mu Bhuvan</title>
+<title>ΔΕΜ — Delta Epsilon Mu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2311,13 +2311,16 @@ function removeTyping() {
 }
 
 function buildSystemPrompt() {
-  // Build a compact but rich data summary for Claude
   const memberSummary = CONTACTS.map(c => {
     const exps = getExpForMember(c['First Name'], c['Last Name']);
     const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
-    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Minor: ${c.Minor||'none'} | Track: ${c.Track||'?'} | Email: ${c.Email||'?'} | Phone: ${c.Phone||'?'} | Experiences: [${expList || 'none recorded'}]`;
-  }).join('\n');
+    
+    // ADD THE LINE BELOW TO INCLUDE FAMILY DATA
+    const famInfo = `Family: ${c.Family || 'N/A'} | Bigs: ${c.Parents?.join(', ') || 'None'} | Littles: ${c.Littles?.join(', ') || 'None'}`;
 
+    return `${c['First Name']} ${c['Last Name']} | ${famInfo} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Experiences: [${expList || 'none'}]`;
+  }).join('\n');
+  
   return `You are the chapter assistant for Delta Epsilon Mu (ΔΕΜ), a pre-health professional fraternity. You have full access to the chapter's active member roster and involvement data. Answer questions helpfully, concisely, and accurately using ONLY the data provided below. If contact info is requested, provide it. Format names in bold using **name** syntax when listing members. Keep responses concise but complete.
 
 ACTIVE MEMBER DATA (84 members):
@@ -2332,6 +2335,9 @@ INSTRUCTIONS:
 - If no members match a query, say so clearly
 - Keep responses under ~200 words unless a full list is genuinely needed`;
 }
+
+const GEMINI_API_KEY = 'AIzaSyDfVFklhoN-j4fg4w-DZ3Jqp7Fq-zdsYLc';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
 async function sendChat() {
   if (chatLoading) return;
@@ -2349,28 +2355,40 @@ async function sendChat() {
   chatLoading = true;
   document.getElementById('chat-send').disabled = true;
   showTyping();
-
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const recentHistory = chatHistory.slice(-10);
+    const contents = recentHistory.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    const response = await fetch(GEMINI_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: buildSystemPrompt(),
-        messages: chatHistory.slice(-10) // last 10 turns for context
+        system_instruction: { parts: [{ text: buildSystemPrompt() }] },
+        contents: contents,
+        generationConfig: { maxOutputTokens: 1000, temperature: 0.3 }
       })
     });
 
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+    }
+
     const data = await response.json();
-    const text = data.content?.map(b => b.text || '').join('') || 'Sorry, I had trouble responding.';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I had trouble responding.';
     chatHistory.push({ role: 'assistant', content: text });
 
     removeTyping();
     appendMsg('bot', formatChatResponse(text));
   } catch (err) {
     removeTyping();
-    appendMsg('bot', '⚠️ Connection error. Please try again.');
+    const errMsg = err.message?.includes('429')
+      ? '⚠️ Rate limit reached. Please wait a moment and try again.'
+      : `⚠️ Connection error: ${err.message || 'Please try again.'}`;
+    appendMsg('bot', errMsg);
     chatHistory.pop();
   }
 
@@ -2392,6 +2410,7 @@ function formatChatResponse(text) {
     .replace(/\n/g, '<br>');
 }
 </script>
+
 
 <footer style="
   background: #1a0505;
