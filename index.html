@@ -1486,95 +1486,105 @@ function showTyping() {
 function removeTyping() { const el=document.getElementById('typing-indicator'); if(el)el.remove(); }
 
 function buildSystemPrompt() {
-  // Active members summary
   const memberSummary = CONTACTS.map(c => {
     const exps = getExpForMember(c['First Name'], c['Last Name']);
-    const expList = exps.map(e => `${e.Category}: ${e.Experience}`).join('; ');
-    const courses = COURSES.filter(co => co.members.some(m => m.toLowerCase().includes(c['First Name'].toLowerCase()) || m.toLowerCase().includes(c['Last Name'].toLowerCase()))).map(co => `${co.course} (Prof. ${co.professor})`).join(', ');
-    return `${c['First Name']} ${c['Last Name']} | Major: ${c.Major||'?'} | Track: ${c.Track||'?'} | Family: ${c.Family||'N/A'} | Class: ${c.ClassName||'?'} | Email: ${c.Email||'N/A'} | Phone: ${c.Phone||'N/A'} | Big(s): ${(c.Parents||[]).join(', ')||'None'} | Littles: ${(c.Littles||[]).join(', ')||'None'} | Courses: ${courses||'none listed'} | Experiences: [${expList||'none'}]`;
+    const expList = exps
+      .map(e => `${e.Category}: ${e.Experience}`)
+      .join('; ');
+
+    return `${c['First Name']} ${c['Last Name']} | Activities: ${expList || 'none listed'}`;
   }).join('\n');
 
-  // Alumni summary
-  const alumniSummary = ALUMNI.map(a =>
-    `${a.name} | Class: ${a.demClass} | Location: ${a.location} | School: ${a.professionalSchool} | Current: ${a.currentTitle} | Can help with: ${a.willingToHelp}${a.email?' | Email: '+a.email:''}${a.phone?' | Phone: '+a.phone:''}${a.note?' | Note: '+a.note:''}`
-  ).join('\n');
+  return `
+You are a simple DEM Sigma chapter assistant.
 
-  // Course summary (most useful ones)
-  const bigCourses = COURSES.filter(c => c.members.length > 2).map(c => `${c.course} (Prof. ${c.professor}): ${c.members.join(', ')}`).join('\n');
+TASK:
+Only answer questions about WHICH MEMBERS are involved in specific activities, interests, or experiences.
 
-  // Demographics summary
-  const demSummary = `DEM Sigma demographics: ~81% pre-med, ~6.6% PA, ~5.5% dentistry. 63.7% female, 36.3% male. 61.5% Asian, 15.4% Hispanic/Latino, 11% White, 5.5% Black. Class distribution: 38.5% sophomores, 24.2% seniors, 22% juniors, 15.4% freshmen.`;
+RULES:
+- ONLY respond to "who does X" or "who is involved in X" type questions
+- If question is unrelated, respond: "I can only help with member activity queries."
+- Keep responses under 50 words
+- Max 5 members per response
+- Format names in **bold**
 
-  return `You are the official chapter assistant for Delta Epsilon Mu (ΔΕΜ) Sigma Chapter at UT Austin, a pre-health professional fraternity. You have complete access to all chapter data. Answer concisely and accurately. Cap member lists at 10 per response. Format names in **bold**. 
-
-IMPORTANT RULES:
-- Keep responses under 100 words unless more detail is requested
-- Max 5 members listed per response
-- Always provide contact info if asked
-- Be specific about which tab/section info comes from when helpful
-- For alumni, be clear they are former members willing to mentor
-- For courses, help members find classmates
-
-== ACTIVE MEMBERS (${CONTACTS.length} total) ==
+DATA:
 ${memberSummary}
-
-== ALUMNI (${ALUMNI.length} mentors available) ==
-${alumniSummary}
-
-== NOTABLE LARGE COURSES (3+ DEM members) ==
-${bigCourses}
-
-== DEMOGRAPHICS ==
-${demSummary}
-
-== FAMILIES ==
-Bigg Tigg, Team Boba, DEMolishers, Sankofa, Selee, N/A`;
+`;
 }
 
 async function sendChat() {
   if (chatLoading) return;
+
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
   if (!msg) return;
-  input.value = ''; input.style.height = 'auto';
+
+  input.value = '';
+  input.style.height = 'auto';
   document.getElementById('chat-suggestions').style.display = 'none';
+
   appendMsg('user', escapeHtml(msg));
-  chatHistory.push({role:'user', content:msg});
+
+  chatHistory.push({ role: 'user', content: msg });
+
+  // Only keep last 2 messages (demo mode = no memory)
+  chatHistory = chatHistory.slice(-2);
+
   chatLoading = true;
   document.getElementById('chat-send').disabled = true;
   showTyping();
+
   try {
-    const recent = chatHistory.slice(-10);
-    const contents = recent.map(m => ({role: m.role==='assistant'?'model':'user', parts:[{text:m.content}]}));
+    const contents = chatHistory.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
     const response = await fetch(GEMINI_URL, {
-      method:'POST', headers:{'Content-Type':'application/json'},
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction:{parts:[{text:buildSystemPrompt()}]},
+        system_instruction: {
+          parts: [{ text: buildSystemPrompt() }]
+        },
         contents,
-        generationConfig:{maxOutputTokens:500, temperature:0.3}
+        generationConfig: {
+          maxOutputTokens: 120, 
+          temperature: 0.2
+        }
       })
     });
-    if (!response.ok) { const e=await response.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${response.status}`); }
+
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({}));
+      throw new Error(e?.error?.message || `HTTP ${response.status}`);
+    }
+
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I had trouble responding.';
-    chatHistory.push({role:'assistant', content:text});
+
+    const text =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      'No response.';
+
+    chatHistory.push({ role: 'assistant', content: text });
+    chatHistory = chatHistory.slice(-2);
+
     removeTyping();
     appendMsg('bot', formatChatResponse(text));
-  } catch(err) {
+
+  } catch (err) {
     removeTyping();
-    appendMsg('bot', err.message?.includes('429') ? '⚠️ Rate limit reached. Please wait a moment.' : `⚠️ Error: ${err.message||'Please try again.'}`);
-    chatHistory.pop();
+    appendMsg(
+      'bot',
+      err.message?.includes('429')
+        ? '⚠️ Rate limit reached. Try again soon.'
+        : `⚠️ Error: ${err.message || 'Please try again.'}`
+    );
   }
+
   chatLoading = false;
   document.getElementById('chat-send').disabled = false;
-}
-
-function formatChatResponse(text) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code style="background:var(--surface2);padding:1px 4px;border-radius:3px;font-size:0.82rem;">$1</code>')
-    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
 }
 
 // ══════════════════════════════════════════════════
